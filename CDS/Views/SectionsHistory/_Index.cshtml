@@ -1,0 +1,160 @@
+﻿@model CDS.Models.LessonPlanEditorUserWork
+
+@{
+    Layout = null;
+}
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>_Index</title>
+</head>
+<body>
+    <!--Section Detail Model-->
+
+    <div class="sectionmodel col-lg-12 col-md-12 col-xs-12 modal fade" id="secmodel" role="dialog">
+        <div class="modal-dialog" style="width:830px">
+            <!-- Modal content-->
+            <div class="modal-content" style="border-radius:1px;width:815px">
+                <div class="modal-header" id="mainheader">
+                    <button id="btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="errorheader">History (@Model.SectionName)</h4>
+                </div>
+                <div class="modal-body" style="overflow:hidden;padding:0px !important">
+                    <div class="col-md-12 text-center" style="padding:10px 0 0 0">
+                        <b>
+                            <span>Show me last</span>
+                            <select style="color:#74a3cb" id="lstval" onchange="onChangeVal();">
+                                <option value="0">All</option>
+                                @for (int i = 5; i <= 50; i = i + 5)
+                                {
+                                    if (i == 5)
+                                    {
+                                        <option selected value="@i">@i</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+                                }
+                            </select>
+                            <span>Histories.</span>
+                        </b>
+                    </div>
+                    <div class="col-md-12" style="overflow-x: hidden;height: 450px;overflow-y: scroll;">
+                        <div class="tab-content" id="tablelessondiv">
+                            @if (Model._lstSectionhistory != null)
+                            {
+                                string dir = "";
+                                if (Model.Direction == "Urdu")
+                                {
+                                    dir = "direction:rtl";
+                                }
+                                else
+                                {
+                                    dir = "direction:ltr";
+                                }
+                                var a = 1;
+                                foreach (var item in Model._lstSectionhistory)
+                                {
+                                    <div style="background-color:#f2f2f2;border:1px solid;padding: 5px 0;overflow: hidden;margin-bottom: 10px;">
+                                        <div class="col-lg-7">
+                                            <b>@item.FirstName @item.LastName (Var : @a)</b>
+                                        </div>
+                                        <div class="col-lg-5 text-right">
+                                            <b>@item.UpdateDateTime</b><a style="cursor:pointer" onclick="onbtnClick('@Model.ID','@item.LogID')">  Restore</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-12" style="margin-top: 5px;margin-bottom: 10px;@dir">
+                                            @MvcHtmlString.Create(item.LessonPlanScript)
+                                        </div>
+                                    </div>
+                                    a++;
+                                }
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--end model-->
+</body>
+</html>
+<script>
+    var ID=@Model.ID;
+    var LessonPlanID=@Model.LessonPlanID;
+    var isindexpage=@Model.IsIndexPage;
+    var Direction='@Model.Direction';
+    var booktype=@Model.BookTypeID;
+
+    $("#secmodel").modal('show');
+    function parseJsonDate(jsonDateString) {
+        var dt=new Date(parseInt(jsonDateString.replace('/Date(', '')));
+        return dt.toLocaleDateString() +" "+ dt.toLocaleTimeString();
+    }
+    function onbtnClick(secid,logid)
+    {
+        RestoreData(secid, logid);
+    }
+    function onChangeVal()
+    {
+        var val=$("#lstval").val();
+
+        $.ajax({
+            type: 'POST',
+            url: '../SectionsHistory/GetHistory',
+            dataType: 'json',
+            data: { ID: ID,LessonPlanId:LessonPlanID,BooktypeId:booktype,IsindexPage:isindexpage,Num:val},
+            success: function (data)
+            {
+                var html="";
+                if (data.length!=0)
+                {
+                    $("#tablelessondiv").empty();
+                    var dir = "";
+                    if (Direction == "Urdu")
+                    {
+                        dir = "direction:rtl";
+                    }
+                    else
+                    {
+                        dir = "direction:ltr";
+                    }
+                    var a = 1;
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        html+='<div style="background-color:#f2f2f2;border:1px solid;padding: 5px 0;overflow: hidden;margin-bottom: 10px;">';
+                        html+='<div class="col-lg-7">';
+                        html+='<b>'+data[i].FirstName+' '+ data[i].LastName+' (Var :'+ a+')</b>';
+                        html+='</div>';
+                        html+='<div class="col-lg-5 text-right">';
+                        html+='<b>'+parseJsonDate(data[i].UpdateDateTime)+'</b><a style="cursor:pointer" onclick="onbtnClick('+ID+','+data[i].LogID+')">  Restore</a>';
+                        html+='</div>';
+                        html+='</div>';
+                        html+='<div class="row">';
+                        html+='<div class="col-lg-12" style="margin-top: 5px;margin-bottom: 10px;'+dir+'">';
+                        html+=data[i].LessonPlanScript;
+                        html+='</div>';
+                        html+='</div>';
+                        a++;
+                    }
+                    $("#tablelessondiv").append(html);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,134 @@
+﻿@model List<CDS.Models.LessonUser>
+<style>
+    .margin-name {
+    margin-bottom:4%;
+    padding-left:0;
+    }
+</style>
+<div class="modal fade" id="LessonUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content model-rights">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="CloseModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                @if (Model != null && Model.Count() > 0)
+                {
+                    @Model.ToList()[0].UserName
+                    <input type="hidden" id="userID" value="@ViewBag.UserID" />
+                    <input type="hidden" id="lessonPlanID" value="@ViewBag.LessonPlanID" />
+                }
+                 Privileges
+                </h4>
+            </div>
+            <div class="modal-body"style="">
+
+                
+
+
+
+                <div class="">
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        <p><b>Select from the following: </b></p>
+                        foreach (var item in Model)
+                        {
+                            <div class="col-lg-12">
+                                @if (item.HasRights)
+                                {
+                                    @*<input type="checkbox" id="@item.LessonRightsID" name="rightID" checked="checked"/>
+                                    <span>@item.LessonRightsName.Replace("Can ", "")</span>*@
+
+                                    <span class="checkbox checkbox-success">
+                                        <input id="@item.LessonRightsID" type="checkbox" name="rightID" checked="checked">
+                                        <label for="@item.LessonRightsID">
+                                            <span>@item.LessonRightsName.Replace("Can ", "")</span>
+                                        </label>
+                                    </span>
+
+
+
+                                }
+                                else
+                                {
+                                    <span class="checkbox checkbox-success">
+                                        <input id="@item.LessonRightsID" type="checkbox" name="rightID">
+                                        <label for="@item.LessonRightsID">
+                                            <span>@item.LessonRightsName.Replace("Can ", "")</span>
+                                        </label>
+                                    </span>
+                                    @*<input type="checkbox" id="@item.LessonRightsID"  name="rightID" />
+                                    <span>@item.LessonRightsName.Replace("Can ", "")</span>*@
+                                }
+                            </div>
+                        }
+                    }
+
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-lg-12 text-right">
+                    <a id="updStatus" onclick="UpdateStatus()" href="#" class="btn-blue" title="Save"> Save</a>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $("#LessonUserModal").modal('show');
+    $('#LessonUserModal').modal({
+        backdrop: 'static',
+        keyboard: false
+    })
+
+    function CloseModal()
+    {
+        $("#LessonUserModal").modal('hide');
+    }
+
+    function UpdateStatus()
+    {
+        var selectedAction = [];
+        $("input:checkbox[name=rightID]:checked").each(function () {
+            selectedAction.push($(this).attr("id"));
+        });
+
+        //if (selectedAction == null || selectedAction.length == 0)
+        //{
+        //    alert('Select atleast one action');
+        //    return false;
+        //}
+        var userID = $("#userID").val();
+        var lessonPlanID = $("#lessonPlanID").val();
+        var $URL = '../LessonPlanEditor/UpdateUserLessonRights';
+        $.ajax({
+            url: $URL,
+            type: "POST",
+            dataType: "json",
+            data: { userID:userID,lessonPlanID:lessonPlanID, lst: selectedAction },
+            success: function (data) {
+                if (data != null && data == "Done") {
+                    if (selectedAction.length > 0) {
+                        $("#edit_" + userID).removeClass("fa-eye");
+                        $("#edit_" + userID).addClass("fa-edit");
+                    }
+                    else
+                    {
+                        $("#edit_" + userID).removeClass("fa-edit");
+                        $("#edit_" + userID).addClass("fa-eye");
+                    }
+                    $("#LessonUserModal").modal('hide');
+                }
+
+            },
+            error: function () {
+                alert("Sorry Something went Wrong.");
+                $("#LessonUserModal").modal('hide');
+
+            }
+        });
+    }
+</script>

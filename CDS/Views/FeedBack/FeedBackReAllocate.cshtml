@@ -1,0 +1,164 @@
+﻿@model CDS.Models.mdl_FeedBack
+
+@{
+    ViewBag.Title = "FeedBackReAllocate";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+
+<link href="~/Content/leafschool.css" rel="stylesheet" />
+
+
+<div class="container-fluid search-holder">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
+                <div class="title-stud">
+                    <h2>Re-Allocate Feedback</h2>
+                </div>
+            </div>
+            @*<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+                    <div class="btn-holder-bar">
+                        <a id="btnEdit" href="#" class="btnnew " title="Edit"><i class="fa fa-edit"></i> Edit</a>
+                    </div>
+                </div>*@
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    @Html.HiddenFor(model => model.FeedBackID)
+    <div class="feedback-process">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="col-lg-12">
+                <div class="col-lg-7">
+                    <table class="table table-inner">
+                        <tbody>
+                            <tr>
+                                <td class="class-bold">FeedBack # : </td>
+                                <td id="DecFeedBackId">@Model.ID</td>
+                            </tr>
+                            <tr>
+                                <td class="class-bold">School : </td>
+                                <td>@Model.SchoolName</td>
+                            </tr>
+                            <tr>
+                                <td class="class-bold">From : </td>
+                                <td>@Model.UserName</td>
+                            </tr>
+                            <tr>
+                                <td class="class-bold">Source : </td>
+                                <td>@Model.Source</td>
+                            </tr>
+                            <tr>
+                                <td class="class-bold">Previous Department : </td>
+                                <td>@Model.PreviousDepartment</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-5">
+                    <table class="table table-inner">
+                        <tbody>
+                            <tr>
+                                <td class="class-bold">Date : </td>
+                                <td>@Model.Date.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 16px 0px !important; border: medium none !important;"></td>
+                                <td style="padding: 16px 0px !important; border: medium none !important;"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 16px 0px !important; border: medium none !important;"></td>
+                                <td style="padding: 16px 0px !important; border: medium none !important;"></td>
+                            </tr>
+                            <tr>
+                                <td class="class-bold">Type : </td>
+                                <td>@Model.Type</td>
+                            </tr>
+                            <tr>
+                                <td class="class-bold">Frequency : </td>
+                                <td>@Model.Frequency</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="col-lg-3">
+                    <span style="font-weight:bold">Remarks : </span>
+                </div>
+                <div class="col-lg-8 ">
+                    <div class="remarks-box-reloc">
+                        @Model.Remarks
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="col-lg-3">
+                    <span style="font-weight:bold">My Comments : </span>
+                </div>
+                <div class="col-lg-8">
+                    <input class="form-control" type="text" id="userComment" placeholder="Insert comment" maxlength="150" />
+                </div>
+            </div>
+
+            <div style="margin-top:1%" class="col-lg-12">
+                <div class="col-lg-3">
+                    <span style="font-weight:bold">Assign To : </span>
+                </div>
+                <div class="col-lg-8">
+                    @Html.DropDownList("lstDepartmentFeedBack", new SelectList(ViewBag.departmentdropdown, "FeedBackDepartmentID", "DepartmentName", @Model.DepartmentID), "Select Department", new { @class = "form-control status-width", onclick = "ClearSpan()" })
+                    <input onclick="ReAllocateStatus()" class="btnnew" type="button" value="Save" />
+                    <input onclick="Cancel()" class="btnnew" type="button" value="Cancel" />
+                    <span class="text-danger" id="TypeErr"></span>
+                </div>
+                <input id="prevdeptID" type="hidden" value="@Model.DepartmentID" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function Cancel()
+    {
+       window.location.href =  '@Url.Action("FeedBackList")';
+    }
+
+    function ReAllocateStatus()
+    {
+        if ($("#lstDepartmentFeedBack").val() == '') {
+            $("#TypeErr").html("");
+            $("#TypeErr").html("Select One Department");
+            return false;
+        }
+        var departmentId = $("#lstDepartmentFeedBack").val();
+        var comment = $("#userComment").val();
+        var feedbackId = $("#DecFeedBackId").html();
+        var encfeedbackID = $("#FeedBackID").val();
+        var prevDeptID = $("#prevdeptID").val();
+        $.ajax({
+            url: '@Url.Action("ReAllocateFeedBack", "FeedBack")',
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "departmentId": departmentId, "comment": comment, "feebbackId": feedbackId, "prevDeptID": prevDeptID },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data == 1) {
+                    window.location.href = "FeedBackReAllocate?EncFeedBackId=" + encfeedbackID;
+                }
+                else {
+                    alert("Something wents wrong. Try Again Later");
+                }
+            }
+        });
+    }
+
+    function ClearSpan() {
+       $("#TypeErr").html("");
+    }
+</script>
+
+

@@ -1,0 +1,242 @@
+﻿@model IEnumerable<CDS.Models.BLL_ChatHistory>
+@{
+    ViewBag.Title = "Comment Inbox";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+<style>
+    table.dataTable thead tr + tr #srno::after,
+    table.dataTable thead tr + tr #Totalunits::after,
+    table.dataTable thead tr + tr #TotalLessons::after,
+    table.dataTable thead tr + tr #Status::after,
+    table.dataTable thead tr + tr #Ratings::after {
+        display: none;
+        opacity: 0;
+    }
+        .hidetd select {
+        display: none !important;
+    }
+
+    .dropdown {
+        margin-left: -10px;
+    }
+</style>
+<div class="container-fluid main-con">
+    <div class="title-bar">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">Inbox</a></li>
+                </ul>
+                <div class="pull-right">
+                    <a href="../Home/Index" class="btn-back" title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="box">
+
+        <!-- /.box-header -->
+        <div class="modal-body">
+            <div class="chat-holder">
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        if (item.isRead == false)
+                        {
+                            if (item.WhereFrom == "Inbox")
+                            {
+                            <div class="user-1" style="background:#d4dffd;cursor:pointer" onclick="GoTOLesson('@item.EncLessonID','@item.EncMessage_ID','@item.EncUserID_A')">
+                                
+                                <h2>@item.UserName <span class="chat-time pull-right">@item.CommentTimeAgo</span></h2>
+                                <div class="msguser">
+                                    @item.Comment
+                                </div>
+                            </div>
+                            }
+                            else if (item.WhereFrom == "Scope")
+                            {
+                                <div class="user-1" style="background:#d4dffd;cursor:pointer" onclick="LoadComments('@item.EncLessonID','@item.EncMessage_ID')">
+
+                                    <h2>@item.UserName <span class="chat-time pull-right">@item.CommentTimeAgo</span></h2>
+                                    <div class="msguser">
+                                        @item.Comment
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="user-1" style="background:#d4dffd;cursor:pointer" onclick="LoadFeedBack('@item.EncMessage_ID')">
+
+                                    <h2>@item.UserName <span class="chat-time pull-right">@item.CommentTimeAgo</span></h2>
+                                    <div class="msguser">
+                                        @item.Comment
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            if (item.WhereFrom == "Inbox")
+                            {
+                            <div class="user-1" style="cursor:pointer" onclick="GoTOLesson('@item.EncLessonID','@item.EncMessage_ID','@item.EncUserID_A')">
+                                <h2>@item.UserName <span class="chat-time pull-right">@item.CommentTimeAgo</span></h2>
+                                <div class="msguser">
+                                    @item.Comment
+                                </div>
+                            </div>
+                            }
+                            else if (item.WhereFrom == "Scope")
+                            {
+                                <div class="user-1" style="cursor:pointer" onclick="LoadComments('@item.EncLessonID','@item.EncMessage_ID')">
+                                    <h2>@item.UserName <span class="chat-time pull-right">@item.CommentTimeAgo</span></h2>
+                                    <div class="msguser">
+                                        @item.Comment
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="user-1" style="background:#d4dffd;cursor:pointer" onclick="LoadFeedBack('@item.EncMessage_ID')">
+
+                                    <h2>@item.UserName <span class="chat-time pull-right">@item.CommentTimeAgo</span></h2>
+                                    <div class="msguser">
+                                        @item.Comment
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                <div class="chat-holder">
+                    <h4>You have no message</h4>
+                </div>
+                }
+
+            </div>
+            </div>
+
+        </div>
+        <!-- /.box-body -->
+    </div>
+@*<script>
+    function GoTOLesson(LessonID,MessageID,UserID) {
+
+        window.location.href = "../LessonPlanEditor/LessonPlan?LessonId=" + LessonID + "&&mode=Message&&InvitaionID=" + MessageID + "&&InvitationUserID=" + UserID + "";
+    }
+
+    $(document).ready(function () {
+
+        $('#example #Message').each(function () {
+            $(this).html('<input type="text"class=form-control search-fld placeholder="Message" style="width:200px; height:30px;" />');
+        });
+        //$('#example #Class').each(function () {
+        //    $(this).html('<input type="text"class=form-control search-fld placeholder="Class Name" style="width:100px; height:30px;" />');
+        //});
+        $('#example #Time').each(function () {
+            $(this).html('<input type="text"class=form-control search-fld placeholder="Time" style="width:100px; height:30px;" />');
+        });
+        var table = $('#example').DataTable({
+            language: {
+                sLengthMenu: "Show _MENU_ Entries"
+            },
+
+            responsive: {
+                details: true
+            },
+            responsive: true,
+            "ordering": false,
+            "lengthMenu": [[-1, 10, 25, 50, 100], ["All", 10, 25, 50, 100]],
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    $('select').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                    var column = this;
+                    var select = $('<select class="form-control"><option value="">All</option></select>').appendTo($(column.header())).on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+
+                    });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        if (d != "") {
+
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        }
+                    });
+                });
+            }
+
+        });
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+
+            $('input', table.column(colIdx).header()).on('keyup change', function () {
+                table.column(colIdx).search(this.value).draw();
+
+            });
+
+            $('input', table.column(colIdx).header()).on('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+
+        }).draw();
+
+    });
+</script>*@
+<script>
+    function GoTOLesson(LessonID, MessageID, UserID) {
+
+        window.location.href = "../LessonPlanEditor/LessonPlan?LessonId=" + LessonID + "&&mode=Message&&InvitaionID=" + MessageID + "&&InvitationUserID=" + UserID + "";
+    }
+    function LoadComments(LessonID,MessageID) {
+        $("body").css("cursor", "progress");
+        $.ajax({
+            url: '../Comment/CommentScopeAndSequence',
+            type: 'GET',
+            cache: false,
+            async: true,
+            data: { 'LessonID': LessonID, 'MessageID': MessageID },
+            success: function (result) {
+                var savedData = result;
+                $.ajax({
+                    url: '../Image/CheckSession',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        if (data == 1) {
+                            $("#scopeAndSequenceModalBrowser").empty();
+                            $("#scopeAndSequenceModalBrowser").html('');
+                            $("#scopeAndSequenceModalBrowser").html(savedData);
+                        }
+                        else {
+                            window.location.href = "../User/LoginUser";
+                        }
+                    }
+                });
+            }
+        });
+        $("body").css("cursor", "default");
+    }
+    function LoadFeedBack(MessageID)
+    {
+        window.location.href = "../FeedBack/FeedBackProcess?EncFeedBackId=" + MessageID + "&&returnPage=Inbox";
+    }
+</script>

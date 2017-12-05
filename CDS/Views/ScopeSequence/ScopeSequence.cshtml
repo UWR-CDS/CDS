@@ -1,0 +1,227 @@
+﻿@model CDS.Models.ScopeSequenceModel
+@{
+    ViewBag.Title = "Scope and Sequence";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+<div class="container-fluid main-con">
+    <div class="title-bar">
+
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">Scope & Sequence</a></li>
+                </ul>
+                <div class="pull-right">
+                    <a href="../Home/Index" class="btn-back " title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="grade-box">
+        <div class="search-box" id="searchbox" style="display:none">
+            <form>
+                <div id="form">
+                </div>
+            </form>
+        </div>
+            <div class="table-responsive">
+                <table id="ScopeTable" class="table table-bordered table-striped  table-scope ">
+                    <thead>
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Grade</th>
+                            <th>Subject Name</th>
+                            <th>Book Name</th>
+                            <th style="text-align:center">Total Unit</th>
+                            <th style="text-align:center">Total Lessons</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @if (Model.lst != null) {
+                           foreach (var item in Model.lst) {
+                               <tr>
+                                   <td></td>
+                                   <td>@item.ClassName</td>
+                                   <td>@item.SubjectName</td>
+                                   <td><a title="Open Book Details" onclick="LoadBook(@item.BookID,'@item.BookName')" class="blue" style="cursor:pointer" href="#">@item.BookName</a></td>
+                                   <td style="text-align:center">@item.TotalChapters</td>
+                                   <td style="text-align:center">@item.TotalLessons</td>
+                               </tr>
+                           }
+                       }
+                    </tbody>
+                </table>
+            </div>
+
+
+
+    </div>
+
+</div>
+<script>
+    $('#myCollapsible').collapse({
+        toggle: false
+    })
+    function onBookClick(id)
+    {
+        var url = "../ScopeSequence/ScopeSequence?BookID="+id;
+        window.open(url, "_self");
+    }
+    function onUnitClick(id)
+    {
+        if (document.getElementById("cls_"+id).className == 'panel-collapse collapse in')
+        {
+            document.getElementById("cls_"+id).className = "";
+            document.getElementById("cls_"+id).className += 'panel-collapse collapse';
+        }
+        else
+        {
+            document.getElementById("cls_"+id).className = "";
+            document.getElementById("cls_"+id).className += 'panel-collapse collapse in';
+        }
+        $('.collapse').each(function (i, obj)
+        {
+            if (obj.id!="cls_"+id)
+            {
+                document.getElementById(obj.id).className = "";
+                document.getElementById(obj.id).className += 'panel-collapse collapse';
+            }
+            else {
+                if (document.getElementById("cls_"+id).className == 'panel-collapse collapse in')
+                {
+                    document.getElementById("cls_"+id).className = "";
+                    document.getElementById("cls_"+id).className += 'panel-collapse collapse';
+                }
+                else
+                {
+                    document.getElementById("cls_"+id).className = "";
+                    document.getElementById("cls_"+id).className += 'panel-collapse collapse in';
+                }
+            }
+
+        });
+    }
+</script>
+<style>
+    .hidetd select {
+        display: none !important;
+    }
+    .dropdown {
+        margin-left: -10px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        //$('#ScopeTable #BookName').each(function () {
+        //    $(this).html('<input type="text"class="form-control datatable-fld" placeholder="Book Name" />');
+        //});
+        var table = $('#ScopeTable').DataTable({
+            language: {
+                sLengthMenu: "Show _MENU_"
+            },
+            responsive: {
+                details: true
+            },
+            responsive: true,
+            "ordering": false,
+            //"order": [[ 1, "desc" ]],
+            "columnDefs": [
+                      { targets: 0, orderable: false },
+            ],
+            "lengthMenu": [[-1, 10, 25, 50, 100], ["All", 10, 25, 50, 100]],
+            initComplete: function () {
+                this.api().columns("1").every(function () {
+                    $('select').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                    var column = this;
+                    var select = $('<select class="g-search"><option value="">All Classes</option></select>').appendTo($("#form")).on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+
+                    });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        if (d != "") {
+
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        }
+                    });
+                });
+                this.api().columns("2").every(function () {
+                    $('select').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                    var column = this;
+                    var select = $('<select class="g-search"><option value="">All Subjects</option></select>').appendTo($("#form")).on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+
+                    });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        if (d != "") {
+
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        }
+                    });
+                });
+            }
+
+        });
+        $(".dataTables_filter").append('<div class="search-btn"><a href="#" id="searchbtn"><i class="fa fa-search"></i></a></div>')
+        table.columns().eq(0).each(function (colIdx) {
+
+            $('input', table.column(colIdx).header()).on('keyup change', function () {
+                table.column(colIdx).search(this.value).draw();
+
+            });
+
+            $('input', table.column(colIdx).header()).on('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+    });
+
+
+</script>
+<script>
+    $(function(){
+        $("#searchbtn").click(function(){
+
+                    //if($("#searchbox").style.display=="none"){
+                    //    $("#searchbox").style.display="block";
+                    //}else{
+                    //    $("#searchbox").style.display="none";
+                    //}
+                     $("#searchbox").toggle();
+                });
+    });
+    function LoadBook(BookID,BookName) {
+        loader();
+        window.location.href = '../ScopeSequence/BookConfig?BookID=' + BookID + '&&BookName=' + BookName;
+    }
+</script>

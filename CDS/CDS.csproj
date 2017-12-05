@@ -1,0 +1,2298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{31B198D2-A10F-4FC9-A9C4-C7FAB27E1A35}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CDS</RootNamespace>
+    <AssemblyName>CDS</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Fluentx, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fluentx.2.0.4\lib\Fluentx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fluentx.Mvc, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fluentx.Mvc.1.0.4\lib\Fluentx.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=1.0.1982.22911, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authentication, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.1.1.2\lib\net451\Microsoft.AspNetCore.Authentication.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authentication.Facebook, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.Facebook.1.1.2\lib\net451\Microsoft.AspNetCore.Authentication.Facebook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authentication.Google, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.Google.1.1.2\lib\net451\Microsoft.AspNetCore.Authentication.Google.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authentication.OAuth, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.OAuth.1.1.2\lib\net451\Microsoft.AspNetCore.Authentication.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authentication.Twitter, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.Twitter.1.1.2\lib\net451\Microsoft.AspNetCore.Authentication.Twitter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Cryptography.Internal, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Cryptography.Internal.1.1.2\lib\net451\Microsoft.AspNetCore.Cryptography.Internal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.DataProtection, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.DataProtection.1.1.2\lib\net451\Microsoft.AspNetCore.DataProtection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.DataProtection.Abstractions, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.DataProtection.Abstractions.1.1.2\lib\net451\Microsoft.AspNetCore.DataProtection.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Abstractions.1.1.2\lib\net451\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Server.Abstractions.1.1.2\lib\net451\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.1.1.2\lib\net451\Microsoft.AspNetCore.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Abstractions.1.1.2\lib\net451\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Extensions, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Extensions.1.1.2\lib\net451\Microsoft.AspNetCore.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.1.1.2\lib\net451\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.1.1.2\lib\net451\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.1.1.2\lib\netstandard1.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.1\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.1.1.1\lib\netstandard1.0\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.1.1.2\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.ObjectPool, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.ObjectPool.1.1.1\lib\net451\Microsoft.Extensions.ObjectPool.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.1.1.2\lib\netstandard1.0\Microsoft.Extensions.Options.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.1.1.1\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.WebEncoders, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.WebEncoders.1.1.2\lib\netstandard1.0\Microsoft.Extensions.WebEncoders.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Headers, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.Headers.1.1.2\lib\netstandard1.1\Microsoft.Net.Http.Headers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=3.2.52.56040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Spire.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.3.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.3.1\lib\netstandard1.0\System.Text.Encodings.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\FaceBookController.cs" />
+    <Compile Include="Controllers\FAQController.cs" />
+    <Compile Include="Controllers\FeedBackController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HTMLTOWORDController.cs" />
+    <Compile Include="Controllers\ImageController.cs" />
+    <Compile Include="Controllers\LessonPlanEditorController.cs" />
+    <Compile Include="Controllers\LessonTemplatesController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\ScopeSequenceController.cs" />
+    <Compile Include="Controllers\SectionsHistoryController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserManagementController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Handler\ImagesHandler.ashx.cs">
+      <DependentUpon>ImagesHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handler\SoundsHandler.ashx.cs">
+      <DependentUpon>SoundsHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handler\UserImageHandler.ashx.cs">
+      <DependentUpon>UserImageHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\CommonLogic.cs" />
+    <Compile Include="Logic\CommonMng.cs" />
+    <Compile Include="Logic\DBConnection.cs" />
+    <Compile Include="Logic\EncyptionDcryption.cs" />
+    <Compile Include="Logic\ExceptionTranslater.cs" />
+    <Compile Include="Manager\ActivityLog.cs" />
+    <Compile Include="Manager\BookManager.cs" />
+    <Compile Include="Manager\CommentManager.cs" />
+    <Compile Include="Manager\ImagesManager.cs" />
+    <Compile Include="Manager\LessonInfoManager.cs" />
+    <Compile Include="Manager\Mngr_Con_Class.cs" />
+    <Compile Include="Manager\ManageUser.cs" />
+    <Compile Include="Manager\Mngr_FeedBack.cs" />
+    <Compile Include="Manager\Mngr_Message.cs" />
+    <Compile Include="Manager\Mngr_ScopeSequence.cs" />
+    <Compile Include="Manager\PdfManager.cs" />
+    <Compile Include="Manager\TemplateManager.cs" />
+    <Compile Include="Manager\UserManagement.cs" />
+    <Compile Include="Models\BLL_ChatHistory.cs" />
+    <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\DashBoard.cs" />
+    <Compile Include="Models\DashBoardChart.cs" />
+    <Compile Include="Models\DashBoardHandler.cs" />
+    <Compile Include="Models\FAQHandler.cs" />
+    <Compile Include="Models\ImagesModel.cs" />
+    <Compile Include="Models\LessonPlan.cs" />
+    <Compile Include="Models\LessonTemplate.cs" />
+    <Compile Include="Models\LessonUser.cs" />
+    <Compile Include="Models\mdl_FAQ.cs" />
+    <Compile Include="Models\mdl_FeedBack.cs" />
+    <Compile Include="Models\Message_Entites.cs" />
+    <Compile Include="Models\Privilige.cs" />
+    <Compile Include="Models\Priviliges.cs" />
+    <Compile Include="Models\QuestionAnswersModel.cs" />
+    <Compile Include="Models\ScopeSequence.cs" />
+    <Compile Include="Models\Con_Class.cs" />
+    <Compile Include="Models\Les_Subject.cs" />
+    <Compile Include="Models\Section.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\UserTag.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionManager.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Admincds.min.css" />
+    <Content Include="Content\AdminLTE.min.css" />
+    <Content Include="Content\all-fonts.css" />
+    <Content Include="Content\all-skins.min.css" />
+    <Content Include="Content\allcds.css" />
+    <Content Include="Content\animate.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cdsfeedback.css" />
+    <Content Include="Content\checkbox-cds.css" />
+    <Content Include="Content\dataTables.bootstrap.min.css" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\LessonWordPreview.css" />
+    <Content Include="Content\logincds.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\morris.css" />
+    <Content Include="Content\MyTinyMce.css" />
+    <Content Include="Content\printpdf.css" />
+    <Content Include="Content\responsive.dataTables.css" />
+    <Content Include="Content\responsive.dataTables.min.css" />
+    <Content Include="Content\responsivecds.css" />
+    <Content Include="Content\sidebar-main.css" />
+    <Content Include="Content\star-rating.min.css" />
+    <Content Include="Content\style-tabs.css" />
+    <Content Include="Content\TinyMceCustom.css" />
+    <Content Include="Content\watchbootstrap.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\all-font-1.svg" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="images\13.png" />
+    <Content Include="images\404.png" />
+    <Content Include="images\5.png" />
+    <Content Include="images\10.png" />
+    <Content Include="images\9.png" />
+    <Content Include="images\approved.png" />
+    <Content Include="images\arrow-select.png" />
+    <Content Include="images\art-icon.png" />
+    <Content Include="images\audio.png" />
+    <Content Include="images\box-shadow.png" />
+    <Content Include="images\3.png" />
+    <Content Include="images\cds-bg.jpg" />
+    <Content Include="images\chat-lsn.png" />
+    <Content Include="images\curriculum-logo.png" />
+    <Content Include="images\english.png" />
+    <Content Include="images\ET_LogoCDS.png" />
+    <Content Include="images\ET_Welcome1.png" />
+    <Content Include="images\FAQ\approved.png" />
+    <Content Include="images\FAQ\comment.png" />
+    <Content Include="images\FAQ\create.png" />
+    <Content Include="images\FAQ\download.png" />
+    <Content Include="images\FAQ\edit.png" />
+    <Content Include="images\FAQ\fb.png" />
+    <Content Include="images\FAQ\gmail.png" />
+    <Content Include="images\FAQ\image.png" />
+    <Content Include="images\FAQ\inprocess.png" />
+    <Content Include="images\FAQ\mylesson.png" />
+    <Content Include="images\FAQ\saveas.png" />
+    <Content Include="images\FAQ\scope.png" />
+    <Content Include="images\FAQ\select.png" />
+    <Content Include="images\FAQ\send.png" />
+    <Content Include="images\FAQ\submitted.png" />
+    <Content Include="images\FAQ\upload.png" />
+    <Content Include="images\FAQ\uploadimage.png" />
+    <Content Include="images\favicon.ico" />
+    <Content Include="images\favicon1.ico" />
+    <Content Include="images\favicon16.png" />
+    <Content Include="images\favicon2.png" />
+    <Content Include="images\favicon3.png" />
+    <Content Include="images\favicon4.png" />
+    <Content Include="images\favicon5.png" />
+    <Content Include="images\fb-cds.png" />
+    <Content Include="images\g-cds.png" />
+    <Content Include="images\gallery_01.png" />
+    <Content Include="images\gallery_02.png" />
+    <Content Include="images\gallery_03.png" />
+    <Content Include="images\gallery_04.png" />
+    <Content Include="images\7.png" />
+    <Content Include="images\gernal.png" />
+    <Content Include="images\grid-view.png" />
+    <Content Include="images\history.png" />
+    <Content Include="images\icon-lsn.png" />
+    <Content Include="images\icon-menu.png" />
+    <Content Include="images\improt.png" />
+    <Content Include="images\left-arrow.png" />
+    <Content Include="images\list-view.png" />
+    <Content Include="images\lock.png" />
+    <Content Include="images\log-in-bg.png" />
+    <Content Include="images\log-in-bg1.png" />
+    <Content Include="images\logo-cds.png" />
+    <Content Include="images\1.png" />
+    <Content Include="images\manager.png" />
+    <Content Include="images\math.png" />
+    <Content Include="images\menu-logo.png" />
+    <Content Include="images\misc.png" />
+    <Content Include="images\no_photo.jpg" />
+    <Content Include="images\pdf-grade.png" />
+    <Content Include="images\pdf-logo.png" />
+    <Content Include="images\pdf-subj.png" />
+    <Content Include="images\pdf-time.png" />
+    <Content Include="images\pdf-title-bg.jpg" />
+    <Content Include="images\pdf-unit.png" />
+    <Content Include="images\process.png" />
+    <Content Include="images\profile-img.png" />
+    <Content Include="images\register-logo.png" />
+    <Content Include="images\rejected.png" />
+    <Content Include="images\right-arrow.png" />
+    <Content Include="images\2.png" />
+    <Content Include="images\6.png" />
+    <Content Include="images\route_to.png" />
+    <Content Include="images\science.png" />
+    <Content Include="images\script.png" />
+    <Content Include="images\social.png" />
+    <Content Include="images\sound-file.png" />
+    <Content Include="images\Speaker.png" />
+    <Content Include="images\tab-icon.png" />
+    <Content Include="images\temp-1.jpg" />
+    <Content Include="images\template-icon_03.png" />
+    <Content Include="images\thumbnail-template.png" />
+    <Content Include="images\tinymc.jpg" />
+    <Content Include="images\tw-cds.png" />
+    <Content Include="images\4.png" />
+    <Content Include="images\urdu.png" />
+    <Content Include="images\used-template_07.png" />
+    <Content Include="images\User.jfif" />
+    <Content Include="images\user.png" />
+    <Content Include="images\user2-160x160.jpg" />
+    <Content Include="images\Userlesson.png" />
+    <Content Include="images\Usermanager.png" />
+    <Content Include="images\Usermisc.png" />
+    <Content Include="images\Userverifier.png" />
+    <Content Include="images\uwr-small-logo.png" />
+    <Content Include="images\verify.png" />
+    <Content Include="images\video logo.png" />
+    <Content Include="images\video-file.png" />
+    <Content Include="img\arrow-select.png" />
+    <Content Include="img\art-icon.png" />
+    <Content Include="img\favicon.ico" />
+    <Content Include="img\icon.gif" />
+    <Content Include="img\icons.gif" />
+    <Content Include="img\improt.png" />
+    <Content Include="img\l.jpg" />
+    <Content Include="img\left-arrow.png" />
+    <Content Include="img\right-arrow.png" />
+    <Content Include="img\tab-icon.png" />
+    <Content Include="Lib\Facebook.dll" />
+    <Content Include="Lib\Facebook.xml" />
+    <Content Include="Lib\HtmlAgilityPack.dll" />
+    <Content Include="Lib\HtmlAgilityPack.pdb" />
+    <Content Include="Lib\HtmlAgilityPack.xml" />
+    <Content Include="Lib\Microsoft.ApplicationBlocks.Data.dll" />
+    <Content Include="Lib\Spire.License.dll" />
+    <Content Include="Lib\Spire.License.xml" />
+    <Content Include="Lib\Spire.Pdf.dll" />
+    <Content Include="Lib\Spire.Pdf.xml" />
+    <Content Include="Scripts\admincds.min.js" />
+    <Content Include="Scripts\adminlte.min.js" />
+    <Content Include="Scripts\ai.0.22.9-build00167.js" />
+    <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\ROBOTO-BOLD.TTF" />
+    <Content Include="fonts\ROBOTO-LIGHT.TTF" />
+    <Content Include="fonts\ROBOTO-MEDIUM.TTF" />
+    <Content Include="fonts\ROBOTO-REGULAR.TTF" />
+    <Content Include="fonts\RALEWAY-BOLD.TTF" />
+    <Content Include="fonts\Arial-round.TTF" />
+    <Content Include="fonts\NUNITO-REGULAR.TTF" />
+    <Content Include="Handler\ImagesHandler.ashx" />
+    <Content Include="Handler\SoundsHandler.ashx" />
+    <Content Include="fonts\all-font-1.eot" />
+    <Content Include="fonts\all-font-1.ttf" />
+    <Content Include="fonts\all-font-1.woff" />
+    <Content Include="fonts\UWR_UrduFont.ttf" />
+    <Content Include="Handler\UserImageHandler.ashx" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\CDS.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.foundation.js" />
+    <Content Include="Scripts\DataTables\autoFill.foundation.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.jqueryui.js" />
+    <Content Include="Scripts\DataTables\autoFill.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.semanticui.js" />
+    <Content Include="Scripts\DataTables\autoFill.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\buttons.colVis.js" />
+    <Content Include="Scripts\DataTables\buttons.colVis.min.js" />
+    <Content Include="Scripts\DataTables\buttons.flash.js" />
+    <Content Include="Scripts\DataTables\buttons.flash.min.js" />
+    <Content Include="Scripts\DataTables\buttons.foundation.js" />
+    <Content Include="Scripts\DataTables\buttons.foundation.min.js" />
+    <Content Include="Scripts\DataTables\buttons.html5.js" />
+    <Content Include="Scripts\DataTables\buttons.html5.min.js" />
+    <Content Include="Scripts\DataTables\buttons.jqueryui.js" />
+    <Content Include="Scripts\DataTables\buttons.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\buttons.print.js" />
+    <Content Include="Scripts\DataTables\buttons.print.min.js" />
+    <Content Include="Scripts\DataTables\buttons.semanticui.js" />
+    <Content Include="Scripts\DataTables\buttons.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.autoFill.js" />
+    <Content Include="Scripts\DataTables\dataTables.autoFill.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.buttons.js" />
+    <Content Include="Scripts\DataTables\dataTables.buttons.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.colReorder.js" />
+    <Content Include="Scripts\DataTables\dataTables.colReorder.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedColumns.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedColumns.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedHeader.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedHeader.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.foundation.js" />
+    <Content Include="Scripts\DataTables\dataTables.foundation.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.jqueryui.js" />
+    <Content Include="Scripts\DataTables\dataTables.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.keyTable.js" />
+    <Content Include="Scripts\DataTables\dataTables.keyTable.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.material.js" />
+    <Content Include="Scripts\DataTables\dataTables.material.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.responsive.js" />
+    <Content Include="Scripts\DataTables\dataTables.responsive.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.rowReorder.js" />
+    <Content Include="Scripts\DataTables\dataTables.rowReorder.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.scroller.js" />
+    <Content Include="Scripts\DataTables\dataTables.scroller.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.select.js" />
+    <Content Include="Scripts\DataTables\dataTables.select.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.semanticui.js" />
+    <Content Include="Scripts\DataTables\dataTables.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.uikit.js" />
+    <Content Include="Scripts\DataTables\dataTables.uikit.min.js" />
+    <Content Include="Scripts\DataTables\jquery.dataTables.js" />
+    <Content Include="Scripts\DataTables\jquery.dataTables.min.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\responsive.foundation.js" />
+    <Content Include="Scripts\DataTables\responsive.foundation.min.js" />
+    <Content Include="Scripts\DataTables\responsive.jqueryui.js" />
+    <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\responsive.semanticui.js" />
+    <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-2.2.3.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.ajax-progress.min.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
+    <Content Include="Scripts\jquery.fileupload.js" />
+    <Content Include="Scripts\jquery.knob.min.js" />
+    <Content Include="Scripts\jquery.loading.block.js" />
+    <Content Include="Scripts\jquery.mask.js" />
+    <Content Include="Scripts\jquery.mask.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.ui.widget.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\morris.min.js" />
+    <Content Include="Scripts\raphael.min.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\star-rating.min.js" />
+    <Content Include="Scripts\tinymce\albanian.js" />
+    <Content Include="Scripts\tinymce\jsapi.js" />
+    <Content Include="Scripts\tinymce\keyboard.css" />
+    <Content Include="Scripts\tinymce\keyboard.png" />
+    <Content Include="Scripts\tinymce\langs\en.js" />
+    <Content Include="Scripts\tinymce\langs\ur.js" />
+    <Content Include="Scripts\tinymce\license.txt" />
+    <Content Include="Scripts\tinymce\plugins\advhr\css\advhr.css" />
+    <Content Include="Scripts\tinymce\plugins\advhr\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\advhr\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\advhr\js\rule.js" />
+    <Content Include="Scripts\tinymce\plugins\advhr\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\advhr\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\advhr\rule.htm" />
+    <Content Include="Scripts\tinymce\plugins\advimage\css\advimage.css" />
+    <Content Include="Scripts\tinymce\plugins\advimage\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\advimage\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\advimage\image.htm" />
+    <Content Include="Scripts\tinymce\plugins\advimage\img\sample.gif" />
+    <Content Include="Scripts\tinymce\plugins\advimage\js\image.js" />
+    <Content Include="Scripts\tinymce\plugins\advimage\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\advimage\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\advlink\css\advlink.css" />
+    <Content Include="Scripts\tinymce\plugins\advlink\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\advlink\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\advlink\js\advlink.js" />
+    <Content Include="Scripts\tinymce\plugins\advlink\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\advlink\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\advlink\link.htm" />
+    <Content Include="Scripts\tinymce\plugins\advlist\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\advlist\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\autolink\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\autolink\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\autoresize\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\autoresize\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\autosave\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\autosave\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\bbcode\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\bbcode\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\css\dialog.css" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\buttons.png" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\icons.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\items.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\menu_arrow.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\menu_check.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\progress.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\tabs.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\tiny_mce_popup.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\utils\editable_selects.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\utils\form_utils.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\utils\mctabs.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\utils\validate.js" />
+    <Content Include="Scripts\tinymce\plugins\contextmenu\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\contextmenu\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\directionality\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\directionality\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\emotions\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\emotions\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\emotions\emotions.htm" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-cool.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-cry.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-embarassed.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-foot-in-mouth.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-frown.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-innocent.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-kiss.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-laughing.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-money-mouth.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-sealed.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-smile.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-surprised.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-tongue-out.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-undecided.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-wink.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\img\smiley-yell.gif" />
+    <Content Include="Scripts\tinymce\plugins\emotions\js\emotions.js" />
+    <Content Include="Scripts\tinymce\plugins\emotions\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\emotions\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\example\dialog.htm" />
+    <Content Include="Scripts\tinymce\plugins\example\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\example\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\example\img\example.gif" />
+    <Content Include="Scripts\tinymce\plugins\example\js\dialog.js" />
+    <Content Include="Scripts\tinymce\plugins\example\langs\en.js" />
+    <Content Include="Scripts\tinymce\plugins\example\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\example\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\example_dependency\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\example_dependency\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\css\fullpage.css" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\fullpage.htm" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\js\fullpage.js" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\fullscreen\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\fullscreen\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\fullscreen\fullscreen.htm" />
+    <Content Include="Scripts\tinymce\plugins\iespell\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\iespell\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\skins\clearlooks2\img\alert.gif" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\skins\clearlooks2\img\button.gif" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\skins\clearlooks2\img\buttons.gif" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\skins\clearlooks2\img\confirm.gif" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\skins\clearlooks2\img\corners.gif" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\skins\clearlooks2\img\horizontal.gif" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\skins\clearlooks2\img\vertical.gif" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\skins\clearlooks2\window.css" />
+    <Content Include="Scripts\tinymce\plugins\inlinepopups\template.htm" />
+    <Content Include="Scripts\tinymce\plugins\insertdatetime\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\insertdatetime\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\examples\sample.html" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\img\icons.gif" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\img\jsvk.gif" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\img\jsvk_off.gif" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\air_large\button_set.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\air_large\keyboard.css" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\air_large\thumbnail.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\air_mid\button_set.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\air_mid\keyboard.css" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\air_mid\thumbnail.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\air_small\button_set.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\air_small\keyboard.css" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\air_small\thumbnail.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\flat_gray\button_set.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\flat_gray\keyboard.css" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\flat_gray\thumbnail.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\goldie\button_set.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\goldie\keyboard.css" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\goldie\thumbnail.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\small\button_set.gif" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\small\keyboard.css" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\small\thumbnail.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\soberTouch\button_set.gif" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\soberTouch\keyboard.css" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\soberTouch\thumbnail.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\textual\keyboard.css" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\textual\thumbnail.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\winxp\button_set.gif" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\winxp\keyboard.css" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\css\winxp\thumbnail.png" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\demo_easy.html" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\demo_iframe.html" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\demo_inline.html" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\demo_popup.html" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\extensions\e.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\extensions\scriptqueue.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\img\icons.gif" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\img\jsvk.gif" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\img\jsvk_off.gif" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\akan.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\albanian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\arabic 101.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\arabic 102 azerty.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\arabic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\armenian eastern.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\armenian western.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\assamese.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\azery-l.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\azery-r.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bambara.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bashkir.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bassa.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\baule.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\belarus.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\belgian-c.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bemba.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bengali-inscript-improved.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bengali-inscript.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bengali-probhat.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bengali-unijoy.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bengali.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bini_ebo.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\blackfoot.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bosnian cyrillic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bosnian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bulgarian phonetic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bulgarian-l.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\bulgarian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\canadian-f-l.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\canadian-f.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\canadian-m.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\chechen-cyr.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\chechen-lat.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\cherokee.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\chichewa.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\chinese-cangjie.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\chinese-pynsimpl.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\chinese-pyntrad.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\colemak.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\croatian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\czech-p.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\czech-q.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\czech.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\danish.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\dari.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\delam.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\devanagari-inscript.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\dinka.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\divehi phonetic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\divehi typewriter.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\duala.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\dutch.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\dzongkha.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\d\CN.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\d\ET.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\d\IKU.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\d\IPA.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\d\JP.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\d\KR.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\d\LA.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\estonian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ethiopic-pan-amharic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ethiopic-washra.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ethiopic-xtt.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ewondo.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\faeroese.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\farsi.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\finnish-s.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\finnish.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\french-linux.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\french.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\fulfulde.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ga.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\gaelic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\gbe.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\georgian-ergonomic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\georgian-qwerty.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\georgian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\german-ibm.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\german.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\glagolitic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\gothic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\greek-220-l.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\greek-220.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\greek-319-l.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\greek-319.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\greek-l.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\greek-polytonic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\greek.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\grenlandic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\gujarati.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\hausa.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\hebrew sil.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\hebrew tiro.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\hebrew.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\hindi-inscript.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\hindi.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\hungarian-101.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\hungarian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\icelandic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\igbo.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\inuktitut-latin.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\inuktitut-navkitot.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\inuktitut-phonetic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\inuktitut-syllabic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ipa.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\irish.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\italian-142.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\italian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\japanese.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\kannada.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\kazakh.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\khmer-nida.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\khmer.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\kikuyu.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\kirundi.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\korean-2beolsik.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\korean-3beolsik.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\korean-ru2kor.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\krio.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\kurdish-ar.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\kurdish-cyr.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\kurdish-lat.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\kyrgyz-c.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\lakhota-standard.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\lao-sengkeo.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\lao.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\latin-am.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\latvian-q.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\latvian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\layouts.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\lingala.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\lithuanian-ext.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\lithuanian-ibm.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\lithuanian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\luganda.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\luo.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\luxembourg.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\macedonian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\malayalam.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\maltese-47.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\maltese-48.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\mande.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\maori-dvorak-twohand.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\maori.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\marathi.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\mongolian-c.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\mongolian-d.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\nepali.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\norwegian-s.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\norwegian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ogham.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\oromo.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\pashto.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\persian standard.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\polish-214.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\polish-p.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\portuguese-br-2.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\portuguese-br.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\portuguese.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\punjabi.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\romanian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\runic-anglo-frisian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\runic-elder.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\runic-younder.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\russian mac.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\russian+qwerty.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\russian-diktor.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\russian-translit-alt.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\russian-translit.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\russian-typewriter.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\russian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\sami-e-fs.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\sami-e-n.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\sanskrit-romanized.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\senegal multilingual.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\serbian-c.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\serbian-l.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\sesotho.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\shona.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\sinhala.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\slovak-q.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\slovak.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\slovenian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\somali.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\spanish-v.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\spanish.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\swahili.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\swedish-dvorak.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\swedish-s.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\swedish.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\swiss-f.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\swiss-german.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\syriac phonetic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\syriac.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\tagalog.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\tajik-lat.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\tamil.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\tatar.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\telugu.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\thai kedmanee.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\thai pattachote.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\thai.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\tswana.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\tur-f.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\tur-q.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\turkmen-cyr.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\uighur-ar.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\uighur-cyr.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\uighur-lat.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\uk-e.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\uk-qm102.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\uk.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ukdvk3.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ukrainian phonetic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ukrainian-translit.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\ukrainian.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\uk_intl4.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\urdu crulp phonetic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\urdu inpage monotype.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\urdu-ar.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\urdu-madni.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\urdu-phonetic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\urdu.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\us mac.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\us-d-l.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\us-d-r.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\us-d.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\us-i.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\us-rul90.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\us.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\uzbek.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\vietnamese.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\wolof.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\xhosa.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\yoruba.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\zawgyi-l.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\layouts\zulu.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\license.txt" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\blackfoot.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\cherokee.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\chinese-cangjie.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\chinese-pynsimpl.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\chinese-pyntrad.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\ethiopic-pan-amharic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\ethiopic-washra.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\ethiopic-xtt.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\inuktitut-phonetic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\inuktitut-syllabic.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\ipa.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\japanese.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\korean-2beolsik.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\korean-3beolsik.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\korean-ru2kor.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\lakhota-standard.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\CN.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\ET.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\IKU.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\IPA.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\JP.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\KR.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\LA.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\io.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\setup.html" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\trantable.html" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\vk.inc.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\virtualkeyboard.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\vk_easy.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\vk_iframe.html" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\vk_iframe.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\vk_loader.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\vk_popup.html" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\vk_popup.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\langs\ar.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\langs\en.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\langs\ur.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\readme.txt" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\_src\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\layer\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\layer\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\legacyoutput\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\legacyoutput\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\lists\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\lists\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\media\css\media.css" />
+    <Content Include="Scripts\tinymce\plugins\media\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\media\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\media\js\embed.js" />
+    <Content Include="Scripts\tinymce\plugins\media\js\media.js" />
+    <Content Include="Scripts\tinymce\plugins\media\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\media\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\media\media.htm" />
+    <Content Include="Scripts\tinymce\plugins\media\moxieplayer.swf" />
+    <Content Include="Scripts\tinymce\plugins\nonbreaking\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\nonbreaking\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\noneditable\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\noneditable\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\pagebreak\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\pagebreak\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\js\pastetext.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\js\pasteword.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\pastetext.htm" />
+    <Content Include="Scripts\tinymce\plugins\paste\pasteword.htm" />
+    <Content Include="Scripts\tinymce\plugins\preview\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\preview\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\preview\example.html" />
+    <Content Include="Scripts\tinymce\plugins\preview\jscripts\embed.js" />
+    <Content Include="Scripts\tinymce\plugins\preview\preview.html" />
+    <Content Include="Scripts\tinymce\plugins\print\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\print\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\save\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\save\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\css\searchreplace.css" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\js\searchreplace.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\searchreplace.htm" />
+    <Content Include="Scripts\tinymce\plugins\spellchecker\css\content.css" />
+    <Content Include="Scripts\tinymce\plugins\spellchecker\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\spellchecker\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\spellchecker\img\wline.gif" />
+    <Content Include="Scripts\tinymce\plugins\style\css\props.css" />
+    <Content Include="Scripts\tinymce\plugins\style\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\style\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\style\js\props.js" />
+    <Content Include="Scripts\tinymce\plugins\style\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\style\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\style\props.htm" />
+    <Content Include="Scripts\tinymce\plugins\style\readme.txt" />
+    <Content Include="Scripts\tinymce\plugins\tabfocus\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\tabfocus\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\table\cell.htm" />
+    <Content Include="Scripts\tinymce\plugins\table\css\cell.css" />
+    <Content Include="Scripts\tinymce\plugins\table\css\row.css" />
+    <Content Include="Scripts\tinymce\plugins\table\css\table.css" />
+    <Content Include="Scripts\tinymce\plugins\table\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\table\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\table\js\cell.js" />
+    <Content Include="Scripts\tinymce\plugins\table\js\merge_cells.js" />
+    <Content Include="Scripts\tinymce\plugins\table\js\row.js" />
+    <Content Include="Scripts\tinymce\plugins\table\js\table.js" />
+    <Content Include="Scripts\tinymce\plugins\table\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\table\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\table\merge_cells.htm" />
+    <Content Include="Scripts\tinymce\plugins\table\row.htm" />
+    <Content Include="Scripts\tinymce\plugins\table\table.htm" />
+    <Content Include="Scripts\tinymce\plugins\template\blank.htm" />
+    <Content Include="Scripts\tinymce\plugins\template\css\template.css" />
+    <Content Include="Scripts\tinymce\plugins\template\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\template\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\template\js\template.js" />
+    <Content Include="Scripts\tinymce\plugins\template\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\template\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\template\template.htm" />
+    <Content Include="Scripts\tinymce\plugins\visualblocks\css\visualblocks.css" />
+    <Content Include="Scripts\tinymce\plugins\visualblocks\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\visualblocks\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\visualchars\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\visualchars\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\wordcount\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\wordcount\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\abbr.htm" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\acronym.htm" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\attributes.htm" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\cite.htm" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\css\attributes.css" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\css\popup.css" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\del.htm" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\editor_plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\editor_plugin_src.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\ins.htm" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\js\abbr.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\js\acronym.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\js\attributes.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\js\cite.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\js\del.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\js\element_common.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\js\ins.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\plugins\xhtmlxtras\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\about.htm" />
+    <Content Include="Scripts\tinymce\themes\advanced\anchor.htm" />
+    <Content Include="Scripts\tinymce\themes\advanced\charmap.htm" />
+    <Content Include="Scripts\tinymce\themes\advanced\color_picker.htm" />
+    <Content Include="Scripts\tinymce\themes\advanced\editor_template.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\editor_template_src.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\image.htm" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\340.jpg" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\black-save-button-icon.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\black-save-button-icon1.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\colorpicker.jpg" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\find-512.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\flash.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\ftp.png" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\icons.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\iframe.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\output_yuMlBm.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\pagebreak.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\quicktime.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\realmedia.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\save-all.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\shockwave.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\smupload.png" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\smuploadd.png" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\trans.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\up.png" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\upload.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\video.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\img\windowsmedia.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\js\about.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\js\anchor.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\js\charmap.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\js\color_picker.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\js\image.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\js\link.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\js\source_editor.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\langs\en.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\langs\en_dlg.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\langs\ur.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\langs\ur_dlg.js" />
+    <Content Include="Scripts\tinymce\themes\advanced\link.htm" />
+    <Content Include="Scripts\tinymce\themes\advanced\shortcuts.htm" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\content.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\dialog.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\img\buttons.png" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\img\icons.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\img\items.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\img\menu_arrow.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\img\menu_check.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\img\progress.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\img\tabs.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\default\ui.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\highcontrast\content.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\highcontrast\dialog.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\highcontrast\ui.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\o2k7\content.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\o2k7\dialog.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\o2k7\img\button_bg.png" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\o2k7\img\button_bg_black.png" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\o2k7\img\button_bg_silver.png" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\o2k7\img\icons.gif" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\o2k7\ui.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\o2k7\ui_black.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\skins\o2k7\ui_silver.css" />
+    <Content Include="Scripts\tinymce\themes\advanced\source_editor.htm" />
+    <Content Include="Scripts\tinymce\themes\simple\editor_template.js" />
+    <Content Include="Scripts\tinymce\themes\simple\editor_template_src.js" />
+    <Content Include="Scripts\tinymce\themes\simple\img\icons.gif" />
+    <Content Include="Scripts\tinymce\themes\simple\langs\ar.js" />
+    <Content Include="Scripts\tinymce\themes\simple\langs\en.js" />
+    <Content Include="Scripts\tinymce\themes\simple\langs\ur.js" />
+    <Content Include="Scripts\tinymce\themes\simple\skins\default\content.css" />
+    <Content Include="Scripts\tinymce\themes\simple\skins\default\ui.css" />
+    <Content Include="Scripts\tinymce\themes\simple\skins\o2k7\content.css" />
+    <Content Include="Scripts\tinymce\themes\simple\skins\o2k7\img\button_bg.png" />
+    <Content Include="Scripts\tinymce\themes\simple\skins\o2k7\ui.css" />
+    <Content Include="Scripts\tinymce\tiny_mce.js" />
+    <Content Include="Scripts\tinymce\tiny_mce_popup.js" />
+    <Content Include="Scripts\tinymce\tiny_mce_src.js" />
+    <Content Include="Scripts\tinymce\ui.css" />
+    <Content Include="Scripts\tinymce\utils\editable_selects.js" />
+    <Content Include="Scripts\tinymce\utils\form_utils.js" />
+    <Content Include="Scripts\tinymce\utils\mctabs.js" />
+    <Content Include="Scripts\tinymce\utils\validate.js" />
+    <Content Include="Scripts\wow.min.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Tagging\assets\example2.js" />
+    <Content Include="Tagging\assets\examples.js" />
+    <Content Include="Tagging\assets\examples3.js" />
+    <Content Include="Tagging\assets\style.css" />
+    <Content Include="Tagging\Content\jquery.mentionsInput.css" />
+    <Content Include="Tagging\lib\jquery.elastic.js" />
+    <Content Include="Tagging\lib\jquery.events.input.js" />
+    <Content Include="Tagging\Scripts\jquery.mentionsInput.js" />
+    <Content Include="Tagging\Scripts\underscore.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_CDSLayout.cshtml" />
+    <Content Include="Views\User\LoginUser.cshtml" />
+    <Content Include="Views\User\ForgetPassword.cshtml" />
+    <Content Include="Views\User\ResetPassword.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\examples\.svn\all-wcprops" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\examples\.svn\entries" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\examples\.svn\prop-base\sample.html.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\examples\.svn\text-base\sample.html.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\img\.svn\all-wcprops" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\img\.svn\dir-prop-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\img\.svn\entries" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\.svn\all-wcprops" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\.svn\dir-prop-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\.svn\entries" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\all-wcprops" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\entries" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\prop-base\io.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\prop-base\setup.html.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\prop-base\setup.php.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\prop-base\trantable.html.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\prop-base\vk.inc.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\prop-base\vk.inc.php.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\text-base\io.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\text-base\setup.html.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\text-base\setup.php.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\text-base\trantable.html.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\text-base\vk.inc.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\text-base\vk.inc.php.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\all-wcprops" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\entries" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\akan.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\albanian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\arabic 101.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\arabic 102 azerty.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\arabic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\armenian eastern.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\armenian western.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\assamese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\azery-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\azery-r.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bambara.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bashkir.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bassa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\baule.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\belarus.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\belgian-c.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bemba.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bengali-inscript-improved.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bengali-inscript.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bengali-probhat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bengali-unijoy.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bengali.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bini_ebo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\blackfoot.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bosnian cyrillic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bosnian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bulgarian phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bulgarian-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\bulgarian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\canadian-f-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\canadian-f.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\canadian-m.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\chechen-cyr.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\chechen-lat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\cherokee.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\chichewa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\chinese-cangjie.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\chinese-pynsimpl.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\chinese-pyntrad.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\colemak.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\croatian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\czech-p.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\czech-q.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\czech.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\danish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\dari.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\delam.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\devanagari-inscript.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\dinka.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\divehi phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\divehi typewriter.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\duala.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\dutch.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\dzongkha.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\estonian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ethiopic-pan-amharic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ethiopic-washra.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ethiopic-xtt.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ewondo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\faeroese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\farsi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\finnish-s.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\finnish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\french-linux.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\french.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\fulfulde.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ga.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\gaelic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\gbe.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\georgian-ergonomic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\georgian-qwerty.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\georgian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\german-ibm.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\german.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\glagolitic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\gothic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\greek-220-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\greek-220.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\greek-319-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\greek-319.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\greek-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\greek-polytonic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\greek.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\grenlandic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\gujarati.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\hausa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\hebrew sil.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\hebrew tiro.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\hebrew.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\hindi-inscript.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\hindi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\hungarian-101.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\hungarian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\icelandic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\igbo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\inuktitut-latin.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\inuktitut-navkitot.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\inuktitut-phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\inuktitut-syllabic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ipa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\irish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\italian-142.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\italian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\japanese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\kannada.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\kazakh.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\khmer-nida.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\khmer.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\kikuyu.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\kirundi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\korean-2beolsik.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\korean-3beolsik.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\korean-ru2kor.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\krio.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\kurdish-ar.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\kurdish-cyr.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\kurdish-lat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\kyrgyz-c.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\lakhota-standard.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\lao-sengkeo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\lao.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\latin-am.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\latvian-q.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\latvian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\lingala.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\lithuanian-ext.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\lithuanian-ibm.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\lithuanian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\luganda.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\luo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\luxembourg.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\macedonian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\malayalam.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\maltese-47.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\maltese-48.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\mande.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\maori-dvorak-twohand.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\maori.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\marathi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\mongolian-c.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\mongolian-d.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\nepali.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\norwegian-s.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\norwegian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ogham.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\oromo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\pashto.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\persian standard.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\polish-214.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\polish-p.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\portuguese-br-2.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\portuguese-br.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\portuguese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\punjabi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\romanian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\runic-anglo-frisian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\runic-elder.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\runic-younder.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\russian mac.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\russian+qwerty.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\russian-diktor.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\russian-translit-alt.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\russian-translit.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\russian-typewriter.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\russian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\sami-e-fs.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\sami-e-n.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\sanskrit-romanized.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\senegal multilingual.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\serbian-c.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\serbian-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\sesotho.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\shona.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\sinhala.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\slovak-q.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\slovak.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\slovenian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\somali.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\spanish-v.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\spanish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\swahili.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\swedish-dvorak.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\swedish-s.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\swedish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\swiss-f.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\swiss-german.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\syriac phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\syriac.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\tagalog.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\tajik-lat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\tamil.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\tatar.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\telugu.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\thai kedmanee.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\thai pattachote.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\thai.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\tswana.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\tur-f.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\tur-q.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\turkmen-cyr.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\uighur-ar.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\uighur-cyr.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\uighur-lat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\uk-e.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\uk-qm102.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\uk.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ukdvk3.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ukrainian phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ukrainian-translit.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\ukrainian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\uk_intl4.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\urdu crulp phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\urdu inpage monotype.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\urdu-ar.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\urdu-madni.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\urdu-phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\urdu.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\us mac.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\us-d-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\us-d-r.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\us-d.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\us-i.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\us-rul90.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\us.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\uzbek.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\vietnamese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\wolof.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\xhosa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\yoruba.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\zawgyi-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\prop-base\zulu.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\akan.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\albanian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\arabic 101.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\arabic 102 azerty.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\arabic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\armenian eastern.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\armenian western.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\assamese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\azery-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\azery-r.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bambara.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bashkir.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bassa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\baule.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\belarus.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\belgian-c.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bemba.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bengali-inscript-improved.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bengali-inscript.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bengali-probhat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bengali-unijoy.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bengali.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bini_ebo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\blackfoot.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bosnian cyrillic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bosnian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bulgarian phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bulgarian-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\bulgarian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\canadian-f-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\canadian-f.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\canadian-m.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\chechen-cyr.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\chechen-lat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\cherokee.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\chichewa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\chinese-cangjie.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\chinese-pynsimpl.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\chinese-pyntrad.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\colemak.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\croatian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\czech-p.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\czech-q.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\czech.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\danish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\dari.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\delam.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\devanagari-inscript.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\dinka.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\divehi phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\divehi typewriter.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\duala.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\dutch.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\dzongkha.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\estonian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ethiopic-pan-amharic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ethiopic-washra.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ethiopic-xtt.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ewondo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\faeroese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\farsi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\finnish-s.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\finnish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\french-linux.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\french.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\fulfulde.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ga.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\gaelic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\gbe.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\georgian-ergonomic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\georgian-qwerty.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\georgian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\german-ibm.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\german.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\glagolitic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\gothic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\greek-220-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\greek-220.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\greek-319-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\greek-319.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\greek-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\greek-polytonic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\greek.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\grenlandic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\gujarati.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\hausa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\hebrew sil.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\hebrew tiro.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\hebrew.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\hindi-inscript.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\hindi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\hungarian-101.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\hungarian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\icelandic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\igbo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\inuktitut-latin.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\inuktitut-navkitot.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\inuktitut-phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\inuktitut-syllabic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ipa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\irish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\italian-142.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\italian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\japanese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\kannada.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\kazakh.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\khmer-nida.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\khmer.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\kikuyu.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\kirundi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\korean-2beolsik.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\korean-3beolsik.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\korean-ru2kor.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\krio.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\kurdish-ar.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\kurdish-cyr.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\kurdish-lat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\kyrgyz-c.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\lakhota-standard.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\lao-sengkeo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\lao.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\latin-am.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\latvian-q.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\latvian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\lingala.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\lithuanian-ext.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\lithuanian-ibm.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\lithuanian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\luganda.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\luo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\luxembourg.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\macedonian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\malayalam.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\maltese-47.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\maltese-48.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\mande.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\maori-dvorak-twohand.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\maori.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\marathi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\mongolian-c.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\mongolian-d.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\nepali.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\norwegian-s.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\norwegian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ogham.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\oromo.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\pashto.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\persian standard.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\polish-214.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\polish-p.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\portuguese-br-2.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\portuguese-br.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\portuguese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\punjabi.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\romanian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\runic-anglo-frisian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\runic-elder.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\runic-younder.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\russian mac.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\russian+qwerty.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\russian-diktor.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\russian-translit-alt.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\russian-translit.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\russian-typewriter.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\russian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\sami-e-fs.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\sami-e-n.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\sanskrit-romanized.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\senegal multilingual.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\serbian-c.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\serbian-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\sesotho.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\shona.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\sinhala.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\slovak-q.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\slovak.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\slovenian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\somali.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\spanish-v.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\spanish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\swahili.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\swedish-dvorak.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\swedish-s.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\swedish.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\swiss-f.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\swiss-german.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\syriac phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\syriac.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\tagalog.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\tajik-lat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\tamil.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\tatar.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\telugu.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\thai kedmanee.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\thai pattachote.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\thai.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\tswana.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\tur-f.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\tur-q.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\turkmen-cyr.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\uighur-ar.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\uighur-cyr.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\uighur-lat.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\uk-e.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\uk-qm102.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\uk.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ukdvk3.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ukrainian phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ukrainian-translit.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\ukrainian.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\uk_intl4.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\urdu crulp phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\urdu inpage monotype.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\urdu-ar.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\urdu-madni.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\urdu-phonetic.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\urdu.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\us mac.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\us-d-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\us-d-r.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\us-d.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\us-i.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\us-rul90.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\us.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\uzbek.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\vietnamese.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\wolof.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\xhosa.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\yoruba.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\zawgyi-l.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\text-base\zulu.klc.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\all-wcprops" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\entries" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\prop-base\CN.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\prop-base\ET.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\prop-base\IKU.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\prop-base\IPA.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\prop-base\JP.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\prop-base\KR.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\prop-base\LA.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\text-base\CN.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\text-base\ET.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\text-base\IKU.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\text-base\IPA.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\text-base\JP.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\text-base\KR.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\text-base\LA.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\all-wcprops" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\entries" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\blackfoot.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\cherokee.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\chinese-cangjie.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\chinese-pynsimpl.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\chinese-pyntrad.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\ethiopic-pan-amharic.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\ethiopic-washra.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\ethiopic-xtt.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\inuktitut-phonetic.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\inuktitut-syllabic.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\ipa.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\japanese.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\korean-2beolsik.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\korean-3beolsik.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\korean-ru2kor.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\prop-base\lakhota-standard.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\blackfoot.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\cherokee.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\chinese-cangjie.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\chinese-pynsimpl.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\chinese-pyntrad.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\ethiopic-pan-amharic.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\ethiopic-washra.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\ethiopic-xtt.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\inuktitut-phonetic.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\inuktitut-syllabic.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\ipa.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\japanese.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\korean-2beolsik.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\korean-3beolsik.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\korean-ru2kor.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\text-base\lakhota-standard.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\akan.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\albanian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\arabic 101.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\arabic 102 azerty.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\arabic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\armenian eastern.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\armenian western.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\assamese.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\azery-l.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\azery-r.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bambara.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bashkir.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bassa.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\baule.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\belarus.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\belgian-c.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bemba.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bengali-inscript-improved.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bengali-inscript.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bengali-probhat.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bengali-unijoy.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bengali.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bini_ebo.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\blackfoot.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bosnian cyrillic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bosnian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bulgarian phonetic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bulgarian-l.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\bulgarian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\canadian-f-l.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\canadian-f.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\canadian-m.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\chechen-cyr.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\chechen-lat.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\cherokee.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\chichewa.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\chinese-cangjie.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\chinese-pynsimpl.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\chinese-pyntrad.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\colemak.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\croatian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\czech-p.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\czech-q.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\czech.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\danish.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\dari.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\delam.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\devanagari-inscript.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\dinka.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\divehi phonetic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\divehi typewriter.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\duala.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\dutch.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\dzongkha.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\estonian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ethiopic-pan-amharic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ethiopic-washra.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ethiopic-xtt.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ewondo.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\faeroese.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\farsi.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\finnish-s.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\finnish.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\french-linux.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\french.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\fulfulde.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ga.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\gaelic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\gbe.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\georgian-ergonomic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\georgian-qwerty.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\georgian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\german-ibm.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\german.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\glagolitic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\gothic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\greek-220-l.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\greek-220.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\greek-319-l.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\greek-319.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\greek-l.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\greek-polytonic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\greek.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\grenlandic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\gujarati.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\hausa.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\hebrew sil.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\hebrew tiro.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\hebrew.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\hindi-inscript.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\hindi.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\hungarian-101.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\hungarian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\icelandic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\igbo.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\inuktitut-latin.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\inuktitut-navkitot.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\inuktitut-phonetic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\inuktitut-syllabic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ipa.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\irish.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\italian-142.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\italian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\japanese.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\kannada.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\kazakh.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\khmer-nida.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\khmer.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\kikuyu.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\kirundi.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\korean-2beolsik.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\korean-3beolsik.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\korean-ru2kor.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\krio.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\kurdish-ar.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\kurdish-cyr.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\kurdish-lat.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\kyrgyz-c.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\lakhota-standard.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\lao-sengkeo.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\lao.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\latin-am.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\latvian-q.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\latvian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\lingala.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\lithuanian-ext.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\lithuanian-ibm.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\lithuanian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\luganda.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\luo.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\luxembourg.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\macedonian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\malayalam.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\maltese-47.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\maltese-48.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\mande.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\maori-dvorak-twohand.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\maori.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\marathi.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\mongolian-c.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\mongolian-d.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\nepali.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\norwegian-s.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\norwegian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ogham.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\oromo.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\pashto.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\persian standard.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\polish-214.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\polish-p.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\portuguese-br-2.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\portuguese-br.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\portuguese.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\punjabi.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\romanian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\runic-anglo-frisian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\runic-elder.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\runic-younder.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\russian mac.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\russian+qwerty.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\russian-diktor.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\russian-translit-alt.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\russian-translit.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\russian-typewriter.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\russian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\sami-e-fs.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\sami-e-n.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\sanskrit-romanized.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\senegal multilingual.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\serbian-c.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\serbian-l.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\sesotho.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\shona.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\sinhala.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\slovak-q.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\slovak.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\slovenian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\somali.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\spanish-v.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\spanish.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\swahili.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\swedish-dvorak.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\swedish-s.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\swedish.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\swiss-f.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\swiss-german.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\syriac phonetic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\syriac.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\tagalog.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\tajik-lat.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\tamil.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\tatar.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\telugu.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\thai kedmanee.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\thai pattachote.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\thai.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\tswana.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\tur-f.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\tur-q.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\turkmen-cyr.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\uighur-ar.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\uighur-cyr.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\uighur-lat.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\uk-e.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\uk-qm102.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\uk.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ukdvk3.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ukrainian phonetic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ukrainian-translit.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\ukrainian.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\uk_intl4.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\urdu crulp phonetic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\urdu inpage monotype.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\urdu-ar.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\urdu-madni.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\urdu-phonetic.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\urdu.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\us mac.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\us-d-l.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\us-d-r.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\us-d.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\us-i.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\us-rul90.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\us.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\uzbek.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\vietnamese.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\wolof.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\xhosa.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\yoruba.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\zawgyi-l.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\zulu.klc" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\out\.svn\all-wcprops" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\out\.svn\entries" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\setup.php" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\vk.inc.php" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\langs\.svn\all-wcprops" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\langs\.svn\entries" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\langs\.svn\prop-base\en.js.svn-base" />
+    <Content Include="Scripts\tinymce\plugins\Jsvk\langs\.svn\text-base\en.js.svn-base" />
+    <Content Include="Views\ScopeSequence\ScopeSequence.cshtml" />
+    <Content Include="Views\LessonPlanEditor\LessonPlanEnglish.cshtml" />
+    <Content Include="Views\LessonPlanEditor\LessonPlanUrdu.cshtml" />
+    <Content Include="Views\User\Error.cshtml" />
+    <Content Include="Views\LessonPlanEditor\LessonList.cshtml" />
+    <Content Include="Views\SectionsHistory\_Index.cshtml" />
+    <Content Include="Views\HTMLTOWORD\EnglishLessonPDF.cshtml" />
+    <Content Include="Views\HTMLTOWORD\UrduLessonPDF.cshtml" />
+    <Content Include="Views\Image\GetImages.cshtml" />
+    <Content Include="Views\Image\GetDeleteImages.cshtml" />
+    <Content Include="Views\Image\ShowImages.cshtml" />
+    <Content Include="Views\Image\GetAudio.cshtml" />
+    <Content Include="Views\Image\GetVideo.cshtml" />
+    <Content Include="Views\LessonTemplates\Index.cshtml" />
+    <Content Include="Views\ScopeSequence\BookConfig.cshtml" />
+    <Content Include="Views\LessonPlanEditor\ReadModeEnglish.cshtml" />
+    <Content Include="Views\FeedBack\FeedBack.cshtml" />
+    <Content Include="Views\FeedBack\FeedBackList.cshtml" />
+    <Content Include="Views\FeedBack\FeedBackProcess.cshtml" />
+    <Content Include="Views\FeedBack\FeedBackReAllocate.cshtml" />
+    <Content Include="Views\FeedBack\SchoolFeedBack.cshtml" />
+    <Content Include="Views\FeedBack\UserFeedBack.cshtml" />
+    <Content Include="Views\FeedBack\_FeedBackPartial.cshtml" />
+    <Content Include="Views\User\UserList.cshtml" />
+    <Content Include="Views\FAQ\Index.cshtml" />
+    <Content Include="Tagging\assets\data.json" />
+    <Content Include="Tagging\Content\jquery.mentionsInput.less" />
+    <Content Include="Tagging\Content\jquery.mentionsInput.scss" />
+    <Content Include="Views\User\UserSubjects.cshtml" />
+    <Content Include="Views\Shared\Authurise.cshtml" />
+    <Content Include="Views\LessonPlanEditor\UnderVerificationLessons.cshtml" />
+    <Content Include="Views\Comment\CommentInbox.cshtml" />
+    <Content Include="Views\Comment\CommentScopeAndSequence.cshtml" />
+    <Content Include="Views\User\RegisterMasg.cshtml" />
+    <Content Include="Views\User\UpdateUser.cshtml" />
+    <Content Include="Views\LessonPlanEditor\GetLessonRights.cshtml" />
+    <Content Include="Views\Home\StaticDashboard.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\LessonPlanEditor\VerifiedLessonList.cshtml" />
+    <Content Include="Views\LessonPlanEditor\VerifiedLesson.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\examples\.svn\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\examples\.svn\tmp\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\examples\.svn\tmp\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\examples\.svn\tmp\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\img\.svn\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\img\.svn\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\img\.svn\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\img\.svn\tmp\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\img\.svn\tmp\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\img\.svn\tmp\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\.svn\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\.svn\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\.svn\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\.svn\tmp\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\.svn\tmp\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\.svn\tmp\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\tmp\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\tmp\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\.svn\tmp\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\tmp\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\tmp\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\.svn\tmp\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\tmp\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\tmp\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\.svn\tmp\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\tmp\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\tmp\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\in\addons\callbacks\.svn\tmp\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\out\.svn\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\out\.svn\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\out\.svn\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\out\.svn\tmp\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\out\.svn\tmp\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\jscripts\setup\out\.svn\tmp\text-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\langs\.svn\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\langs\.svn\tmp\prop-base\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\langs\.svn\tmp\props\" />
+    <Folder Include="Scripts\tinymce\plugins\Jsvk\langs\.svn\tmp\text-base\" />
+    <Folder Include="Views\FaceBook\" />
+    <Folder Include="Views\Message\" />
+    <Folder Include="Views\UserManagement\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>_Index</title>
+</head>
+<body>
+    <!--Section Detail Model-->
+
+    <div class="sectionmodel col-lg-12 col-md-12 col-xs-12 modal fade" id="showImageModal" role="dialog">
+        <div class="modal-dialog" style="width:830px">
+            <!-- Modal content-->
+            <div class="modal-content" style="border-radius:1px;width:815px">
+                <div class="modal-header" id="mainheader">
+                    <button id="btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="errorheader"></h4>
+                </div>
+                <div class="modal-body" style="overflow:hidden;padding:35px !important">
+                    @if (ViewBag.MediaType == 1)
+                    {
+                        <img style="width:100%" src="@ViewBag.ImageSrc" id="newImage" />
+                    }
+                    else if (ViewBag.MediaType == 2)
+                    {
+                        <audio id="modalsoundworkplace" class="modalsound-content" controls="controls">
+                            <source  src="@ViewBag.ImageSrc" />
+                        </audio>
+                    }
+                    else if (ViewBag.MediaType == 3)
+                    {
+                        <video id="modalvideoworkplace" class="modalvideopop-content" controls="controls">
+                            <source  src="@ViewBag.ImageSrc"/>
+                        </video>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--end model-->
+</body>
+</html>
+<script>
+    $("#showImageModal").modal('show');
+</script>

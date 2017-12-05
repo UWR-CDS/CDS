@@ -1,0 +1,702 @@
+﻿@model CDS.Models.ListLessonInfo
+@{
+    ViewBag.Title = "Dashboard Statistics";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+
+<link href="~/Content/morris.css" rel="stylesheet" />
+@*<script src="~/Scripts/jquery.min.js"></script>*@
+<script src="~/Scripts/jquery.knob.min.js"></script>
+<script src="~/Scripts/raphael.min.js"></script>
+<script src="~/Scripts/morris.min.js"></script>
+@*<script src="~/Scripts/Chart.js"></script>*@
+
+<style>
+        .rating-stars ul {
+        list-style-type: none;
+        padding: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+    }
+
+        .rating-stars ul > li.star {
+            display: inline-block;
+        }
+
+            /* Idle State of the stars */
+            .rating-stars ul > li.star > i.fa {
+                font-size: 2.5em; /* Change the size of the stars */
+                color: #ccc; /* Color on idle state */
+            }
+
+            /* Hover state of the stars */
+            .rating-stars ul > li.star.hover > i.fa {
+                color: #FFCC36;
+            }
+
+            /* Selected state of the stars */
+            .rating-stars ul > li.star.selected > i.fa {
+                color: #FFCC36;
+            }
+</style>
+
+<div class="container-fluid main-con">
+    <div class="title-bar">
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">Dashboard Statistics</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+                <a href="../Home/Index" class="btn-back" title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+    
+    <div class="box-graph">
+        
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="info-box bg-darkblue" onclick="FillTable(1)" style="cursor:pointer">
+                <span class="info-box-icon" style="padding: 10px 0px 0px;"><i class="icon icon-book-1"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">In Process Lesson</span>
+                    <span class="info-box-number">
+                        <span id="Inprocess"></span>/<span id="iTotal"></span>
+                    </span>
+                    <div class="progress">
+                        <div class="progress-bar" id="inprocessbar"></div>
+                    </div>
+                    <span class="progress-description text-center">
+                        <span id="ibartitle"></span>% In Process
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="info-box bg-darkpink" onclick="FillTable(2)" style="cursor:pointer">
+                <span class="info-box-icon"><i class="icon icon-book-2"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Submitted Lessons</span>
+                    <span class="info-box-number">
+                        <span id="Completed"></span>/<span id="cTotal"></span>
+                    </span>
+
+                    <div class="progress">
+                        <div class="progress-bar" id="completedbar"></div>
+                    </div>
+                    <span class="progress-description text-center">
+                        <span id="cbartitle"></span>% Submitted
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            </div>
+            <!-- Info Boxes Style 2 -->
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="info-box bg-parrot-green" onclick="FillTable(3)" style="cursor:pointer">
+                <span class="info-box-icon"><i class="icon icon-document-text-1"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Approved Lessons</span>
+                    <span class="info-box-number">
+                        <span id="Verified"></span>/<span id="vTotal"></span>
+                    </span>
+                    <div class="progress">
+                        <div class="progress-bar" id="verifiedbar"></div>
+                    </div>
+                    <span class="progress-description text-center">
+                        <span id="vbartitle"></span>% Approved
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            </div>
+        </div>
+    
+    <div class="box-graph">
+        <div id="loader" class="loader" style="display:none"></div>
+        <div id="tablediv" class="table-responsive grade-box dataTables_wrapper form-inline dt-bootstrap" style="display:none">
+            <table id="LessonTable" class="table table-striped table-bordered" width="100%" cellspacing="0"">
+                <thead>
+                    <tr>
+                        <th>Lesson</th>
+                        <th>Class</th>
+                        <th>Subject</th>
+                        <th style="text-align:center">Creation Date</th>
+                        <th style="text-align:center">Time Consumed</th>
+                        <th id="comptd" style="display:none;text-align:center">Submission Date</th>
+                        <th class="vertd" style="display:none;text-align:center">Approve Date</th>
+                        <th class="vertd" style="display:none">Approved By</th>
+                        <th class="vertd" style="display:none">Rating</th>
+                    </tr>
+                </thead>
+                <tbody id="data">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <!-- LINE CHART -->
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Lesson Progress</h3>
+                    <select class="form-control" id="LineChart">
+                        <option value="1"> Daily</option>
+                        <option value="2"> Monthly</option>
+                    </select>
+                </div>
+                <div class="box-body chart-responsive">
+                    <div class="chart" id="line-chart" style="height:282px;"></div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <!-- BAR CHART -->
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Bar Chart</h3>
+                    <select class="form-control" id="BarChart">
+                        <option value="1"> Daily</option>
+                        <option value="2"> Monthly</option>
+                    </select>
+
+                </div>
+                <div class="box-body chart-responsive">
+                    <div class="chart" id="bar-chart" style="height:288px;"></div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    </div>
+   
+<style>
+.loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 50px;
+    height: 50px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    text-align: center !important;
+    margin:0 auto;
+}
+
+@@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<script>
+    $(function () {
+        "use strict";
+   
+    });
+</script>
+<section>
+    <script>
+        $(function () {
+            LessonTabData();
+            ScriptStatData();
+            ChartData();
+
+            $("#LineChart").change(function () {
+                var TypeID;
+                TypeID = $("#LineChart").val();
+                $.ajax({
+                    dataType: "JSON",
+                    type: "GET",
+                    url: "../Home/Charts",
+                    data: { TypeID: TypeID },
+                    success: function (dbdata) {
+                        $("#line-chart").html('');
+                        
+                        Morris.Line({
+                            element: 'line-chart',
+                            xValueType: "dateTime",
+                            resize: true,
+                            data: dbdata,
+                            parseTime: false,
+                            xkey: 'Date',
+                            ykeys: ['VerifyLesson', 'NewLesson', 'CompleteLesson'],
+                            labels: ['Approved Lesson', 'In Process', 'Submitted Lesson'],
+                            lineColors: ['#5BC510', '#3c8dbc', '#CB3E7C'],
+                            hideHover: 'auto',
+                            gridIntegers: true,
+                            ymin: 0,
+
+                        });
+                    }, error: function () {
+                    }
+                });
+            });
+
+            $("#BarChart").change(function () {
+                var TypeID;
+                TypeID = $("#BarChart").val();
+                $.ajax({
+                    dataType: "JSON",
+                    type: "GET",
+                    url: "../Home/Charts",
+                    data: { TypeID: TypeID },
+                    success: function (dbdata) {
+                        $("#bar-chart").html('');
+                        
+                        Morris.Bar({
+                            element: 'bar-chart',
+                            resize: true,
+                            data: dbdata,
+                            barGap: 0,
+                            xLabelMargin: 5,
+                           // barSizeRatio: 1.5,
+                            barColors: ['#dddddd', '#67BA14'],
+                            xkey: 'Date',
+                            ykeys: ['VerifyLesson', 'NewLesson', 'CompleteLesson'],
+                            labels: ['Approved Lesson', 'In Process', 'Submitted Lesson'],
+                            barColors: ['#5BC510', '#3c8dbc', '#CB3E7C'],
+                            hideHover: 'auto',
+                            gridIntegers: true,
+                            ymin: 0,
+                        });
+                    }, error: function () {
+                    }
+                });
+            });
+            FillTable(1);
+        });
+        function LessonTabData() {
+            var Progressper;
+            var Verifiedper;
+            var Completedper;
+            $.ajax({
+                dataType: "JSON",
+                type: "GET",
+                url: "../Home/LessonTabData",
+                success: function (dbdata) {
+                    $("#vTotal").html('');
+                    $("#vbartitle").html('');
+                    $("#Verified").html('');
+                    $("#Verified").html(dbdata[0].VerifiedLesson);
+                    $("#vTotal").html(dbdata[0].TotalLesson);
+                    Verifiedper = Math.round((dbdata[0].VerifiedLesson / dbdata[0].TotalLesson) * 100);
+                    $("#verifiedbar").css("width", Verifiedper + "%");
+                    $("#vbartitle").html(Verifiedper);
+
+
+                    $("#cTotal").html('');
+                    $("#cbartitle").html('');
+                    $("#Completed").html('');
+                    $("#Completed").html(dbdata[0].CompletedLesson);
+                    $("#cTotal").html(dbdata[0].TotalLesson);
+                    Completedper = Math.round((dbdata[0].CompletedLesson / dbdata[0].TotalLesson) * 100);
+                    $("#completedbar").css("width", Completedper + "%");
+                    $("#cbartitle").html(Completedper);
+
+                    $("#iTotal").html('');
+                    $("#ibartitle").html('');
+                    $("#Inprocess").html('');
+                    $("#Inprocess").html(dbdata[0].InProgressLesson);
+                    $("#iTotal").html(dbdata[0].TotalLesson);
+                    Progressper = Math.round((dbdata[0].InProgressLesson / dbdata[0].TotalLesson) * 100);
+                    $("#inprocessbar").css("width", Progressper + "%");
+                    $("#ibartitle").html(Progressper);
+                }
+            });
+        }
+            function ScriptStatData() {
+                var Progressper;
+                var Verifiedper;
+                var Completedper;
+                $.ajax({
+                    dataType: "JSON",
+                    type: "GET",
+                    url: "../Home/ScriptStatistics",
+                    success: function (dbdata) {
+                        
+                        Progressper = Math.round((dbdata[0].InProgressLesson / dbdata[0].TotalLesson) * 100);
+                        Verifiedper = Math.round((dbdata[0].VerifiedLesson / dbdata[0].TotalLesson ) * 100);
+                        Completedper = Math.round((dbdata[0].CompletedLesson / dbdata[0].TotalLesson) * 100);
+
+                        $("#inprogressknob").val(Progressper).trigger('change');
+                        $("#verfiedknob").val(Verifiedper).trigger('change');
+                        $("#completedknob").val(Completedper).trigger('change');
+                    }, error: function () {
+                    }
+                });
+
+            }
+            function ChartData() {
+                var TypeID;
+                TypeID = 1;
+                $.ajax({
+                    dataType: "JSON",
+                    type: "GET",
+                    url: "../Home/Charts",
+                    data: {TypeID: TypeID},
+                    success: function (dbdata) {
+                        
+                        Morris.Line({
+                            element: 'line-chart',
+                            xValueType: "dateTime",
+                            resize: true,
+                            data: dbdata,
+                            parseTime: false,
+                            ymin: 0,
+                            ymax: 'auto',
+                            xkey: 'Date',
+                            ykeys: ['VerifyLesson', 'NewLesson', 'CompleteLesson'],
+                            labels: ['Approved Lesson', 'In Process', 'Submitted Lesson'],
+                            lineColors: ['#5BC510', '#3c8dbc', '#CB3E7C'],
+                            hideHover: 'auto',
+                            gridIntegers: true,
+                            ymin: 0,
+
+                        });
+
+                        Morris.Bar({
+                            element: 'bar-chart',
+                            resize: true,
+                            data: dbdata,
+                            barGap: 0,
+                           // xLabelAngle: 45,
+                            xLabelMargin: 5,
+                         //   barSizeRatio: 2.5,
+                            barColors: ['#dddddd', '#67BA14'],
+                            xkey: 'Date',
+                            ykeys: ['VerifyLesson', 'NewLesson', 'CompleteLesson'],
+                            labels: ['Approved Lesson', 'In Process', 'Submitted Lesson'],
+                            barColors: ['#5BC510', '#3c8dbc', '#CB3E7C'],
+                            hideHover: 'auto',
+                            gridIntegers: true,
+                            ymin: 0,
+                        });
+                    }, error: function () {
+                    }
+                });
+            }
+            function DateTime() {
+                var date = new Date();
+                var month = date.getMonth();
+                var monthString = month > 9 ? month : '0' + month;
+                var day = date.getDate();
+                var dayString = day > 9 ? day : '0' + day;
+                var year = date.getFullYear();
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                ];
+                var strTime = dayString + " " + monthNames[month] + " " + year + "  " + hours + ':' + minutes + ' ' + ampm;
+                return strTime;
+            }
+            function ShowDetail(LessonID) {
+                
+                //$("#Les_"+LessonID).css("display","block");
+                $("#Les_"+LessonID).toggle();
+            }
+    </script>
+    <script>
+        var table;
+        //$(document).ready(function () {
+        //    table = $('#LessonTable').DataTable({
+        //        language: {
+        //            sLengthMenu: "Show _MENU_ Entries"
+        //        },
+        //        responsive: {
+        //            details: true
+        //        },
+        //        responsive: true,
+        //        "ordering": false,
+        //        "lengthMenu": [[-1, 10, 25, 50, 100], ["All", 10, 25, 50, 100]],
+        //    });
+        //});
+
+        function FillTable(SelectedTab) {
+
+            $("#tablediv").hide();
+            $("#loader").show();
+            $.ajax({
+                dataType: "JSON",
+                type: "GET",
+                url: "../Home/LoadLesson",
+                data: { SelectedTab: SelectedTab },
+                success: function (dbdata) {
+
+                    var html = '';
+                    if (dbdata.lstLessonInfo != null) {
+                      //  $("#tablediv").show();
+                        if (dbdata.lstLessonInfo[0].LessonPlanStatus == 2) {
+                            $("#comptd").show();
+                            $(".vertd").hide();
+                            for (var i = 0; i < dbdata.lstLessonInfo.length; i++) {
+                                html += '<tr>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].LessonTitle + '</td>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].ClassName + '</td>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].SubjectName + '</td>'
+                                html += '<td style="text-align:center">' + dbdata.lstLessonInfo[i].StartTime + '</td>'
+                                html += '<td style="text-align:center">' + dbdata.lstLessonInfo[i].TimeConsumed + '</td>'
+                                html += '<td style="text-align:center">' + dbdata.lstLessonInfo[i].EndTime + '</td>'
+                                html += '</tr>'
+                            }
+                        } else if (dbdata.lstLessonInfo[0].LessonPlanStatus == 3) {
+                            $(".vertd").show();
+                            $("#comptd").show();
+                            for (var i = 0; i < dbdata.lstLessonInfo.length; i++) {
+                                html += '<tr>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].LessonTitle + '</td>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].ClassName + '</td>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].SubjectName + '</td>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].StartTime + '</td>'
+                                html += '<td style="text-align:center">' + dbdata.lstLessonInfo[i].TimeConsumed + '</td>'
+                                html += '<td style="text-align:center">' + dbdata.lstLessonInfo[i].EndTime + '</td>'
+                                html += '<td style="text-align:center">' + dbdata.lstLessonInfo[i].VerificationDate + '</td>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].VerifiedBy + '</td>'
+                                html += '<td><div class="rating-stars text-center" style="font-size:6px;width: 105px;float:left;">'
+                                html += '<ul id="rating_'+ dbdata.lstLessonInfo[i].LessonPlanID+'" class="stars">'
+                                html +='<li class="star" title="Poor" data-value="1"><i class="fa fa-star fa-fw"></i></li>'
+                                html +='<li class="star" title="Fair" data-value="2"><i class="fa fa-star fa-fw"></i></li>'
+                                html +='<li class="star" title="Good" data-value="3"><i class="fa fa-star fa-fw"></i></li>'
+                                html +='<li class="star" title="Very Good" data-value="4"><i class="fa fa-star fa-fw"></i></li>'
+                                html +='<li class="star" title="Excellent" data-value="5"><i class="fa fa-star fa-fw"></i></li>'
+                                html +='</ul>'
+                                html += '</div>'
+                                html += '</td>'
+                                html += '</tr>'
+                                
+                               
+                            }
+                        } else {
+                            for (var i = 0; i < dbdata.lstLessonInfo.length; i++) {
+                                html += '<tr>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].LessonTitle + '</td>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].ClassName + '</td>'
+                                html += '<td>' + dbdata.lstLessonInfo[i].SubjectName + '</td>'
+                                html += '<td style="text-align:center">' + dbdata.lstLessonInfo[i].StartTime + '</td>'
+                                html += '<td style="text-align:center">' + dbdata.lstLessonInfo[i].TimeConsumed + '</td>'
+                                html += '</tr>'
+                            }
+                            $("#comptd").hide();
+                            $(".vertd").hide();
+                        }
+
+
+
+                    } else {
+
+                        html += '<tr>'
+                        html += '<td colspan="5">No record found</td>'
+                        html+='</tr>'
+                    }
+                    $("#data").html('');
+                    $("#data").append(html);
+                    debugger
+                    if (dbdata.lstLessonInfo != null) {
+                        if (dbdata.lstLessonInfo[0].LessonPlanStatus == 3) {
+                            for (var i = 0; i < dbdata.lstLessonInfo.length; i++) {
+                                debugger
+                                var onStar = dbdata.lstLessonInfo[i].Rating;
+                                var stars = $('#rating_' + dbdata.lstLessonInfo[i].LessonPlanID).children('li.star');
+
+                                for (j = 0; j < stars.length; j++) {
+                                    $(stars[j]).removeClass('selected');
+                                }
+
+                                for (k = 0; k < onStar; k++) {
+                                    $(stars[k]).addClass('selected');
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }).done(function (response) {
+                $("#loader").hide();
+                $("#tablediv").show();
+            });
+        }
+
+    </script>
+</section>
+<section id="morris_chart_scaling">
+    <script>
+        (function () {
+            var $, MyMorris;
+
+            MyMorris = window.MyMorris = {};
+            $ = jQuery;
+
+            MyMorris = Object.create(Morris);
+
+            MyMorris.Grid.prototype.gridDefaults["gridIntegers"] = false;
+
+            MyMorris.Grid.prototype.setData = function (data, redraw) {
+                var e, idx, index, maxGoal, minGoal, ret, row, step, total, y, ykey, ymax, ymin, yval, _ref;
+                if (redraw == null) {
+                    redraw = true;
+                }
+                this.options.data = data;
+                if ((data == null) || data.length === 0) {
+                    this.data = [];
+                    this.raphael.clear();
+                    if (this.hover != null) {
+                        this.hover.hide();
+                    }
+                    return;
+                }
+                ymax = this.cumulative ? 0 : null;
+                ymin = this.cumulative ? 0 : null;
+                if (this.options.goals.length > 0) {
+                    minGoal = Math.min.apply(Math, this.options.goals);
+                    maxGoal = Math.max.apply(Math, this.options.goals);
+                    ymin = ymin != null ? Math.min(ymin, minGoal) : minGoal;
+                    ymax = ymax != null ? Math.max(ymax, maxGoal) : maxGoal;
+                }
+                this.data = (function () {
+                    var _i, _len, _results;
+                    _results = [];
+                    for (index = _i = 0, _len = data.length; _i < _len; index = ++_i) {
+                        row = data[index];
+                        ret = {
+                            src: row
+                        };
+                        ret.label = row[this.options.xkey];
+                        if (this.options.parseTime) {
+                            ret.x = Morris.parseDate(ret.label);
+                            if (this.options.dateFormat) {
+                                ret.label = this.options.dateFormat(ret.x);
+                            } else if (typeof ret.label === 'number') {
+                                ret.label = new Date(ret.label).toString();
+                            }
+                        } else {
+                            ret.x = index;
+                            if (this.options.xLabelFormat) {
+                                ret.label = this.options.xLabelFormat(ret);
+                            }
+                        }
+                        total = 0;
+                        ret.y = (function () {
+                            var _j, _len1, _ref, _results1;
+                            _ref = this.options.ykeys;
+                            _results1 = [];
+                            for (idx = _j = 0, _len1 = _ref.length; _j < _len1; idx = ++_j) {
+                                ykey = _ref[idx];
+                                yval = row[ykey];
+                                if (typeof yval === 'string') {
+                                    yval = parseFloat(yval);
+                                }
+                                if ((yval != null) && typeof yval !== 'number') {
+                                    yval = null;
+                                }
+                                if (yval != null) {
+                                    if (this.cumulative) {
+                                        total += yval;
+                                    } else {
+                                        if (ymax != null) {
+                                            ymax = Math.max(yval, ymax);
+                                            ymin = Math.min(yval, ymin);
+                                        } else {
+                                            ymax = ymin = yval;
+                                        }
+                                    }
+                                }
+                                if (this.cumulative && (total != null)) {
+                                    ymax = Math.max(total, ymax);
+                                    ymin = Math.min(total, ymin);
+                                }
+                                _results1.push(yval);
+                            }
+                            return _results1;
+                        }).call(this);
+                        _results.push(ret);
+                    }
+                    return _results;
+                }).call(this);
+                if (this.options.parseTime) {
+                    this.data = this.data.sort(function (a, b) {
+                        return (a.x > b.x) - (b.x > a.x);
+                    });
+                }
+                this.xmin = this.data[0].x;
+                this.xmax = this.data[this.data.length - 1].x;
+                this.events = [];
+                if (this.options.events.length > 0) {
+                    if (this.options.parseTime) {
+                        this.events = (function () {
+                            var _i, _len, _ref, _results;
+                            _ref = this.options.events;
+                            _results = [];
+                            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                                e = _ref[_i];
+                                _results.push(Morris.parseDate(e));
+                            }
+                            return _results;
+                        }).call(this);
+                    } else {
+                        this.events = this.options.events;
+                    }
+                    this.xmax = Math.max(this.xmax, Math.max.apply(Math, this.events));
+                    this.xmin = Math.min(this.xmin, Math.min.apply(Math, this.events));
+                }
+                if (this.xmin === this.xmax) {
+                    this.xmin -= 1;
+                    this.xmax += 1;
+                }
+                this.ymin = this.yboundary('min', ymin);
+                this.ymax = this.yboundary('max', ymax);
+                if (this.ymin === this.ymax) {
+                    if (ymin) {
+                        this.ymin -= 1;
+                    }
+                    this.ymax += 1;
+                }
+                if (((_ref = this.options.axes) === true || _ref === 'both' || _ref === 'y') || this.options.grid === true) {
+                    if (this.options.ymax === this.gridDefaults.ymax && this.options.ymin === this.gridDefaults.ymin) {
+                        this.grid = this.autoGridLines(this.ymin, this.ymax, this.options.numLines);
+                        this.ymin = Math.min(this.ymin, this.grid[0]);
+                        this.ymax = Math.max(this.ymax, this.grid[this.grid.length - 1]);
+                    } else {
+                        step = (this.ymax - this.ymin) / (this.options.numLines - 1);
+                        if (this.options.gridIntegers) {
+                            step = Math.max(1, Math.round(step));
+                        }
+                        this.grid = (function () {
+                            var _i, _ref1, _ref2, _results;
+                            _results = [];
+                            for (y = _i = _ref1 = this.ymin, _ref2 = this.ymax; step > 0 ? _i <= _ref2 : _i >= _ref2; y = _i += step) {
+                                _results.push(y);
+                            }
+                            return _results;
+                        }).call(this);
+                    }
+                }
+                this.dirty = true;
+                if (redraw) {
+                    return this.redraw();
+                }
+            };
+        }).call(this);
+    </script>
+</section>

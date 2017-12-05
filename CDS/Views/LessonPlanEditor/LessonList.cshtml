@@ -1,0 +1,542 @@
+﻿@model CDS.Models.ListLessonInfo
+@{
+    ViewBag.Title = "My Lessons";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+
+<style>
+    table.dataTable thead tr + tr #srno::after,
+    table.dataTable thead tr + tr #Totalunits::after,
+    table.dataTable thead tr + tr #TotalLessons::after,
+    table.dataTable thead tr + tr #Status::after,
+    table.dataTable thead tr + tr #Ratings::after {
+        display: none;
+        opacity: 0;
+    }
+</style>
+<style>
+    a:hover { 
+    text-decoration:underline;
+}
+    pre {
+        display: block;
+        padding: 9.5px;
+        margin: 0 0 10px;
+        font-size: 13px;
+        line-height: 1.42857143;
+        color: #333;
+        word-break: break-all;
+        word-wrap: break-word;
+        background-color: #F5F5F5;
+        border: 1px solid #CCC;
+        border-radius: 4px;
+    }
+
+    .header {
+        padding: 20px 0;
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+        .header:after {
+            content: "";
+            display: block;
+            height: 1px;
+            background: #eee;
+            position: absolute;
+            left: 30%;
+            right: 30%;
+        }
+
+        .header h2 {
+            font-size: 3em;
+            font-weight: 300;
+            margin-bottom: 0.2em;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+
+    .success-box {
+        margin: 50px 0;
+        padding: 10px 10px;
+        border: 1px solid #eee;
+        background: #f9f9f9;
+    }
+
+        .success-box img {
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .success-box > div {
+            vertical-align: top;
+            display: inline-block;
+            color: #888;
+        }
+
+
+
+    /* Rating Star Widgets Style */
+    .rating-stars ul {
+        list-style-type: none;
+        padding: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+    }
+
+        .rating-stars ul > li.star {
+            display: inline-block;
+        }
+
+            /* Idle State of the stars */
+            .rating-stars ul > li.star > i.fa {
+                font-size: 2.5em; /* Change the size of the stars */
+                color: #ccc; /* Color on idle state */
+            }
+
+            /* Hover state of the stars */
+            .rating-stars ul > li.star.hover > i.fa {
+                color: #FFCC36;
+            }
+
+            /* Selected state of the stars */
+            .rating-stars ul > li.star.selected > i.fa {
+                color: #FFCC36;
+            }
+</style>
+<style>
+    table {
+    width:100% !important;
+    }
+    /*.hidetd select {
+        display: none !important;
+    }
+
+    .dropdown {
+        margin-left: -10px;
+    }*/
+</style>
+
+<div class="container-fluid main-con">
+    <div class="title-bar">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">My Lessons</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-12">
+
+                <ul class="btn-status">
+                    @{
+                        int select = 0;
+                        if (ViewBag.SelectedTab != null)
+                        {
+                            select = Convert.ToInt32(ViewBag.SelectedTab);
+                            if (select == 1)
+                            {
+                    <li><a href="#" class="active" onclick="OnTabsClick(1)">In Process</a></li>
+                    <li><a href="#" onclick="OnTabsClick(2)">Submitted</a></li>
+                    <li><a title="Ready to deploy" href="#" onclick="OnTabsClick(3)">Approved</a></li>
+
+                            }
+                            else if (select == 2)
+                            {
+                    <li><a href="#" onclick="OnTabsClick(1)">In Process</a></li>
+                    <li><a href="#" class="active" onclick="OnTabsClick(2)">Submitted</a></li>
+                    <li><a title="Ready to deploy" href="#" onclick="OnTabsClick(3)">Approved</a></li>
+                            }
+                            else if (select == 3)
+                            {
+                    <li><a href="#" onclick="OnTabsClick(1)">In Process</a></li>
+                    <li><a href="#" onclick="OnTabsClick(2)">Submitted</a></li>
+                    <li><a title="Ready to deploy" href="#" class="active" onclick="OnTabsClick(3)">Approved</a></li>
+                            }
+                        }
+
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    
+    @*<div class="row">
+        <div class="grade-box">
+            <div class="search-box search-box-lsn" id="searchbox" style="">
+                <form>
+                
+                       
+                  
+                </form>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="grade-box lsnlist">
+        <div class="search-box search-box-lsn" id="searchbox" style="display:none">
+            <form>
+                <div id="form">
+                    @*<select class="g-search">
+                        <option value="">Class</option>
+                        <option value="Grade 1">Grade 1</option>
+                        <option value="KG">KG</option>
+                    </select>
+                    <select class="g-search">
+                        <option value="">Subject</option>
+                        <option value="English">English</option>
+                        <option value="Science">Science</option>
+                        <option value="Urdu">Urdu</option>
+                    </select>*@
+                </div>
+            </form>
+        </div>
+        <!-- /.box-header -->
+        <div class="table-responsive">
+            @*<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">*@
+                <table id="example" class="table table-striped table-bordered dataTable"  cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Lesson</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th style="text-align:center">Creation Date</th>
+                            <th style="text-align:center">Time Consumed</th>
+                            @if (select == 2) {<th style="text-align:center">Submission Date</th>}
+                            
+                            @if (select == 3)
+                            {
+                            <th style="text-align:center">Submission Date</th>
+                            <th>Approved By</th>
+                            <th style="text-align:center">Approve Date</th>
+                            <th></th>
+                            <th></th>
+                            }
+
+                        </tr>
+                        @*<tr>
+                            <th class="hidetd" id="srno"></th>
+                            <th class="hidetd" id="lesson"></th>
+                            <th id="Class"></th>
+                            <th id="Subject"></th>
+                            <th class="hidetd" id="StartTime"></th>
+                            <th class="hidetd" id="TimeConsumed"></th>
+                            @if (select == 2)
+                            {
+                                <th class="hidetd" id="CompleteDate"></th>
+                            }
+                            @if (select == 3)
+                            {
+                            <th class="hidetd" id="CompleteDate"></th>
+                            <th class="hidetd" id="VerificationDate"></th>
+                            <th class="hidetd" id="VerifiedBy"></th>
+                            <th class="hidetd" id="Ratings"></th>
+                            }
+                        </tr>*@
+                    </thead>
+
+                    <tbody>
+                        @if (Model.lstLessonInfo != null)
+                        {
+                            foreach (var lesson in Model.lstLessonInfo)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td><a href="../LessonPlanEditor/LessonPlan?LessonId=@lesson.EncryptLessonID&&mode=List" class="book-link">@lesson.LessonTitle</a></td>
+                                    <td>@lesson.ClassName</td>
+                                    <td>@lesson.SubjectName</td>
+                                    <td style="text-align:center">@lesson.StartTime</td>
+                                    <td style="text-align:center">@lesson.TimeConsumed</td>
+                                    @if (select == 2){<td style="text-align:center">@lesson.CompleteDate</td>}
+                                    @if (select == 3)
+                                    {
+                                    <td style="text-align:center">@lesson.CompleteDate
+                             
+                                    </td>
+                                    <td>@lesson.VerifiedBy</td>
+                                    <td style="text-align:center">@lesson.VerificationDate  </td>
+                                    <td title="Rating">
+                                        <div class='rating-stars text-center' style="font-size:6px;width: 105px;float:left;">
+                                            <ul id="rating_@lesson.LessonPlanID" class='stars'>
+                                                <li class='star' title='Poor' data-value='1'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                                <li class='star' title='Fair' data-value='2'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                                <li class='star' title='Good' data-value='3'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                                <li class='star' title='Very Good' data-value='4'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                                <li class='star' title='Excellent' data-value='5'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        @if (lesson.LessonPlanStatus == 1)
+                                        {
+                                            <span>
+                                                <i class="fa fa-close" title="Delete" data-val="@lesson.LessonPlanID"> </i>
+                                            </span>
+                                        }
+                                        
+                                        <script>
+                                            $(function () {
+                                                var onStar = @lesson.Rating;
+                                                var stars = $('#rating_@lesson.LessonPlanID').children('li.star');
+
+                                                for (i = 0; i < stars.length; i++) {
+                                                    $(stars[i]).removeClass('selected');
+                                                }
+
+                                                for (i = 0; i < onStar; i++) {
+                                                    $(stars[i]).addClass('selected');
+                                                }
+                                            });
+                                        </script>
+                                    </td>
+                                    <td><a href="#" onclick="ModifyLesson('@lesson.LessonPlanID','@lesson.EncryptLessonID')" style="color:#8ECBEB;" title="Modify your lesson">Modify</a></td>
+                                    }
+                                </tr>
+                                                }
+                                            }
+                                            @*else
+                                            {
+                                                <tr>
+                                                    <td colspan="9" style="text-align:center;">Record not found.</td>
+                                                </tr>
+                                            }*@
+                    </tbody>
+                </table>
+            @*</div>*@
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+
+
+</div>
+
+
+@*<script>
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+    </script>*@
+
+
+<script>
+    function OnTabsClick(id) {
+        var url = "../LessonPlanEditor/LessonList?SelectTab=" + id;
+        var win = window.open(url, '_self');
+    }
+   
+    
+    $(document).ready(function () {
+
+        
+        //$('#example #lesson').each(function () {
+        //    $(this).html('<input type="text"class=form-control search-fld placeholder="Lesson Name" style="width:200px; height:30px;" />');
+        //});
+        //$('#example #Class').each(function () {
+        //    $(this).html('<input type="text"class=form-control search-fld placeholder="Class Name" style="width:100px; height:30px;" />');
+        //});
+        //$('#example #VerifiedBy').each(function () {
+        //    $(this).html('<input type="text"class=form-control search-fld placeholder="Verifier" style="width:100px; height:30px;" />');
+        //});
+        var table = $('#example').DataTable({
+            language: {
+                sLengthMenu: "Show _MENU_ Entries"
+            },
+
+            responsive: {
+                details: true
+            },
+            responsive: true,
+            "ordering": false,
+            "lengthMenu": [[-1,10, 25, 50,100], ["All",10, 25, 50,100]],
+            initComplete: function () {
+                this.api().columns("2").every( function () {
+                    $('select').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                    var column = this;
+                    var select = $('<select class="g-search"><option value="">All Classes</option></select>').appendTo($("#form")).on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^'+val+'$' : '', true, false )
+                            .draw();
+
+                    });
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        if(d!=""){
+
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        }
+                    });
+                });
+                this.api().columns("3").every( function () {
+                    $('select').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                    var column = this;
+                    var select = $('<select class="g-search"><option value="">All Subjects</option></select>').appendTo($("#form")).on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^'+val+'$' : '', true, false )
+                            .draw();
+
+                    });
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        if(d!=""){
+
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        }
+                    } );
+                });
+            }
+
+        });
+        $(".dataTables_filter").append('<div class="search-btn"><a href="#" id="searchbtn"><i class="fa fa-search"></i></a></div>')
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+
+            $('input', table.column(colIdx).header()).on('keyup change', function () {
+                table.column(colIdx).search(this.value).draw();
+
+            });
+
+            $('input', table.column(colIdx).header()).on('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+
+        }).draw();
+
+    });
+</script>
+<script>
+    //$(document).ready(function () {
+
+    //    /* 1. Visualizing things on Hover - See next part for action on click */
+    //    $('.stars li').on('mouseover', function () {
+    //        var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+
+    //        // Now highlight all the stars that's not after the current hovered star
+    //        $(this).parent().children('li.star').each(function (e) {
+    //            if (e < onStar) {
+    //                $(this).addClass('hover');
+    //            }
+    //            else {
+    //                $(this).removeClass('hover');
+    //            }
+    //        });
+
+    //    }).on('mouseout', function () {
+    //        $(this).parent().children('li.star').each(function (e) {
+    //            $(this).removeClass('hover');
+    //        });
+    //    });
+
+
+    //    /* 2. Action to perform on click */
+    //    $('.stars li').on('click', function () {
+    //        var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+    //        var stars = $(this).parent().children('li.star');
+
+    //        for (i = 0; i < stars.length; i++) {
+    //            $(stars[i]).removeClass('selected');
+    //        }
+
+    //        for (i = 0; i < onStar; i++) {
+    //            $(stars[i]).addClass('selected');
+    //        }
+
+    //        // JUST RESPONSE (Not needed)
+    //        var ratingValue = parseInt($('.stars li.selected').last().data('value'), 10);
+    //        console.log(ratingValue);
+    //    });
+
+
+    //});
+</script>
+<script id="delLesson">
+    $('.fa-close').click(function(){
+        if(confirm('Are you sure, you want to delete this Lesson.'))
+        {
+            var val = $(this).data('val');
+            $.ajax({
+                url:'../LessonPlanEditor/DeleteLesson',
+                type: 'GET',
+                datatype:'Json',
+                data:{Val:val},
+                asnyc:false,
+                success:function(data){
+                    if(data != null)
+                    {
+                        alert(data);
+                    }
+                },
+                error:function(xhr, error){
+
+                }
+            });
+        }
+    });
+</script>
+<script>
+    $(function(){
+        $("#searchbtn").click(function(){
+           
+                    //if($("#searchbox").style.display=="none"){
+                    //    $("#searchbox").style.display="block";
+                    //}else{
+                    //    $("#searchbox").style.display="none";
+                    //}
+                     $("#searchbox").toggle();
+                });
+    
+    });
+    function ModifyLesson(LessonPlanID,LessonID){
+        if(confirm("Are you sure to Modify this Lesson")){
+            loader();
+            $.ajax({
+                dataType:"JSON",
+                type:"POST",
+                url:"../LessonPlanEditor/ModifyApprovedLesson",
+                data:{LessonPlanID:LessonPlanID,LessonID:LessonID},
+                success:function(dbdata){
+                    if(dbdata==1){
+                        location.href="../LessonPlanEditor/LessonPlan?LessonId="+LessonID+"&&mode=List"
+                    }
+                },
+                error:function(err){
+                
+                }
+
+            
+            });
+        }
+
+    }
+</script>

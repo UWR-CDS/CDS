@@ -1,0 +1,186 @@
+﻿.mce_Jsvk
+{
+    display:none !important;
+}
+.mce_replace
+    {
+        display:none !important;
+    }
+#virtualKeyboard
+{
+margin-top:-300px;
+display:none;
+cursor:move;
+}
+.defaultSkin .mceStatusbar
+{
+    display:none !important;
+
+}
+#tinymce
+{
+    overflow-x:hidden !important;
+}
+#maindiveditor_tbl
+{
+    width:100% !important;
+    height:636px !important;
+}
+#maindiveditor_ifr
+{
+      height:636px !important;
+      background-color:white !important;
+}
+.mceContentBody {
+        min-width:850px;
+        /*max-width:850px;*/
+        /*word-wrap:break-word;*/
+        white-space:normal;
+        /*overflow-y:hidden;*/
+        /*overflow-x:hidden!important;*/
+        /*font-family:Nafees !important;*/
+        padding:15px;
+        line-height:28px;
+        background-color:white;
+}
+.mceLayout
+{
+    width:100% !important;
+}
+.mceContentBody1 {
+
+
+        /*word-wrap:break-word;*/
+        white-space:normal;
+       overflow-x:hidden!important;
+
+    line-height:28px;
+
+        }
+.mceContentBody2 {
+
+
+        /*word-wrap:break-word;*/
+        white-space:normal;
+       overflow-x:hidden !important;
+       overflow-y:hidden !important;
+        line-height:28px;
+
+        }
+
+.mainTxt17 {
+    FONT-SIZE: 13px;
+    COLOR: #000;
+     font-family: 'UWR_UrduFont';
+     LINE-HEIGHT: 36px;
+}
+@font-face {
+    font-family: 'UWR_UrduFont';
+    src: url('../fonts/UWR_UrduFont.ttf') format('truetype');
+}
+
+
+#htmldatadiv_tbl
+{
+    width:100% !important;
+
+}
+#htmldatadiv_ifr
+{
+    height:540px !important;
+}
+#maindiveditorLeft_tbl
+{
+    width:100% !important;
+
+}
+#maindiveditorLeft_ifr
+{
+    height:460px !important;
+}
+#maindiveditorRight_tbl
+{
+    width:100% !important;
+
+}
+#maindiveditorRight_ifr
+{
+    height:460px !important;
+}
+ @media only screen and (min-width:320px) and (max-width:480px) {
+
+            .mceContentBody {
+                min-width: 100% !important;
+                /*overflow-x: scroll !important;*/
+            }
+            .defaultSkin div{
+                overflow-x: scroll;
+                overflow-y: hidden;
+                width: 290px;
+                padding:5px 0;
+            }
+
+        }
+
+@media only screen and (min-width:481px) and (max-width:767px) {
+
+
+    .mceContentBody {
+        min-width: 425px !important;
+        /*overflow-x: scroll !important;*/
+    }
+
+    .defaultSkin div {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 450px;
+        padding: 5px 0;
+    }
+}
+
+    @media only screen and (min-width:768px) and (max-width:1024px)
+     {
+
+        .mceContentBody {
+            min-width: 100% !important;
+            /*overflow-x: scroll !important;*/
+        }
+
+        .defaultSkin div {
+            overflow-x: scroll;
+            overflow-y: hidden;
+            width: 100%;
+            /*width:88%;*/
+            padding: 5px 0;
+        }
+
+
+        #maindiveditor_parent {
+            background: red;
+            width: 100%;
+        }
+
+
+    .inventorycls {
+        border: none !important;
+        width: 100% !important;
+        direction: ltr !important;
+    }
+
+    .mce_savescript img {
+        width: 15px !important;
+        height: 15px !important;
+        margin: 2px 0 0;
+    }
+    .mceNonEditable
+    {
+        background-color:yellow !important;
+    }
+     .borderbox
+        {
+            border:1px solid #ccc !important;
+            height:auto;
+            min-height:200px;
+        }
+
+}

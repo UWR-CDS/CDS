@@ -1,0 +1,207 @@
+﻿@model CDS.Models.UserData
+@{
+    ViewBag.Title = "UpdateUser";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+
+<link href="~/Content/logincds.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/checkbox-cds.css" rel="stylesheet" />
+<link href="~/Content/responsivecds.css" rel="stylesheet" />
+
+<div class="rigster-header">
+    <style>
+        body {
+            background: #EAEAEB !important;
+        }
+    </style>
+</div>
+<div class="container">
+
+    @if (ViewBag.UpdateUser != null)
+    {
+        <div class="col-lg-12 col-sm-12 col-xs-2 col-md-12" style="z-index:10">
+            <div class="alert alert-warning alert-update">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4 id="alertmsg"><i class="fa fa-envelope-o" style="margin-right:5px;"></i></h4>
+                @ViewBag.UpdateUser
+            </div>
+        </div>
+    }
+    <div class="reg-title">
+        <h1>Update Profile</h1>
+    </div>
+    <div class="update-subject">
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+            <div class="form-subj" style="">
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 img-user">
+                    <img src="..\\Handler\\UserImageHandler.ashx?key=@SessionManager.Current.UserID&&Time=@DateTime.Now.Millisecond" alt="user-image" id="imgicon" class="img-responsive" />
+                    <div class="btn-fdbak">
+                        <input id="icondata" name="icondata"  class="inputfile" multiple="multiple" onchange="ImageCheck(this);" accept=".jpg,.jpeg,.png" type="file">
+                        <label class="label-profile"  for="icondata"> Upload Photo</label>
+                    </div>
+                </div>
+                @using (Html.BeginForm("UpdateUser", "User", FormMethod.Post, new { role = "form", @id = "loginForm" }))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <form>
+                        @Html.ValidationMessageFor(m => m.UserFirstName, "", new { @class = "text-danger", @style = "" })
+                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 user-email-reg">
+                            @Html.TextBoxFor(m => m.UserFirstName, new { @type = "text", @class = "form-control fname", required = "required", PlaceHolder = "First Name", @maxLength = "32" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.UserLastName, "", new { @class = "text-danger", @style = "" })
+                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 user-email-reg">
+                            @Html.TextBoxFor(m => m.UserLastName, new { @type = "text", @class = "form-control", required = "required", PlaceHolder = "Last Name", @maxLength = "32" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.UserPhone, "", new { @class = "text-danger", @style = "" })
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 user-email-reg">
+                            @Html.TextBoxFor(m => m.UserPhone, new { @type = "text", @class = "form-control", required = "required", PlaceHolder = "Mobile Phone", @maxLength = "16" })
+                        </div>
+                        <div class="clearfix"></div>
+                        @Html.ValidationMessageFor(m => m.UserEmail, "", new { @class = "text-danger", @style = "" })
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-email-reg">
+                            @Html.TextBoxFor(m => m.UserEmail, new { @type = "Email", @class = "form-control", required = "required", @readonly = "readonly", PlaceHolder = "Email", @maxLength = "64" })
+                        </div>
+
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger", @style = "" })
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-pwd up-prfoile">
+                            @Html.PasswordFor(m => m.Password, new { @type = "Password", @class = "form-control", PlaceHolder = "********", @maxLength = "20" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.RetypePassword, "", new { @class = "text-danger", @style = "" })
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-pwd up-prfoile">
+                            @Html.PasswordFor(m => m.RetypePassword, new { @type = "Password", @class = "form-control", PlaceHolder = "********", @maxLength = "20" })
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn-register">
+                            <button type="submit">Update</button>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+            <div class="subj-view">
+                <h2>Selected Subjet(s)</h2>
+                @if (Model.lstUserSubjects != null)
+                {
+                    <div class="sbj-view-box">
+                        @{
+                            int sid = 0;
+                            List<CDS.Models.Les_Subject> lst = new List<CDS.Models.Les_Subject>();
+                            foreach (var item in Model.lstUserSubjects)
+                            {
+                                if (sid == 0 || sid != item.SubjectID)
+                                {
+                                    string src1 = "../images/" + @item.SubjectID + ".png";
+                        <div class="subj-box-view">
+                            <div class="icon-title-view">
+                                <div class="subj-icon-view">
+                                    <img src="@src1" alt="icon" class="img-responsive">
+                                </div>
+                                <div class="subj-title-view">
+                                    @item.SubjectName
+                                </div>
+                            </div>
+                            @{
+                                            sid = item.SubjectID;
+                                            lst = Model.lstUserSubjects as List<CDS.Models.Les_Subject>;
+                                            lst = lst.Where(x => x.SubjectID == item.SubjectID).ToList();
+                                            if (lst != null)
+                                            {
+                                        <div class="subj-list-view">
+                                            @foreach (var item1 in lst)
+                                                    {
+                                                    <div class="col-lg-6">
+                                                        <i class="fa fa-check"></i>@item1.ClassName
+                                                    </div>
+                                                    }
+                                        </div>
+                                            }
+                            }
+
+                        </div>
+                                                }
+                                            }
+                        }
+                    </div>
+                }
+                <div class="btn-select-sbj">
+                    <a herf="#" onclick="window.open('../User/UserSubjects', '_self')" class="btn-blue" title="Add/Drop Subjects">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright-login dark">
+        <p>Incoporation with UnitedWeReach. 2017 </p>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(1000, function () {
+                $(this).remove();
+            });
+        }, 4000);
+
+        $('#UserPhone').on('keydown', function (e)
+        {
+            -1 !== $.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) || /65|67|86|88/.test(e.keyCode) &&
+            (!0 === e.ctrlKey || !0 === e.metaKey) || 35 <= e.keyCode && 40 >= e.keyCode || e.keyCode == 189 || e.keyCode == 187 ||
+            (e.shiftKey || 48 > e.keyCode || 57 < e.keyCode) && (96 > e.keyCode || 105 < e.keyCode) && e.preventDefault()
+        });
+
+    });
+</script>
+
+<script>
+    var userid=@SessionManager.Current.UserID;
+        var isimagefile=false;
+        function ImageCheck(obj)
+        {
+            var fileExtension = ['jpeg', 'jpg', 'png','JPEG', 'JPG', 'PNG'];
+            if ($.inArray($(obj).val().split('.').pop().toLowerCase(), fileExtension) == -1)
+            {
+                alert("Only '.jpeg','.jpg', '.png' formats are allowed.");
+                $("#icondata").val("");
+                isimagefile= false;
+            }
+            else
+            {
+                isimagefile= true;
+                UploadIcon();
+            }
+        }
+        function UploadIcon()
+        {
+            if (isimagefile == true)
+            {
+                $("body").css("cursor", "wait");
+                var data = new FormData();
+                var files = $("#icondata").get(0).files;
+                if (files.length > 0) {
+                    data.append("Myicon", files[0]);
+                }
+                $.ajax({
+                    url: '../User/UploadIcon',
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (image)
+                    {
+                        if (image==true)
+                        {
+                            document.getElementById("imgicon").src = "..\\Handler\\UserImageHandler.ashx?key="+userid+"&&Time="+Math.random();
+                        }
+                    }
+                });
+                $("body").css("cursor", "default");
+            }
+            else
+            {
+                alert("Only '.jpeg','.jpg', '.png' formats are allowed.");
+            }
+        }
+
+</script>

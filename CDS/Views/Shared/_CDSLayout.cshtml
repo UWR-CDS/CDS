@@ -1,0 +1,476 @@
+﻿ @using LEAF_Logic
+@using CDS.Models
+@using CDS.Manager
+<!DOCTYPE html>
+@{
+    var count = 0;
+    List<BLL_ChatHistory> userMessages = new List<BLL_ChatHistory>();
+    userMessages = new UserManagement().GetMessageNotification(SessionManager.Current.UserID, SessionManager.Current.EntityID);
+}
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    @*<link rel="shortcut icon" href="~/images/favicon16.png" />*@
+    <link rel="shortcut icon" href="~/images/favicon5.png" />
+    <title>@ViewBag.Title</title>
+
+    <script src="~/Scripts/jquery-2.2.3.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/Admincds.min.css" rel="stylesheet" />
+    <link href="~/Content/all-skins.min.css" rel="stylesheet" />
+    <link href="~/Content/sidebar-main.css" rel="stylesheet" />
+    @*<link href="~/Content/watchbootstrap.min.css" rel="stylesheet" />*@
+    <link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/Content/checkbox-cds.css" rel="stylesheet" />
+
+    <link href="~/Content/allcds.css" rel="stylesheet" />
+
+    <link href="~/Content/all-fonts.css" rel="stylesheet" />
+    <link href="~/Content/responsivecds.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.loading.block.js"></script>
+    <script src="~/Scripts/CDS.js"></script>
+</head>
+
+<body class="skin-blue sidebar-mini sidebar-collapse">
+
+    <div id="wrapper" class="wrapper">
+        <div id="scopeAndSequenceModalBrowser"></div>
+        <header class="main-header">
+
+
+            <!-- Logo -->
+            @*<span href="" class="logo">
+                     mini logo for sidebar mini 50x50 pixels
+                     logo for regular state and mobile devices
+                    <span class="logo-lg"><b>Admin</b>Leaf</span>
+                </span>*@
+
+            <button type="button" class="hamburger animated fadeInLeft is-open" data-toggle="offcanvas">
+                <span class="hamb-top"></span>
+                <span class="hamb-middle"></span>
+                <span class="hamb-bottom"></span>
+            </button>
+
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                @*<span href="" class="admin-text"></span>*@
+                <div class="con-time">
+                    <h2>@ViewBag.ViewName</h2>
+                </div>
+                <!--News Update start-->
+                <div id="newsupdate" class="newsupdate">
+                    <div class="newslabel"> <i class="fa fa-warning"></i> News </div>
+                    <div class="news-text">
+                        <p>
+                            <marquee id="mar" onmouseover="this.stop();" onmouseout="this.start();">
+                                @*System would be shutting down for maintainance in one hour*@
+                            </marquee>
+                        </p>
+                    </div>
+                </div>
+                <!--News Update end-->
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages: style can be found in dropdown.less-->
+                        <!-- Tasks: style can be found in dropdown.less -->
+                        <li id="inbox" class="dropdown messages-menu mob-user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="New Message">
+                                <i class="fa fa-envelope-o"></i>
+                                @if (@userMessages != null && @userMessages.Count() > 0)
+                                {
+                                    <span id="notificationCount" class="label label-danger">@userMessages.Count()</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-danger"></span>
+                                }
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if (@userMessages != null && @userMessages.Count() > 0)
+                                {
+                                    <li id="header_msg" class="header">You have @userMessages.Count() new messages</li>
+                                }
+                                else
+                                {
+                                    <li class="header">You have no new messages</li>
+                                }
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        @if (@userMessages != null && @userMessages.Count() > 0)
+                                        {
+                                            for (int message = 0; message < @userMessages.Count(); message++)
+                                            {
+                                                if (userMessages.ToList()[message].isRead == false)
+                                                {
+                                                    <li id="Inboxcmnt_@userMessages.ToList()[message].Message_ID" style="background-color:#d4dffd;cursor:pointer">
+                                                        @if (@userMessages.ToList()[message].WhereFrom == "Inbox")
+                                                        {
+                                                            if (@userMessages.ToList()[message].OwnerID == SessionManager.Current.UserID)
+                                                            {
+                                                                 <!-- start message -->
+                                                                <a href="../LessonPlanEditor/LessonPlan?LessonId=@userMessages.ToList()[message].EncLessonID&&mode=List">
+                                                                    <div class="pull-left">
+                                                                        <img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                                                    </div>
+                                                                    <h4>
+                                                                        @userMessages.ToList()[message].UserName
+                                                                        <small><i class="fa fa-clock-o"></i> @userMessages.ToList()[message].CommentTimeAgo</small>
+                                                                    </h4>
+                                                                    @if (userMessages.ToList()[message].Comment.Length > 40)
+                                                                    {
+                                                                        <p title="@userMessages.ToList()[message].Comment">@(userMessages.ToList()[message].Comment.Substring(0, 40) + "...")</p>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p>@userMessages.ToList()[message].Comment</p>
+                                                                    }
+                                                                </a>
+                                                            }
+                                                            else
+                                                            {
+                                                                 <!-- start message -->
+                                                                <a href="../LessonPlanEditor/LessonPlan?LessonId=@userMessages.ToList()[message].EncLessonID&&mode=Desktop&&InvitaionID=@userMessages.ToList()[message].EncMessage_ID&&InvitationUserID=@userMessages.ToList()[message].EncUserID_A">
+                                                                    <div class="pull-left">
+                                                                        <img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                                                    </div>
+                                                                    <h4>
+                                                                        @userMessages.ToList()[message].UserName
+                                                                        <small><i class="fa fa-clock-o"></i> @userMessages.ToList()[message].CommentTimeAgo</small>
+                                                                    </h4>
+                                                                    @if (userMessages.ToList()[message].Comment.Length > 40)
+                                                                    {
+                                                                        <p title="@userMessages.ToList()[message].Comment">@(userMessages.ToList()[message].Comment.Substring(0, 40) + "...")</p>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p>@userMessages.ToList()[message].Comment</p>
+                                                                    }
+                                                                </a>
+                                                            }
+                                                        }
+                                                        else if (@userMessages.ToList()[message].WhereFrom == "Scope")
+                                                        {
+                                                            <a onclick="LoadComments('@userMessages.ToList()[message].EncLessonID','@userMessages.ToList()[message].EncMessage_ID')">
+                                                                <div class="pull-left">
+                                                                    <img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                                                </div>
+                                                                <h4>
+                                                                    @userMessages.ToList()[message].UserName
+                                                                    <small><i class="fa fa-clock-o"></i> @userMessages.ToList()[message].CommentTimeAgo</small>
+                                                                </h4>
+                                                                @if (userMessages.ToList()[message].Comment.Length > 40)
+                                                                {
+                                                                    <p title="@userMessages.ToList()[message].Comment">@(userMessages.ToList()[message].Comment.Substring(0, 40) + "...")</p>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <p>@userMessages.ToList()[message].Comment</p>
+                                                                }
+                                                            </a>
+                                                        }
+                                                        else if (@userMessages.ToList()[message].WhereFrom == "FeedBack")
+                                                        {
+                                                            <a href="@Url.Action("FeedBackProcess", "FeedBack", new { @EncFeedBackId = userMessages.ToList()[message].EncMessage_ID}, null)">
+                                                                <div class="pull-left">
+                                                                    <img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                                                </div>
+                                                                <h4>
+                                                                    @userMessages.ToList()[message].UserName
+                                                                    <small><i class="fa fa-clock-o"></i> @userMessages.ToList()[message].CommentTimeAgo</small>
+                                                                </h4>
+                                                                @if (userMessages.ToList()[message].Comment.Length > 40)
+                                                                {
+                                                                    <p title="@userMessages.ToList()[message].Comment">@(userMessages.ToList()[message].Comment.Substring(0, 40) + "...")</p>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <p>@userMessages.ToList()[message].Comment</p>
+                                                                }
+                                                            </a>
+                                                        }
+                                                    </li>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li></li>
+                                        }
+                                    </ul>
+                                </li>
+                                @if (@userMessages != null && @userMessages.Count() > 0)
+                                {
+                                    <li class="footer"><a href="../Comment/CommentInbox">See All Messages</a></li>
+                                }
+                                else
+                                {
+                                    <li class="footer"><a href="#"></a></li>
+                                }
+                            </ul>
+                        </li>
+
+
+
+
+
+                        <li class="tasks-menu">
+                            @using (Html.BeginForm("Logout", "User", FormMethod.Post, new { role = "form" }))
+                            {
+                                <button type="submit" class="logout" title="Logout">Logout</button>
+                            }
+                        </li>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            @if (SessionManager.Current.UserName != null)
+                            {
+                            <a href="#" title="User Profile"  onclick="window.open('../User/UpdateUser', '_self')">
+                                <img src="..\\Handler\\UserImageHandler.ashx?key=@SessionManager.Current.UserID&&Time=@DateTime.Now.Millisecond" class="user-image" alt="User Image" />
+                                <span style="cursor:pointer" onclick="window.open('../User/UpdateUser', '_self')" class="mob-user">@SessionManager.Current.UserName</span>
+                            </a>
+                            }
+
+                            @*<ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="..\\Handler\\UserImageHandler.ashx?key=@SessionManager.Current.UserID&&Time=@DateTime.Now.Millisecond" class="img-circle" alt="User Image">
+                                    <p><strong>@Session["UserName"] </strong></p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="text-center">
+                                        <a onclick="window.open('../User/UpdateUser', '_self')" href="#" class="btn-prof">Profile</a>
+                                    </div>
+                                </li>
+                            </ul>*@
+                        </li>
+                        <li><a onclick="SetPage();" href="#" title="Set as Default Page"><i class="fa fa-cogs"></i></a></li>
+                        <!-- Control Sidebar Toggle Button -->
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!--main sidebar new-->
+        <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper">
+            <ul class="nav sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="~/Home/Index"><img src="~/images/menu-logo.png" /> </a>
+                </li>
+                <li> <a href="~/Home/Index"><i class="fa fa-fw fa-home"></i> Home</a></li>
+                @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanViewScopeSequence, Convert.ToInt32(SessionManager.Current.UserID)))
+                {
+                    <li> <a href="~/ScopeSequence/ScopeSequence"><i class="fa fa-fw fa-folder"></i> Scope &amp; Sequence</a> </li>
+                }
+                @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanViewLessonScript, Convert.ToInt32(SessionManager.Current.UserID)))
+                {
+                    <li> <a href="~/LessonPlanEditor/LessonList"><i class="fa fa-fw fa-file-text"></i> My Lessons</a> </li>
+                }
+                @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanVerifiyLesson, Convert.ToInt32(SessionManager.Current.UserID)))
+                {
+                    <li> <a href="~/LessonPlanEditor/UnderVerificationLessons"><i class="icon icon-document-sans-accept"></i> Submitted Lessons</a> </li>
+                }
+                @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanViewLessonVerifiedList, Convert.ToInt32(SessionManager.Current.UserID)))
+                {
+                    <li> <a href="~/LessonPlanEditor/VerifiedLessonList"><i class="fa fa-check"></i> Approved Lessons</a> </li>
+                }
+                @*@if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanViewVerifiedLessonList, Convert.ToInt32(SessionManager.Current.UserID)))
+                {
+                    <li> <a href="../LessonPlanEditor/VerifiedLesson"><i class="fa fa-fw fa-cog"></i> All Approved Lessons</a> </li>
+                }*@
+                @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanViewUserList, Convert.ToInt32(SessionManager.Current.UserID)))
+                {
+                    <li> <a href="~/User/UserList"><i class="fa fa-fw fa-users"></i> User Manager</a> </li>
+                }
+                @*<li> <a href="#"> <i class="fa fa-fw fa-book"></i> Book Composing</a> </li>*@
+                <li> <a href="~/Comment/CommentInbox"><i class="fa fa-fw fa-envelope"></i> Inbox</a> </li>
+                @if (SessionManager.Current.EntityID != 3 || SessionManager.Current.isMaster==1)
+                {
+                    <li> <a href="~/FeedBack/FeedBack"><i class="fa fa-fw fa-commenting"></i> Feedback</a> </li>
+                }
+                @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanViewFeedbackManagement, Convert.ToInt32(SessionManager.Current.UserID)))
+                {
+                <li> <a href="~/FeedBack/FeedBackList"><i class="fa fa-fw fa-comments"></i> Feedback Management</a> </li>
+                }
+
+                <li> <a href="~/FAQ/Index"><i class="fa fa-fw fa-question-circle"></i> FAQ</a> </li>
+
+            </ul>
+        </nav>
+        @RenderBody()
+    </div>
+    <!-- ./wrapper -->
+
+</body>
+</html>
+
+
+
+<script id="marque">
+        $(function(){
+
+            $('#newsupdate').hide();
+
+            $.ajax({
+                type: "Get", //HTTP POST Method
+                url: "../Message/GetMessage", // Controller/View
+                datatype:JSON,
+                success: function (dbdata)
+                {
+                    if (dbdata != "")
+                    {
+                        $('#mar').html(dbdata);
+                        $('#newsupdate').show();
+                        document.getElementById('mar').onmouseout();
+                    }
+                }
+            });
+        });
+</script>
+<script>
+    var LoginAs = '@SessionManager.Current.PrivigilesID';
+
+    function loader() {
+        $.loadingBlockShow({
+            imgPath: "../img/icon.gif",
+            text: 'Loading ...',
+            style: {
+                position: 'fixed',
+                width: '100%',
+                height: '100%',
+                background: 'rgba(0, 0, 0, .8)',
+                left: 0,
+                top: 0,
+                zIndex: 10000
+            }
+        })
+    };
+
+    function LoadComments(LessonID, MessageID) {
+        loader();
+        $.ajax({
+            url: '../Comment/CommentScopeAndSequence',
+            type: 'GET',
+            cache: false,
+            async: true,
+            data: { 'LessonID': LessonID, 'MessageID': MessageID },
+            success: function (result) {
+                var savedData = result;
+                $.ajax({
+                    url: '../Image/CheckSession',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        debugger
+                        if (data == 1) {
+                            $("#scopeAndSequenceModalBrowser").empty();
+                            $("#scopeAndSequenceModalBrowser").html('');
+                            $("#scopeAndSequenceModalBrowser").html(savedData);
+                        }
+                        else {
+                            window.location.href = "../User/LoginUser";
+                        }
+                    }
+                });
+            }
+        }).done(function (response) {
+            $("#loading_block").hide()
+        });
+    }
+
+    $(document).ready(function () {
+        debugger
+        var trigger = $('.hamburger'),
+           overlay = $('.overlay');
+        if (CloseMenu == false) {
+            $("#wrapper").addClass("toggled")
+            isClosed = false;
+        } else {
+            $("#wrapper").removeClass("toggled");
+            trigger.addClass('is-closed');
+            trigger.removeClass('is-open');
+         isClosed = true;
+        }
+       
+          
+
+        trigger.click(function () {
+            hamburger_cross();
+        });
+
+        function hamburger_cross() {
+            if (isClosed == true) {
+                overlay.hide();
+                trigger.addClass('is-open');
+                trigger.removeClass('is-closed');
+                isClosed = false;
+            } else {
+                overlay.show();
+                trigger.addClass('is-closed');
+                trigger.removeClass('is-open');
+                isClosed = true;
+            }
+        }
+
+        $('[data-toggle="offcanvas"]').click(function () {
+            $('#wrapper').toggleClass('toggled');
+        });
+
+    });
+    function preventBack() { window.history.forward(); }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+    function SetPage() {
+        var url = window.location.href;
+        var AlertMsg = 'Are you sure to set this your default page?';
+        if (confirm(AlertMsg)) {
+            $.ajax({
+                url: '../User/SetDefaultPage',
+                type: 'GET',
+                data: { Page: url },
+                success: function (data) {
+                    if (data == "-1") {
+                        window.location.href = "../User/LoginUser";
+                    }
+                }
+            });
+        }
+    }
+
+    //function hamburger_cross() {
+    //    if (isClosed == true) {
+    //        overlay.hide();
+    //        trigger.removeClass('is-open');
+    //        trigger.addClass('is-closed');
+    //        isClosed = false;
+    //    } else {
+    //        overlay.show();
+    //        trigger.removeClass('is-closed');
+    //        trigger.addClass('is-open');
+    //        isClosed = true;
+    //    }
+    //}
+
+
+</script>
+
+@*<script>
+            $(function () {
+                $('a#logout').click(function ()
+                {
+                    $('form#logoutform').submit();
+                });
+            });
+
+    </script>*@
+

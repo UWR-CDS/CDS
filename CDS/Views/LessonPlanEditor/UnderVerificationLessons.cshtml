@@ -1,0 +1,469 @@
+﻿@model CDS.Models.ListLessonInfo
+@{
+    ViewBag.Title = "Submitted Lessons";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui.js"></script>
+<style>
+    table.dataTable thead tr + tr #srno::after,
+    table.dataTable thead tr + tr #Totalunits::after,
+    table.dataTable thead tr + tr #TotalLessons::after,
+    table.dataTable thead tr + tr #Status::after,
+    table.dataTable thead tr + tr #Ratings::after {
+        display: none;
+        opacity: 0;
+    }
+    .tab-pane {
+    padding:10px;
+    }
+    .lastlist {
+    margin-bottom:15px;
+    border-bottom:1px solid #ccc
+    }
+    .clrfix {
+    padding:2px;
+    }
+</style>
+<style>
+    pre {
+        display: block;
+        padding: 9.5px;
+        margin: 0 0 10px;
+        font-size: 13px;
+        line-height: 1.42857143;
+        color: #333;
+        word-break: break-all;
+        word-wrap: break-word;
+        background-color: #F5F5F5;
+        border: 1px solid #CCC;
+        border-radius: 4px;
+    }
+
+    .header {
+        padding: 20px 0;
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+        .header:after {
+            content: "";
+            display: block;
+            height: 1px;
+            background: #eee;
+            position: absolute;
+            left: 30%;
+            right: 30%;
+        }
+
+        .header h2 {
+            font-size: 3em;
+            font-weight: 300;
+            margin-bottom: 0.2em;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+
+    .success-box {
+        margin: 50px 0;
+        padding: 10px 10px;
+        border: 1px solid #eee;
+        background: #f9f9f9;
+    }
+
+        .success-box img {
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .success-box > div {
+            vertical-align: top;
+            display: inline-block;
+            color: #888;
+        }
+
+
+
+    /* Rating Star Widgets Style */
+    .rating-stars ul {
+        list-style-type: none;
+        padding: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+    }
+
+        .rating-stars ul > li.star {
+            display: inline-block;
+        }
+
+            /* Idle State of the stars */
+            .rating-stars ul > li.star > i.fa {
+                font-size: 2.5em; /* Change the size of the stars */
+                color: #ccc; /* Color on idle state */
+            }
+
+            /* Hover state of the stars */
+            .rating-stars ul > li.star.hover > i.fa {
+                color: #FFCC36;
+            }
+
+            /* Selected state of the stars */
+            .rating-stars ul > li.star.selected > i.fa {
+                color: #FFCC36;
+            }
+</style>
+<style>
+    table {
+    width:100% !important;
+    }
+</style>
+<div class="container-fluid main-con">
+
+    <div class="title-bar">
+
+
+
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">Submitted Lessons</a></li>
+                </ul>
+                <div class="pull-right">
+                    <a href="../Home/Index" class="btn-back" title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grade-box">
+        <div class="search-box" id="searchbox" style="display:none">
+            <form>
+                <div id="form">
+                </div>
+            </form>
+        </div>
+        <!-- /.box-header -->
+            <div class="table-responsive">
+                <table id="example" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Lesson</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th>Author</th>
+                            <th>Time Consumed</th>
+                            <th style="text-align:center">Submission Date</th>
+                            <th>Submitted since</th>
+                            @*
+                            <th style="text-align:center">Approve Date</th>
+                            <th></th>*@
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.lstLessonInfo != null)
+                        {
+                            foreach (var lesson in Model.lstLessonInfo)
+                            {
+                                <tr class="likes-icon">
+                                    <td></td>
+                                    <td><a href="../LessonPlanEditor/LessonPlan?LessonId=@lesson.EncryptLessonID&&mode=Verify&&VerifiedUserID=@lesson.EncLessonOwnerID" class="book-link">@lesson.LessonTitle</a></td>
+                                    <td>@lesson.ClassName</td>
+                                    <td>@lesson.SubjectName</td>
+                                    <td>@lesson.CreatedBy</td>
+                                    <td>@lesson.TimeConsumed</td>
+                                    <td style="text-align:center">@lesson.CompleteDate </td>
+                                   <td>@lesson.TimeConsumedAgo <span id="rjverify" onclick="LoadHistoryModal(@lesson.Rating,@lesson.LessonPlanID,@lesson.VerifyCount,@lesson.RejectCount,'@lesson.CreatedBy','@lesson.CompleteDate')" class="iconlike" style="float:right;" data-toggle="modal" data-target="#MyModal"> @if (lesson.VerifyCount != 0)
+                                   { <i class="fa fa-thumbs-o-up" title="Approved"> @lesson.VerifyCount </i>} @if (lesson.RejectCount != 0)
+                                   { <i class="fa fa-thumbs-o-down" title="Rejected"> @lesson.RejectCount </i>} </span> </td>
+                                   @* <td>@lesson.VerifiedBy</td>*@
+                                    @*<td style="text-align:center">@lesson.VerificationDate</td>*@
+                                        @*<td>
+                                            <div class='rating-stars text-center' style="font-size:6px;width: 105px;float:left;">
+                                                <ul id="rating_@lesson.LessonPlanID" class='stars'>
+                                                    <li class='star' title='Poor' data-value='1'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                    <li class='star' title='Fair' data-value='2'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                    <li class='star' title='Good' data-value='3'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                    <li class='star' title='Very Good' data-value='4'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                    <li class='star' title='Excellent' data-value='5'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <script>
+                                            $(function () {
+                                                var onStar = @lesson.Rating;
+                                                var stars = $('#rating_@lesson.LessonPlanID').children('li.star');
+
+                                                for (i = 0; i < stars.length; i++) {
+                                                    $(stars[i]).removeClass('selected');
+                                                }
+
+                                                for (i = 0; i < onStar; i++) {
+                                                    $(stars[i]).addClass('selected');
+                                                }
+                                            });
+                                            </script>
+                                        </td>*@
+
+                                </tr>
+                                        }
+                                    }
+                    </tbody>
+                </table>
+            </div>
+
+        <!-- /.box-body -->
+    </div>
+    <div id="MyModal" class="modal fade sub-history" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Lesson Submission History</h4>
+                </div>
+
+                <div id="tabs" class="modal-body">
+                    <div class="col-lg-12">
+                       <label style="margin-right:8px">Author: </label><span id="author"></span>
+                    </div>
+                    <div id="ratingdiv" class="rating-stars col-lg-12" style="font-size: 8px;margin-top:0px;">
+                    </div>
+                    <ul id="tabul" class="nav nav-tabs" role="tablist">
+                        <li id="verifiedli" class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#verify" role="tab">Approved</a>
+                        </li>
+                        <li id="rejectli" class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#reject" role="tab">Rejected</a>
+                        </li>
+                    </ul>
+                    <div id="data" class="lsnverifyhistory">
+
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+</div>
+<script>
+    function getLessonHistory(lessonplanid, Createby, Completedate) {
+        $.ajax({
+            dataType:"JSON",
+            type:"POST",
+            url:"../LessonPlanEditor/GetLessonHistory",
+            data:{LessonPlanID:lessonplanid},
+            success: function (dbdata) {
+                debugger
+                $("#author").html('');
+                $("#subdate").html('');
+                $("#author").html(Createby);
+                $("#subdate").html(Completedate);
+
+                if (dbdata != null) {
+                    $("#data").html('');
+                    var html='';
+                    html+='<div class="tab-content">'
+                    if (dbdata.VerificationHistory.length != 0 && dbdata.RejectionHistory.length == 0) {
+                        html += '<div id="verify" class="tab-pane active" role="tabpanel">'
+                        html += '<table class="table table-striped table-bordered table-hover"><thead><tr><th style="text-align:center">Submission Date</th><th style="text-align:center">Approve Date</th><th>Approved By</th></tr></thead><tbody id="verifybody"></tbody></table>'
+                        html+='</div>'
+                    }else if(dbdata.RejectionHistory.length!=0 && dbdata.VerificationHistory.length==0){
+                        html += '<div id="reject" class="tab-pane active" role="tabpanel">'
+                        html += '<table class="table table-striped table-bordered table-hover"><thead><tr><th style="text-align:center">Submission Date</th><th style="text-align:center">Rejection Date</th><th>Rejected By</th><th>Reason</th></tr></thead><tbody id="rejectbody"></tbody></table>'
+                        html+='</div>'
+                    } else {
+
+                        html += '<div id="reject" class="tab-pane" role="tabpanel">'
+                        html += '<table class="table table-striped table-bordered table-hover"><thead><tr><th style="text-align:center">Submission Date</th><th style="text-align:center">Rejection Date</th><th>Rejected By</th><th>Reason</th></tr></thead><tbody id="rejectbody"></tbody></table>'
+                        html+='</div>'
+                        html += '<div id="verify" class="tab-pane active" role="tabpanel">'
+                        html += '<table class="table table-striped table-bordered table-hover"><thead><tr><th style="text-align:center">Submission Date</th><th style="text-align:center">Approve Date</th><th>Approved By</th></tr></thead><tbody id="verifybody"></tbody></table>'
+                        html+='</div>'
+                    }
+                    html+='</div>'
+                    $("#data").append(html);
+                    html='';
+                    if(dbdata.RejectionHistory.length!=0){
+                        for (var i = 0; i < dbdata.RejectionHistory.length; i++) {
+                            html += '<tr>'
+                            html += '<td style="text-align:center">' + dbdata.RejectionHistory[i].CompletionDate + '</td>'
+                            html += '<td style="text-align:center">' + dbdata.RejectionHistory[i].Date + '</td>'
+                            html += '<td>' + dbdata.RejectionHistory[i].UserName + '</td>'
+                            html += '<td>' + dbdata.RejectionHistory[i].Reason + '</td>'
+                            html+='</tr>'
+                            //html += 'Submission Date: <label>' + dbdata.RejectionHistory[i].CompletionDate + '</label><div class="clearfix clrfix"></div>'
+                            //html += 'Rejection Date: <label>' + dbdata.RejectionHistory[i].Date + '</label><div class="clearfix clrfix"></div>'
+                            //html += 'Reason: <label>' + dbdata.RejectionHistory[i].Reason + '</label><div class="clearfix clrfix"></div>'
+                            //html += 'Rejected By: <label>' + dbdata.RejectionHistory[i].UserName + '</label><div class="clearfix lastlist"></div>'
+                        }
+                        $("#rejectbody").append(html);
+                    }
+                    html='';
+                    if(dbdata.VerificationHistory.length!=0){
+                        for (var i = 0; i < dbdata.VerificationHistory.length; i++) {
+                            html += '<tr>'
+                            html += '<td style="text-align:center">' + dbdata.VerificationHistory[i].CompletionDate + '</td>'
+                            html += '<td style="text-align:center">' + dbdata.VerificationHistory[i].Date + '</td>'
+                            html += '<td>' + dbdata.VerificationHistory[i].UserName + '</td>'
+                            html += '</tr>'
+
+                            //html += 'Submission Date: <label>' + dbdata.VerificationHistory[i].CompletionDate + '</label><div class="clearfix clrfix"></div>'
+                            //html += 'Approve Date: <label>' + dbdata.VerificationHistory[i].Date + '</label><div class="clearfix clrfix"></div>'
+                            //html += 'Approved By: <label>' + dbdata.VerificationHistory[i].UserName + '</label><div class="clearfix lastlist"></div>'
+                        }
+                        $("#verifybody").append(html);
+                    }
+                }
+
+
+            }
+        });
+    }
+    function LoadHistoryModal(Rating, lessonplanid, verifycount, rejectcount,Createby,completedate) {
+        $("#tabul li").removeClass("active");
+        getLessonHistory(lessonplanid,Createby,completedate);
+        var html='';
+        if(verifycount==0){
+            $("#verifiedli").hide();
+            $("#ratingdiv").hide();
+            $("#rejectli").show();
+            $("#rejectli").addClass('active');
+        }else if(rejectcount==0){
+            $("#verifiedli").addClass('active');
+            $("#verifiedli").show();
+            $("#ratingdiv").show();
+            $("#rejectli").hide();
+        }else{
+            $("#verifiedli").addClass('active');
+            $("#verifiedli").show();
+            $("#ratingdiv").show();
+            $("#rejectli").show();
+        }
+        $("#ratingdiv").html('');
+        html += '<ul id="rating_' + lessonplanid + '" class="stars"><label style="font-size:14px;margin-right:8px">Average Rating: </label>'
+        if (Rating > 0) {
+            for (var i = 0; i < Rating; i++) {
+                html += '<li class="star" style="color:#ff9800"><i style="color:#ff9800 !important" class="fa fa-star fa-star"></i></li>'
+            }
+        }
+        //html += '<label style="font-size: 13px;margin-left:8px">' + Rating + '</label></ul>'
+        var onStar = Rating;
+        var stars = $('#rating_' + lessonplanid).children('li.star');
+
+        for (j = 0; j < stars.length; j++) {
+            $(stars[j]).removeClass('selected');
+        }
+
+        for (k = 0; k < onStar; k++) {
+            $(stars[k]).addClass('selected');
+        }
+        $("#ratingdiv").append(html);
+    }
+    $(document).ready(function () {
+            var table = $('#example').DataTable({
+            language: {
+                sLengthMenu: "Show _MENU_ Entries"
+            },
+
+            responsive: {
+                details: true
+            },
+            responsive: true,
+            "ordering": false,
+            "lengthMenu": [[-1,10, 25, 50,100], ["All",10, 25, 50,100]],
+            initComplete: function () {
+                this.api().columns("2").every( function () {
+                    $('select').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                    var column = this;
+                    var select = $('<select class="g-search"><option value="">All Class</option></select>').appendTo($("#form")).on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^'+val+'$' : '', true, false )
+                            .draw();
+
+                    });
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        if(d!=""){
+
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        }
+                    });
+                });
+                this.api().columns("3").every( function () {
+                    $('select').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                    var column = this;
+                    var select = $('<select class="g-search"><option value="">All Subject</option></select>').appendTo($("#form")).on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^'+val+'$' : '', true, false )
+                            .draw();
+
+                    });
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        if(d!=""){
+
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        }
+                    } );
+                });
+              }
+
+            });
+            $(".dataTables_filter").append('<div class="search-btn"><a href="#" id="searchbtn"><i class="fa fa-search"></i></a></div>')
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+
+            $('input', table.column(colIdx).header()).on('keyup change', function () {
+                                    table.column(colIdx).search(this.value).draw();
+
+                                });
+
+            $('input', table.column(colIdx).header()).on('click', function (e) {
+                                    e.stopPropagation();
+                                });
+                            });
+        table.on('order.dt search.dt', function () {
+                                table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                                    cell.innerHTML = i + 1;
+                                });
+
+                            }).draw();
+
+                        });
+</script>
+<script>
+    $(function(){
+        $("#searchbtn").click(function(){
+                     $("#searchbox").toggle();
+                });
+    });
+</script>

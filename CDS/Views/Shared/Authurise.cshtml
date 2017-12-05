@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Authurise";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+
+<div class="container content">
+    <div class="row">
+        @if (ViewBag.Name != "" && ViewBag.Name == "Lesson")
+        {
+            <h2 class="text-danger">Now you are not part of this lesson....</h2>
+        }
+        else
+        {
+            <h2 class="text-danger">You are not authurize to see this page....</h2>
+        }
+    </div>
+</div>
+
+
+
+
+

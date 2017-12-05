@@ -1,0 +1,229 @@
+﻿@model IEnumerable<CDS.Models.mdl_FeedBack>
+
+@{
+    ViewBag.Title = "FeedBackList";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+    var tr = "iWgT5Ba8OFA=";
+    var fal = "w1KSdRHV15E=";
+}
+
+
+@*<script src="~/Scripts/DataTables/responsive.bootstrap.min.js"></script>*@
+<script src="/CDS/Scripts/dataTables.bootstrap.min.js"></script>
+<!DOCTYPE html>
+<style>
+    .route-icon {
+        background-image: url('../images/route_to.png');
+        width: 25px;
+        height: 25px;
+        float: left;
+    }
+
+    .p-icon {
+        width: 25px;
+        height: 25px;
+        margin-left: 19px;
+        color: #929292;
+    }
+
+        .p-icon:hover {
+            color: #4C76DF;
+            text-decoration: underline;
+        }
+</style>
+
+<html>
+<head>
+    @*Jquery datatable*@
+    <style>
+        .hidetd select {
+            display: none;
+        }
+
+        /*.dropdown {
+            margin-left: -10px;
+        }*/
+    </style>
+    <meta name="viewport" content="width=device-width" />
+    <title>Feedback List</title>
+</head>
+<body>
+    <div class="container-fluid main-con">
+
+        <div class="title-bar">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="breadcrumb-lesson">
+                        <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                        <li><a href="">Feed Back Management</a></li>
+                    </ul>
+                    <div class="pull-right">
+                        <a href="../Home/Index" class="btn-back" title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="grade-box">
+            <div class="table-responsive">
+                <table id="feedBackTable" class="table table-hover table-feedback">
+                    <thead>
+                        <tr>
+                            <th>Sr#</th>
+                            <th>From</th>
+                            <th> Remarks</th>
+                            <th style="text-align:center"> Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        @*<tr style="background-color:white !important;">
+                                <td class="sr hidetd"></td>
+                                <td id="fbfrom" class="hidetd"></td>
+                                <td id="fbremarks" class="hidetd"></td>
+                                <td id="fbdate" class=""></td>
+                                <td id="fbstatus" class=""></td>
+                                <td class="hidetd"></td>
+                            </tr>*@
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count() > 0)
+                        {
+                            for (int i = 0; i < Model.Count(); i++)
+                            {
+
+                        <tr>
+                            <td>
+                                @(i + 1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.ToList()[i].UserName)
+                            </td>
+                            <td>
+                                @if (Model.ToList()[i].Remarks.Length > 21)
+                                        {
+                                        <span style="" title="@Model.ToList()[i].Remarks">@(Model.ToList()[i].Remarks.Substring(0, 21) + "...")</span>
+                                        }
+                                        else
+                                        {
+                                        <span style="">@Model.ToList()[i].Remarks</span>
+                                        }
+                            </td>
+                            <td style="text-align:center">
+                                @Model.ToList()[i].Date.ToString("dd/MM/yyyy")
+                            </td>
+                            @if (Model.ToList()[i].FeedbackStatusID == 1)
+                                    {
+                                    <td style="text-align:left">
+                                        <span class="pros">
+                                            @Html.DisplayFor(modelItem => Model.ToList()[i].Status)
+                                        </span>
+                                    </td>
+                                    }
+                                    else if (Model.ToList()[i].FeedbackStatusID == 2)
+                                    {
+                                    <td style="color:#5C54A9;text-align:left;">
+                                        @Html.DisplayFor(modelItem => Model.ToList()[i].Status)
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td style="text-align:left">
+                                        <span class="comp">
+                                            @Html.DisplayFor(modelItem => Model.ToList()[i].Status)
+                                        </span>
+                                    </td>
+                                    }
+                            <td>
+                                <a href="@Url.Action("FeedBackProcess", "FeedBack", new { @EncFeedBackId = Model.ToList()[i].FeedBackID}, null)" title="View" class="">
+                                    <div class="p-icon">View</div>
+                                </a>
+                            </td>
+                        </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</body>
+</html>
+<script>
+    //$('#feedBackTable #fbfrom').each(function () {
+    //    $(this).html('<input type="text"class="form-control datatable-fld" placeholder="From" />');
+    //});
+    //$('#feedBackTable #fbremarks').each(function () {
+    //    $(this).html('<input type="text"class="form-control datatable-fld" placeholder="Remarks" />');
+    //});
+
+    var table = $('#feedBackTable').DataTable({
+        language: {
+            sLengthMenu: "Show _MENU_ Entries"
+        },
+        responsive: {
+            details: true
+        },
+        responsive: true,
+        //"order": [[ 1, "asc" ]],
+        "bSort": false,
+        //"columnDefs": [
+        //          {  targets: 0, orderable: false},
+        //         // {  targets: 1, orderable: false},
+        //          {  targets: 1, orderable: false},
+        //          //{  targets: 8, orderable: false},
+        //],
+        "lengthMenu": [[-1, 10, 25, 50, 100], ["All", 10, 25, 50, 100]],
+        //initComplete: function () {
+        //    this.api().columns().every(function () {
+        //        var column = this;
+        //        var select = $('<select class="form-control dropdown"><option value="">All</option></select>').appendTo($(column.header())).on('change', function () {
+        //            var val = $.fn.dataTable.util.escapeRegex(
+        //                $(this).val()
+        //            );
+
+        //            column
+        //                .search(val ? '^' + val + '$' : '', true, false)
+        //                .draw();
+
+        //        });
+        //        $('select').on('click', function (e) {
+        //            e.stopPropagation();
+        //        });
+        //        column.data().unique().sort().each(function (d, j) {
+        //            // column.order('asc').draw(false).data().unique().each(function (d, j) {
+
+        //            if (d != "") {
+
+        //                select.append('<option value="' + d + '">' + d + '</option>')
+
+        //            }
+        //        });
+        //    });
+        //}
+    });
+    $(".dataTables_filter").append('<div class="search-btn"><a href="#" id="searchbtn"><i class="fa fa-search"></i></a></div>');
+    //table.columns().eq(0).each(function (colIdx) {
+
+    //    $('input', table.column(colIdx).header()).on('keyup change', function () {
+    //        table.column(colIdx).search(this.value).draw();
+
+    //    });
+
+    //    $('input', table.column(colIdx).header()).on('click', function (e) {
+    //        e.stopPropagation();
+    //    });
+    //});
+    //table.on('order.dt search.dt', function () {
+    //    table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+    //        cell.innerHTML = i + 1;
+    //    });
+    //}).draw();
+</script>
+

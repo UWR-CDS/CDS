@@ -1,0 +1,325 @@
+﻿@model CDS.Models.LoginModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/images/favicon5.png" />
+    <title>Login</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/logincds.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/checkbox-cds.css" rel="stylesheet" />
+    <link href="~/Content/responsivecds.css" rel="stylesheet" />
+    <link href="~/Content/animate.css" rel="stylesheet" />
+</head>
+<body>
+    <section id="Models">
+        @if (ViewBag.LoginError != null)
+        {
+            <div class="col-md-12">
+                <div class="login-error">
+                    @if (ViewBag.LoginError == "Password Updated Successfully. Please Login Here")
+                {
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <h4>Alert!</h4>
+                            @ViewBag.LoginError
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <h4><i class="fa fa-warning"></i> Alert!</h4>
+                            @ViewBag.LoginError
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if (ViewBag.AlreadyLogin != null)
+        {
+            <div id="PopupModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #e5e5e5;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Alert !</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4 class="message">@ViewBag.AlreadyLogin</h4>
+                            <h4>Do you want to logout?</h4>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btnnew btnpop" id="btnok" onclick="ForcefullLogout();">OK</button>
+                            <button type="button" class="btnnew btnpop" data-dismiss="modal">Cancel</button>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        }
+        @if (ViewBag.AlreadyLogout != null)
+        {
+            <div id="PopupModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: #5bbd8e; color:#fff">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title"><i class="fa fa-warning"></i> Alert !</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4 class="message">@ViewBag.AlreadyLogout</h4>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btnnew" data-dismiss="modal">OK</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+        @* Firefox popup modal *@
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                Modal content
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #e5e5e5;">
+
+                        <h4 class="modal-title"><i class="fa fa-warning"></i> Alert</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="message">For Best Experience Use Firefox.</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="SubmitForm()" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        @* Firefox popup modal *@
+    </section>
+    <div class="login-box">
+        <div class="form-holder">
+            @using (Html.BeginForm("LoginUser", "User", FormMethod.Post, new { role = "form", @id = "loginForm" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="logo-cds wow zoomIn  animated" data-wow-delay="0s" style="animation-delay: 0s; animation-name: zoomIn ;">
+                    <img src="~/images/logo-cds.png" />
+                </div>
+                <form>
+                    <p class="login-title">login</p>
+                    <div class="user-email">
+                        @Html.TextBoxFor(m => m.Email, new { @type = "Email", required = "required", @class = "form-control", PlaceHolder = "Email" })
+                        <span class="icon-login">
+                            <img src="~/images/user.png" alt="icon" />
+                        </span>
+                    </div>
+                    <div class="user-pwd">
+                        @Html.PasswordFor(m => m.Password, new { @type = "Password", required = "required", @class = "form-control", PlaceHolder = "Password" })
+                        <span class="icon-login">
+                            <img src="~/images/lock.png"  alt="icon"/>
+                        </span>
+                    </div>
+                    <div class="btn-login">
+                        <button type="submit">Sign In</button>
+                    </div>
+
+                    <div class="fget-pwd">
+                        <div class="registerd">
+                            New user?<span class="reg" onclick="location.href='@Url.Action("Register", "User", new { UserId = "3tqJU97nj+c="})'"> Register here.</span>
+                        </div>
+                        <span class="pwd" onclick="location.href='@Url.Action("ForgetPassword", "User")'">Forgot password?</span>
+                    </div>
+
+                </form>
+            }
+            @*@if (ViewBag.islocalhost==null)
+            {*@
+                <div class="social-icon-login">
+                    <label>Sign Up With: </label>
+                    <ul>
+                        <li class="wow fadeInRight  animated" data-wow-delay="0s" style="animation-delay: 0s; animation-name: fadeInRight ;">
+                            @using (Html.BeginForm("Facebook", "Facebook",  FormMethod.Post, new { role = "form", @id = "FacebookloginForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a id="Facebook" name="provider" value="Facebook" herf="" title="facebook">
+                                    <img src="~/images/fb-cds.png" />
+                                </a>
+                            }
+                        </li>
+                        <li class="wow fadeInRight  animated" data-wow-delay="0s" style="animation-delay: 0s; animation-name: fadeInRight ;">
+                            @using (Html.BeginForm("ExternalLogin", "Account", new { provider = "Google" }, FormMethod.Post, new { role = "form", @id = "GoogleloginForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a id="Google" name="provider" value="Google" herf="" title="gplus">
+                                    <img src="~/images/g-cds.png" />
+                                </a>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            @*}*@
+            <div class="shdow-img"></div>
+        </div>
+        <div class="copyright-login">
+            <p>  Incorporation with UnitedWeReach. 2017 </p>
+        </div>
+    </div>
+</body>
+</html>
+<script src="~/Scripts/jquery-2.2.3.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/wow.min.js"></script>
+<script type="text/javascript">
+    function GoingToLogout() {
+        var $URL = '../User/GoingToLogout';
+        $.ajax({
+            url: $URL,
+            type: "GET",
+            dataType: "json",
+
+            traditional: true,
+
+            success: function (data) {
+                if (data != null) {
+                    window.location = '../User/LoginUser?message=' + data + '';
+                }
+                else {
+                    alert("GoingLogoutError");
+                    window.location = '../User/LoginUser';
+                }
+            },
+            error: function () {
+                alert("GoingToLogoutError");
+            }
+        });
+
+    }
+    function ForcefullLogout() {
+
+
+        var $URL = '../User/ForceLogout';
+        $.ajax({
+
+            url: $URL,
+
+            type: "GET",
+
+            dataType: "json",
+
+            traditional: true,
+
+            success: function (data) {
+                //alert(data);
+
+                if (data != null) {
+                    window.location = '../Home/Index';
+                }
+                else {
+                    GoingToLogout();
+                    window.location = '../User/LoginUser';
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+    $(document).ready(function () {
+
+        $("#Email").focus();
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(1000, function () {
+                $(this).remove();
+            });
+        }, 4000);
+    });
+    function preventBack() { window.history.forward(); }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+
+    (function (exports) {
+        function valOrFunction(val, ctx, args) {
+            if (typeof val == "function") {
+                return val.apply(ctx, args);
+            } else {
+                return val;
+            }
+        }
+        function InvalidInputHelper(input, options) {
+        }
+        exports.InvalidInputHelper = InvalidInputHelper;
+    })(window);
+    InvalidInputHelper(document.getElementById("Email"),
+    {
+        //defaultText: "Please enter an email address!",
+        //emptyText: "Please enter an email address!",
+    });
+    InvalidInputHelper(document.getElementById("Password"), {
+        //defaultText: "Please enter Your Password!",
+        //emptyText: "Please enter Your Password!",
+    });
+    function BrowserCheck() {
+        var N = navigator.appName, ua = navigator.userAgent, tem;
+        var M = ua.match(/(opera|chrome|safari|firefox|msie|trident)\/?\s*(\.?\d+(\.\d+)*)/i);
+        if (M && (tem = ua.match(/version\/([\.\d]+)/i)) != null) { M[2] = tem[1]; }
+        M = M ? [M[1], M[2]] : [N, navigator.appVersion, '-?'];
+        var n = M[0].search("Firefox");
+
+        if (n != undefined && n != null && n != -1) {
+            $("#loginForm").submit();
+            return true;
+        }
+        else if (n == -1) {
+            UpgradeBrowser();
+        }
+
+    }
+    function UpgradeBrowser() {
+        //alert("For Best Experience use firefox browser.");
+        //$('#myModal').modal('show');
+    }
+    //function SubmitForm() {
+    //    $("#loginForm").submit();
+    //}
+        $('#PopupModal').modal('show');
+</script>
+<section id="multimedialogin">
+    <script>
+        var islocalhost = '@ViewBag.islocalhost';
+        function OnRegisterClick()
+        {
+            var url = '../User/Register';
+            window.open(url, "_blank");
+        }
+        if (islocalhost!='True') {
+            $(function () {
+                $('a#Facebook').click(function () {
+                    $('form#FacebookloginForm').submit();
+                });
+                //$('a#Twitter').click(function () {
+                //    $('form#TwitterloginForm').submit();
+                //});
+                $('a#Google').click(function () {
+                    $('form#GoogleloginForm').submit();
+                });
+            });
+        }
+
+    </script>
+</section>

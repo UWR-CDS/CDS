@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "UserSubjects";
+    int count = 0;
+    if (ViewBag.UserSubject == null)
+    {
+        Layout = null;
+        count = 0;
+        <script src="~/Scripts/jquery-2.2.3.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+        <link href="~/Content/bootstrap.css" rel="stylesheet" />
+        <link href="~/Content/Admincds.min.css" rel="stylesheet" />
+        <link href="~/Content/all-skins.min.css" rel="stylesheet" />
+        <link href="~/Content/allcds.css" rel="stylesheet" />
+        <link href="~/Content/all-fonts.css" rel="stylesheet" />
+    }
+    else
+    {
+        count = 1;
+        Layout = "~/Views/Shared/_CDSLayout.cshtml";
+    }
+
+}
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject</title>
+    <link rel="shortcut icon" href="~/images/favicon5.png" />
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/checkbox-cds.css" rel="stylesheet" />
+    <link href="~/Content/logincds.css" rel="stylesheet" />
+    <link href="~/Content/responsivecds.css" rel="stylesheet" />
+<style>
+        body {
+            background: #EAEAEB !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid main-con">
+        <div class="user-sbj">
+           <h1>Available Subject</h1>
+            @*<button class="btn-sbj" onclick="onSaveClick();">Save</button>*@
+            <p>To start creating lessons in CDS, first you have to select the subject and its grade that you want to work on</p>
+        </div>
+        <div class="row user-sbj-box">
+            @if (ViewBag.AllSubjects != null)
+            {
+                int sid = 0;
+                List<CDS.Models.Les_Subject> lst = new List<CDS.Models.Les_Subject>();
+                foreach (var item in ViewBag.AllSubjects as List<CDS.Models.Les_Subject>)
+                {
+                    if (sid == 0 || sid != item.SubjectID)
+                    {
+                        string src1 = "../images/" + item.SubjectID + ".png";
+                        <div class="col-lg-3">
+                            <div class="subj-box">
+                                <div class="icon-title">
+                                    <div class="subj-icon">
+                                        <img src="@src1" alt="icon" class="img-responsive" />
+                                    </div>
+                                    <div class="subj-title">
+                                        @item.SubjectName
+                                    </div>
+                                </div>
+                                @{
+                                    sid = item.SubjectID;
+                                    lst = ViewBag.AllSubjects as List<CDS.Models.Les_Subject>;
+                                    lst = lst.Where(x => x.SubjectID == item.SubjectID).ToList();
+                                }
+                                @if (lst != null)
+                                {
+                                    <div class="subj-list">
+                                        @foreach (var item1 in lst)
+                                        {
+                                            <div class="checkbox checkbox-txt checkbox-success">
+                                                <input type="checkbox" id="cs-@item1.ClassID-@item1.SubjectID" class="clssub" onchange="onSaveClick('cs-@item1.ClassID-@item1.SubjectID');">
+                                                <label for="cs-@item1.ClassID-@item1.SubjectID">
+                                                    @item1.ClassName
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                                            }
+
+                                        }
+                                    }
+
+        </div>
+    </div>
+
+</body>
+</html>
+<script>
+    var seluserid = '@CDS.SessionManager.Current.UserID';
+    var coun=@count;
+    fillSubjects();
+    function fillSubjects()
+    {
+        var $URL = '../User/GetUserSubjects';
+        $.ajax({
+            url: $URL,
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        var id = "cs-" + data[i].ClassID + "-" + data[i].SubjectID;
+                        document.getElementById(id).checked = true;
+                    }
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+    function onSaveClick(id)
+    {
+
+        $("body").css("cursor", "wait");
+        var lst = [];
+        $('.clssub').each(function (i, obj) {
+            if (document.getElementById(obj.id).checked == true) {
+                var id = obj.id.replace("cs-", "");
+                lst.push(id);
+            }
+        });
+        if (lst.length == 0)
+        {
+            alert("Please Select atleast 1 subject.");
+            document.getElementById(id).checked = true;
+            $("body").css("cursor", "default");
+            return false;
+        }
+        var $URL = '../User/UpdateUserSubjects';
+        $.ajax({
+            url: $URL,
+            type: "POST",
+            dataType: "json",
+            data: { lst: lst },
+            success: function (data) {
+                if (data != null && data == "Done") {
+                    $("body").css("cursor", "default");
+                    if (coun==0) {
+                        window.location.reload();
+                    }
+                    //else {
+                    //    window.open('../User/UpdateUser', '_self');
+                    //}
+
+                }
+
+            },
+            error: function () {
+                alert("Sorry Something went Wrong.");
+            }
+        });
+
+    }
+</script>
+
+

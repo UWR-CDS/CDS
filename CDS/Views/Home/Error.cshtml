@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Error";
+    Layout = null;
+}
+<link rel="shortcut icon" href="~/images/favicon5.png" />
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+@*<link href="~/Content/allcds.css" rel="stylesheet" />*@
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background:#2877E3;
+    }
+    .error-msg {
+  height: 500px;
+  margin: 5% auto 0;
+  text-align: center;
+  width: 750px;
+}
+    .error-msg img {
+  margin-bottom: 40px;
+}
+.error-msg p {
+  color: #fff;
+  font-family: "Arial Rounded MT";
+  font-size: 28px;
+  line-height: 30px;
+  margin-bottom: 30px;
+  opacity: 0.5;
+}
+.error-btn {
+  background-color: rgb(66, 135, 231);
+  border: 1px solid rgb(113, 164, 236);
+  border-radius: 4px;
+  box-shadow: 0 46px 0 -24px rgb(113, 164, 236) inset;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-block;
+  font-family: Arial;
+  font-size: 17px;
+  font-weight: bold;
+  padding: 8px 50px;
+  text-decoration: none;
+}
+.error-btn:hover {
+  background-color: rgb(40, 119, 227);
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgb(0, 0, 0, 0.8);
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-block;
+  font-family: Arial;
+  font-size: 17px;
+  font-weight: bold;
+  padding: 9px 50px;
+  text-decoration: none;
+  outline: none;
+  border: 0px !important;
+}
+
+</style>
+
+<div class="error-msg">
+    <img src="../images/404.png" class="img-responsive" />
+    <p>Oops! Looks like something broke.</p>
+
+    <button class="error-btn" onclick="window.open('../Home/Index','_self')">Go Back</button>
+</div>

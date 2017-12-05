@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "School FeedBack";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+
+<head>
+
+    <link href="~/Content/leafschool.css" rel="stylesheet" />
+    <style>
+
+    </style>
+
+</head>
+
+<div class="container-fluid search-holder">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
+                <div class="title-stud">
+                    <h2>FeedBack</h2>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+                <button id="btnBack" class="btnnew pull-right"> Back </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div id="feedback-div"></div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('html, body').css("cursor", "wait");
+
+        $.ajax({
+            url: '@Url.Action("LoadFeedBack", "FeedBack")',
+            type: 'get',
+            cache: false,
+            async: true,
+            data: { 'isSchoolFeedBack': true },
+            success: function (result) {
+                setTimeout(function () {
+                    var savedData = result;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (data) {
+                            if (data == 1)
+                            {
+                                $("#feedback-div").html('');
+                                $("#feedback-div").html(savedData);
+                            }
+                            else
+                            {
+                                window.location.href =  "@Url.Action("LoginUser", "User")";
+                            }
+                            $('html, body').css("cursor", "auto");
+                        }
+                    });
+                }, 2000);
+
+            }
+        });
+    })
+</script>
+

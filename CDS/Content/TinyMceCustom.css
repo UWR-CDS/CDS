@@ -1,0 +1,325 @@
+﻿
+.mce_Jsvk {
+    display: none !important;
+}
+
+.mce_replace {
+    display: none !important;
+}
+
+#virtualKeyboard {
+    position: absolute;
+    display: none;
+    cursor: move;
+    z-index: 1500;
+    left: 0px;
+    bottom: 0px;
+}
+
+.defaultSkin .mceStatusbar {
+    display: none !important;
+}
+
+#maindiveditor_tbl {
+    width: 100% !important;
+    height: 636px !important;
+}
+
+#maindiveditor_ifr {
+    height: 636px !important;
+    background-color: white !important;
+}
+
+.mceContentBody {
+    padding: 10px 20px 0px 6px !important;
+    margin: 0px 0px 0 27px;
+    min-height: 10px;
+    font-size: 18px;
+    line-height: 22px;
+    min-width: 90%;
+    width: 90%;
+    white-space: normal;
+}
+
+.defaultSkin .mceToolbar {
+    height: 0px !important;
+}
+
+.mceLayout {
+    width: 100% !important;
+}
+
+.mceContentBody1 {
+    white-space: normal;
+    overflow-x: hidden !important;
+    line-height: 28px;
+}
+
+.mceContentBody2 {
+    /*word-wrap:break-word;*/
+    white-space: normal;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    line-height: 28px;
+}
+
+.mainTxt17 {
+    FONT-SIZE: 13px;
+    COLOR: #000;
+    font-family: 'UWR_UrduFont';
+    LINE-HEIGHT: 36px;
+}
+
+@font-face {
+    font-family: 'UWR_UrduFont';
+    src: url('../fonts/UWR_UrduFont.ttf') format('truetype');
+}
+
+.defaultSkin .mceIframeContainer {
+    border: 0px !important;
+}
+
+.defaultSkin table.mceLayout tr.mceFirst td {
+    border: 0px !important;
+    background-color: white;
+}
+
+.defaultSkin table.mceLayout {
+    height: 0px !important;
+    border: 0px !important;
+}
+
+#htmldatadiv_tbl {
+    width: 100% !important;
+}
+
+#htmldatadiv_ifr {
+    height: 600px !important;
+}
+
+#maindiveditorLeft_tbl {
+    width: 100% !important;
+}
+
+#maindiveditorLeft_ifr {
+    height: 600px !important;
+}
+
+#maindiveditorRight_tbl {
+    width: 100% !important;
+}
+
+#maindiveditorRight_ifr {
+    height: 600px !important;
+}
+
+.tinymc-box {
+    height: 500px !important;
+    min-height: 500px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+.main-tiny {
+    width: 58%;
+    margin: 2% auto 0 !important;
+}
+
+.content-wrapper .content {
+    padding: 15px 0;
+}
+
+@media only screen and (min-width:300px) and (max-width:480px) {
+
+    /*mobile-view-tinymce css start*/
+    .main-tiny {
+        width: 100%;
+        margin: 1px auto 0 !important;
+    }
+    .defaultSkin div {
+        position: absolute;
+        top: -45px;
+    }
+    .left-bar-tiny, .right-bar-tiny, .control-sidebar-bg, .template-sidebar-bg {
+        display: none;
+    }
+    .editor-box {
+        background: #fff;
+    }
+    .editor-box .header-editor {
+        float: none;
+        margin: 0 0px;
+    }
+    .tinymc-box {
+        width: 100%;
+    }
+    .mceIframeContainer iframe {
+        height: 40px;
+    }
+    .editor-box .header-editor {
+        margin: 0;
+    }
+    .lsn-selection {
+        padding: 1px;
+    }
+    .lsn-selection .lsn-unit {
+        width: 20%;
+    }
+    .lsn-selection .lsn-name-list {
+        width: 100% !important;
+    }
+
+    /*mobile-view-tinymce css end*/
+
+    .mceContentBody {
+        margin: 0 !important;
+        min-width: 80% !important;
+        width: 80% !important;
+    }
+}
+
+@media only screen and (min-width:481px) and (max-width:767px) {
+
+
+
+    /*mobile-view-tinymce css start*/
+    .main-tiny {
+        margin: 2% auto 0;
+        width: 90%;
+    }
+
+    .defaultSkin div {
+        position: absolute;
+        top: -45px;
+    }
+    .left-bar-tiny, .right-bar-tiny, .control-sidebar-bg, .template-sidebar-bg {
+        display: none;
+    }
+    .editor-box {
+        background: #fff;
+        margin: 0 15px;
+    }
+    .editor-box .header-editor {
+        float: none;
+        margin: 0 0px;
+    }
+    .tinymc-box {
+        width: 100%;
+    }
+    .mceIframeContainer iframe {
+        height: 40px;
+    }
+    .editor-box .header-editor {
+        margin: 0;
+    }
+    .lsn-selection {
+        padding: 1px;
+    }
+    .lsn-selection .lsn-unit {
+        width: 20%;
+    }
+    .lsn-selection .lsn-name-list {
+        width: 100%;
+    }
+    /*mobile-view-tinymce css end*/
+}
+
+@media only screen and (min-width:768px) and (max-width:1024px) {
+
+    .defaultSkin div {
+        position: absolute;
+        top: -45px;
+    }
+    .defaultSkin div {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+        padding: 5px 0;
+    }
+    #maindiveditor_parent {
+        background: red;
+        width: 100%;
+    }
+    .inventorycls {
+        border: none !important;
+        width: 100% !important;
+        direction: ltr !important;
+    }
+    .mce_savescript img {
+        width: 15px !important;
+        height: 15px !important;
+        margin: 2px 0 0;
+    }
+    .mceNonEditable {
+        background-color: yellow !important;
+    }
+
+    .borderbox {
+        border: 1px solid #ccc !important;
+        height: auto;
+        min-height: 200px;
+    }
+    /*tiny mce css responsive*/
+    .editor-box {
+        background: #fff;
+        margin: 0 15px;
+    }
+    .editor-box .header-editor {
+        margin: 0;
+        overflow: hidden;
+    }
+    .main-tiny {
+        margin-left: 10% !important;
+        margin-top: 2% !important;
+        width: 69% !important;
+    }
+    .editor-box {
+        overflow: hidden;
+        margin: 0 15px;
+    }
+    .lsn-selection .lsn-name-list {
+        width: 100%;
+    }
+    /*Tiny mce css responsive end*/
+
+}
+
+@media screen and (min-width:1200px) and (max-width:1600px) {
+    .ifr_position {
+        left: 44px;
+        position: absolute;
+        top: -33px;
+    }
+}
+
+@media screen and (min-width:1601px) and (max-width:1940px) {
+    .ifr_position {
+        position: absolute !important;
+        top: 179px !important;
+    }
+
+    .defaultSkin table.mceToolbar {
+        margin-left: 3px;
+        position: absolute;
+        top: -217px;
+        left: 27px;
+    }
+}
+.mainTxt17 {
+    FONT-SIZE: 13px;
+    COLOR: #000;
+    font-family: 'UWR_UrduFont';
+    LINE-HEIGHT: 36px;
+}
+.mainTxt15 {
+    FONT-SIZE: 18px;
+    COLOR: #000;
+    font-family: 'UWR_UrduFont' !important;
+}
+@font-face {
+    font-family: 'UWR_UrduFont';
+    src: url('../fonts/UWR_UrduFont.ttf') format('truetype');
+}
+.urdudivdirection {
+    direction: rtl !important;
+}

@@ -1,0 +1,576 @@
+﻿@{
+
+    Layout = null;
+
+}
+<style>
+    .img-box-holder img {
+        height: 50px;
+        width: 100%;
+    }
+
+
+    .input-sm{
+    margin-bottom:10px;
+    width:80% !important;
+}
+   .f-browse {
+      width: 10%;
+    }
+
+
+    
+</style>
+
+
+<div class="sectionmodel modal fade" id="Sounduploadmodal2" role="dialog">
+    <div class="modal-dialog" style="width:70%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" id="mainheader">
+                <button id="btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="errorheader">Audio</h4>
+            </div>
+            <div class="modal-body">
+                <div id="audioLoader" style="position: absolute;z-index: 1200;background: rgba(115, 115, 115, 0.5);width: 96%;height: 600px;display:none">
+                    <img src="../img/icon.gif" style="margin-top: 210px;margin-left: 45%;">
+                </div>
+                <ul id="ConfigTab" class="nav nav-tabs nav-images" style="font-weight:bold;">
+                    <li id="lessonImages" onclick="LoadLessonAudio()"><a data-toggle="tab" href="#menu2">My Audio</a></li>
+                    <li id="uwrImages" onclick="LoadUWRAudio()"><a data-toggle="tab" href="#menu3">UWR Audio</a></li>
+                    <li id="driveImages"><a data-toggle="tab" href="#menu4">My Drive</a></li>
+                </ul>
+
+                <div class="tab-content tab-mediacontent">
+                    <div id="menu2" class="tab-pane fade">
+                        <div class="">
+                            <div class="" style="">
+                                <div class="" style="margin-top:2%">
+                                    <div class="col-lg-12" style="margin-bottom:2%;padding:0">
+                                        <input onkeyup="SearchAllLessonAudio()" class="form-control s-image" type="text" id="LessonSearchText" name="id" placeholder="Type anything to search" />
+                                          <a onclick="SearchLessonAudio()" style="border-radius:0 4px 4px 0; margin-right:10px;" class="btnmedia"><i class="fa fa-search"></i> Search</a>
+                                        <a onclick="DownloadAudio()" class="btnmedia" style="border-radius:4px;"> Download</a>
+                                    </div>
+                                    <div id="lessonAudiosdiv" class="row" style="width:100%; height: 450px;overflow: hidden;overflow-y: auto;">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu3" class="tab-pane fade">
+                        <div class="">
+                            <div class="" style="">
+                                <div class="" style="margin-top:2%">
+                                    <div class="col-lg-12" style="margin-bottom:2%;padding:0">
+                                        <input onkeyup="SearchAllUWRAudio()" class="form-control s-image" type="text" id="UWRSearchText" name="id" placeholder="Type anything to search" />
+
+                                        <a onclick="SearchUWRAudio()" style="border-radius:0 4px 4px 0; margin-right:10px;" class="btnmedia"><i class="fa fa-search"></i> Search</a>
+                                        <a onclick="DownloadAudio()" class="btnmedia" style="border-radius:4px;"> Download</a>
+                                    </div>
+                                    <div id="uwrAudiosdiv" class="row" style="width:100%; height: 450px;overflow: hidden;overflow-y: auto;">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="menu4" class="tab-pane fade">
+                        <div class="">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="" style="margin-top:2%">
+                                        <div id="drivAudiosdiv" class="row" style="margin-bottom:3%">
+                                            <div class="progress col-lg-4 progressmedia" style="display:none">
+                                                <div id="progress" class="progress-bar active" role="progressbar">
+                                                    <span>0%</span>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="f-name-fld">
+
+                                                <div style="" class="fld-text form-inline">
+                                                    <label>File Name:</label>
+                                                    <input onkeypress="return IsAlphaNumeric(event);" type="text" id="filenameaudio" class="input-sm form-control" placeholder="Max 16 Characters" maxlength="16" />
+                                                    <span style="margin-left:17%;"><b>Allowed Extensions</b> : mp3 , wav , ogg , m4a , aac</span>
+                                                </div>
+                                            </div>
+                                            <div class="f-browse">
+                                                <input type="file" id="audioUploadForm" name="audio" multiple="multiple" accept=".wav , .ogg , .mp3 , .m4a , .WAV , .OGG , .MP3 , .M4A" />
+                                                <span class="btnmedia" id='AudioUploadButton' style="border-radius:0 4px 4px 0; margin-right:10px;">Select File</span>
+                                            </div>
+                                            <div class="f-upload">
+                                                <div class="upload-btn">
+                                                    <button onclick="SubmitAudio()" id="btnuploadaudio" class="btnmedia" type="button" style="border-radius:4px;"> <i class="fa fa-upload"></i> Upload Audio</button>
+                                                </div>
+                                            </div>
+                                            <div style="width:300px;margin:0 auto;">
+                                                <p style="margin:150px 0 ;font-size:30px;color:#ccc;text-align:center">Search audios from your Computer</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+    function CloseModal()
+    {
+        
+        previousTarget = null;
+        $('#Sounduploadmodal2').modal('hide');
+        tinyMCE.activeEditor.buttons.Jsvk.onclick();
+        ///window.location.reload();
+
+    }
+
+
+
+    var bookID = @ViewBag.BookID;
+    var lessonID = @ViewBag.LessonID;
+    var currentLessonPage = 1
+    var currentUWRPage = 1
+    var isLessonSearch = 0;
+    var isUWRSearch = 0;
+    var PreviousLessonLoad = 0;
+    var PreviousUWRLoad = 0;
+    $(document).ready(function () {
+        previousTarget = null;
+        LoadLessonAudio();
+        $('#Sounduploadmodal2').modal('show');
+        //$('#Sounduploadmodal2').modal("show");
+
+    })
+    var previousTarget = null;
+    function ClickImage(id)
+    {
+        $('.selected').removeClass('selected');
+        $(".Img_"+id).addClass('selected');
+    }
+
+    function LoadUWRAudio()
+    {
+        $('#ConfigTab a[href="#menu3"]').tab('show');
+        //bookID = 0;
+        if(isUWRSearch == 1)
+        {
+            LoadUAudios(currentUWRPage);
+        }
+        else
+        {
+            if(PreviousUWRLoad != currentUWRPage)
+            {
+                PreviousUWRLoad = currentUWRPage;
+                LoadUAudios(currentUWRPage);
+            }
+        }
+
+    }
+
+    jQuery(function($) {
+        $('#lessonAudiosdiv').on('scroll', function() {
+            if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+                currentLessonPage += 1;
+                LoadAudios(currentLessonPage);
+            }
+        });
+        $('#uwrAudiosdiv').on('scroll', function() {
+            if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+                currentUWRPage += 1;
+                LoadUAudios(currentUWRPage);
+            }
+        });
+    });
+
+    function LoadUAudios(currentUWRPage)
+    {
+        $("#audioLoader").show();
+        var UWRSearchText = $("#UWRSearchText").val();
+        $.ajax({
+            url: "../Image/LessonAudios",
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "searchKeyWord":UWRSearchText,"bkid": bookID, "pageNumber":currentUWRPage,"imageType":"All","lid":lessonID },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var savedData = data;
+                $.ajax({
+                    url:'../Image/CheckSession',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    success: function (result) {
+                        if (result == 1)
+                        {
+                            if(isUWRSearch == 1)
+                            {
+                                $("#uwrAudiosdiv").html('');
+                                isUWRSearch = 0;
+                            }
+                            $.each(savedData, function (i, value) {
+                                //$("#uwrAudiosdiv").append('<div class="main-imgdiv"><i id="' + value.ImageFolderPath + '" class="download-btn fa fa-download"></i><img width="220px" height="150" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + value.ImageFolderPath + '"/></div>')
+                                //$("#uwrAudiosdiv").append('<div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 img-box-holder""><img  class="img-responsive" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + value.ImageFolderPath + '"/><input style="text-align:center" id="File_'+ value.FileID +'" onblur="SaveName('+ value.FileID +')" title="Click here to change Name" placeholder="Untitled Image" class="input-image-box" type="text" value="'+ value.NickName +'"/></div>')
+                                $("#uwrAudiosdiv").append('<div class="col-lg-1 col-md-1 col-sm-6 col-xs-12 img-box-holder"><img onclick="ClickImage('+value.FileID+')" class="img-responsive Img_'+value.FileID+'" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="../images/sound-file.png"/><input style="text-align:center" id="File_'+ value.FileID +'" onblur="SaveName('+ value.FileID +')" title="Click here to change Name" placeholder="Untitled Audio" class="input-image-box" type="text" value="'+ value.NickName +'"/></div>')
+
+                            });
+                        }
+                        else
+                        {
+                            window.location.href =  "../LoginUser/User";
+                        }
+                    }
+                });
+
+            }
+        }).always(function(){
+            $("#audioLoader").hide();
+        })
+    }
+
+
+    function LoadLessonAudio()
+    {
+        $('#ConfigTab a[href="#menu2"]').tab('show');
+        if(isLessonSearch == 1)
+        {
+            LoadAudios(currentLessonPage);
+        }
+        else
+        {
+            if(PreviousLessonLoad != currentLessonPage)
+            {
+                PreviousLessonLoad = currentLessonPage;
+                LoadAudios(currentLessonPage);
+            }
+        }
+
+    }
+
+    function LoadAudios(currentLessonPage)
+    {
+        $("#audioLoader").show();
+        var LessonSearchText = $("#LessonSearchText").val();
+        $.ajax({
+            url: "../Image/LessonAudios",
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "searchKeyWord":LessonSearchText, "bkid": bookID, "pageNumber":currentLessonPage,"lid":lessonID },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var savedData = data;
+                $.ajax({
+                    url:'../Image/CheckSession',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    success: function (result) {
+                        if (result == 1)
+                        {
+                            if(isLessonSearch == 1)
+                            {
+                                $("#lessonAudiosdiv").html('');
+                                isLessonSearch = 0;
+                            }
+                            $.each(savedData, function (i, value) {
+                                //$("#lessonAudiosdiv").append('<div class="main-imgdiv"><i id="' + value.ImageFolderPath + '" class="download-btn fa fa-download"></i><img width="220" height="150" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + value.ImageFolderPath + '"/></div>')
+                                //$("#lessonAudiosdiv").append('<div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 img-box-holder"><img class="img-responsive" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + value.ImageFolderPath + '"/><input style="text-align:center" id="File_'+ value.FileID +'" onblur="SaveName('+ value.FileID +')" title="Click here to change Name" placeholder="Untitled Image" class="input-image-box" type="text" value="'+ value.NickName +'"/></div>')
+                                $("#lessonAudiosdiv").append('<div class="col-lg-1 col-md-1 col-sm-6 col-xs-12 img-box-holder"><img onclick="ClickImage('+value.FileID+')" class="img-responsive Img_'+value.FileID+'" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="../images/sound-file.png"/><input style="text-align:center" id="File_'+ value.FileID +'" onblur="SaveName('+ value.FileID +')" title="Click here to change Name" placeholder="Untitled Audio" class="input-image-box" type="text" value="'+ value.NickName +'"/></div>')
+
+                            });
+                        }
+                        else
+                        {
+                            window.location.href =  "../User/LoginUser";
+                        }
+                    }
+                });
+
+            }
+        }).always(function(){
+            $("#audioLoader").hide();
+        })
+    }
+
+    function SearchAllLessonAudio()
+    {
+        if($("#LessonSearchText").val() == "")
+        {
+            SearchLessonAudio();
+        }
+    }
+    function SearchLessonAudio()
+    {
+        isLessonSearch = 1;
+        currentLessonPage = 1;
+        LoadLessonAudio()
+    }
+
+
+    function DownloadAudio()
+    {
+        
+        var img = $("img.selected").attr('id');
+        var imgNameWithExt = img.substring(img.lastIndexOf('\\') + 1)
+        if(img != undefined)
+        {
+
+            var imgId =imgNameWithExt.substring(0,imgNameWithExt.lastIndexOf('.'));
+            var description = $("#File_"+imgId).val();
+            $("#audioLoader").show();
+            $.ajax({
+                    url: "../Image/SaveAudio",
+                    type: 'get',
+                    dataType: 'json',
+                    casync: false,
+                    data: { "audio": img, "bkid": bookID, "lesid": lessonID,"description": description },
+                    contentType: "application/json; charset=utf-8",
+                    success: function(data) {
+                        if(data == 1)
+                        {
+                            FillSoundsPlanEditor();
+                            alert("Download Successfully");
+                        }
+                        else
+                        {
+                            alert("Problem in downloading. Try Again Later");
+                        }
+                    },
+                    error: function(data)
+                    {
+                        alert("Problem in downloading. Try Again Later");
+                    }
+            }).always(function(){
+                $("#audioLoader").hide();
+            })
+        }
+        else
+        {
+            alert("Select audio first");
+        }
+
+    }
+
+    function fileextensionsound() {
+        //, #soundupdatefileupload
+        var ext = $('#fileuploadsound').val().split('.').pop().toLowerCase();
+        //if($.inArray(ext, ['mp3','wav','ogg']) == -1) {
+        //var validate=//"ext == 'mp3' || ext == 'wav' || ext == 'ogg' || ext == 'm4a'";
+        //$.each(dbextarrmedianames ,function(i, dd)
+        //{
+        //    validate =validate+'ext=='+dd.ext+' || ';
+        //});
+
+
+        if (ext == 'mp3' || ext == 'wav' || ext == 'ogg' || ext == 'm4a' || ext == 'aac') {
+
+            extensiontype = 1;
+
+            //  alert('extension type: ' + extensiontype);
+
+        }
+
+        else {
+
+            extensiontype = 0;
+            // alert('extension type: ' + extensiontype);
+        }
+    }
+
+    function GetExtensionsSize(Groupid) {
+
+
+        $.ajax({
+            url: '../Image/GetExtensionSize',
+            type: "GET",
+            datatype: "json",
+            data: { MediaTypeID: Groupid },
+            success: function (dbdata) {
+                if (dbdata != null) {
+
+                    $.each(dbdata, function (i, sub) {
+
+                        dbextarrmedianames += ' ' + sub.ExtensionName + ', ';
+
+                        dbextarrimg += '.' + sub.ExtensionName + ',';
+
+                    });
+
+
+
+                    var n = dbextarrimg.length - 1;
+                    if (n > 0) {
+                        dbextarrimg = dbextarrimg.slice(0, -1);
+                    }
+
+
+                    var n = dbextarrmedianames.length - 1;
+                    if (n > 0) {
+                        dbextarrmedianames = dbextarrmedianames.slice(0, -2);
+                    }
+
+
+                    filesizedb = dbdata[0].MaxSizeinMB * 1048576;
+
+                    filesizedbimg = dbdata[0].MaxSizeinMB * 1024;
+
+
+
+                    //  alert(filesizedbimg);
+
+                    var sizeinmb = dbdata[0].MaxSizeinMB - 1;
+
+                    $('.imgext').html(dbextarrmedianames);
+
+                    $('.imgsize').html(sizeinmb + 'MB');
+
+
+
+                }
+
+                else {
+
+                }
+
+            }
+        });
+    }
+
+    $('#AudioUploadButton').click(function () {
+        $("input[type='file']").trigger('click');
+    })
+
+    $("input[type='file']").change(function () {
+        var fullname = this.value.replace(/C:\\fakepath\\/i, '');
+        var name = fullname.split('.');
+        if(name[0].length > 16)
+        {
+            name[0] = name[0].substring(0, 16);
+        }
+        $('#filenameaudio').val(name[0]);
+    })
+
+    function SubmitAudio()
+    {
+        
+
+        $(".progress").show();
+        var formData = new FormData();
+        var totalFiles = document.getElementById("audioUploadForm").files.length;
+        if(totalFiles == 0)
+        {
+            alert("Select atleast one audio to upload");
+            return false;
+        }
+        for (var i = 0; i < totalFiles; i++)
+        {
+            var file = document.getElementById("audioUploadForm").files[i];
+            var ext = file.name.split(".");
+            ext[1] = ext[1].toString().toLowerCase();
+            if (ext[1] == "wav" || ext[1] == "ogg" || ext[1] == "mp3" || ext[1] == "m4a")
+            {
+                formData.append("audioUploadForm", file);
+            }
+            else
+            {
+                alert("Invalid Format");
+                return false;
+            }
+        }
+        var pval = $("#filenameaudio").val();
+        var bkID = bookID;
+        var lesID = lessonID;
+        formData.append('value', pval);
+        formData.append('bkid', bkID);
+        formData.append('lesid', lesID);
+        //formData.append('chpid', 1);
+        $("#audioLoader").show();
+        $.ajax({
+            type: "POST",
+            url: "../Image/UploadAudio",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if(response != null)
+                {
+                    FillSoundsPlanEditor();
+                    CloseModal();
+                }
+                else
+                {
+                    alert(response);
+                }
+            },
+            error: function (error) {
+                
+                alert("error");
+            },
+            progress: function(e) {
+                if(e.lengthComputable) {
+                    var progress=e.loaded / e.total * 100;
+                    setProgress(e.loaded / e.total * 100);
+                    if(progress==100){
+                        setTimeout(function() {   //calls click event after a certain time
+                            $('#showAudioModal').modal('hide');
+                        }, 1000);
+                    }
+                    progress=0;
+                }
+                else {
+                    console.warn('Content Length not reported!');
+                }
+            }
+        }).always(function(){
+            $("#audioLoader").hide();
+        })
+    }
+</script>
+<script>
+
+        var filesize;
+        var filesizedb;
+        var filesizedbimg;
+        var extensiontype = 5;
+
+        function IsAlphaNumeric(e) {
+
+
+            var ret;
+            var specialKeys = new Array();
+            specialKeys.push(8); //Backspace
+            specialKeys.push(9); //Tab
+            specialKeys.push(46); //Delete
+            specialKeys.push(36); //Home
+            specialKeys.push(35); //End
+            specialKeys.push(37); //Left
+            specialKeys.push(39); //Right
+            //specialKeys.push(38);
+            //--38 = &
+            //--36 = $
+            //--64 = at the rate of
+
+            var keyCode = e.keyCode == 0 ? e.charCode : e.keyCode;
+            var ret = ((keyCode == 63) || (keyCode == 40) || (keyCode == 41) || (keyCode == 32) || (keyCode == 95) || (keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122) || (specialKeys.indexOf(e.keyCode) != -1 && e.charCode != e.keyCode));
+            //var ret =((keyCode != 38) && (keyCode != 36) && (keyCode != 64) || (keyCode == 32) || (keyCode == 95) || (keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122) || (specialKeys.indexOf(e.keyCode) != -1 && e.charCode != e.keyCode));
+            //return ret;
+
+            return ret;
+
+
+        }
+
+</script>

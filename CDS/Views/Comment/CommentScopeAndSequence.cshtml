@@ -1,0 +1,308 @@
+﻿@model List<CDS.Models.BLL_ChatHistory>
+@{
+    int modalCount = Model.Count();
+}
+<style>
+    .top-heading p{
+       float:left
+    }
+    .nameTitle {
+        font-weight:bold;
+    }
+    .valueTitle {
+        margin-left:5%;
+    }
+</style>
+
+<div class="modal fade modal-comments" id="ScopeandSequenceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="CloseModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Comments</h4>
+            </div>
+            
+            <div class="modal-body">
+                @if (Model != null && Model.Count() > 0)
+            {
+                    <div class="col-lg-12 top-heading">
+                        <div class="col-lg-6">
+                            <p class="nameTitle">Class: </p>
+                            @if (Model.ToList()[0].ClassName.Length > 12)
+                            {
+                                <p class="valueTitle" title="@Model.ToList()[0].ClassName">@(Model.ToList()[0].ClassName.Substring(0, 12) + "...")</p>
+                            }
+                            else
+                            {
+                                <p class="valueTitle">@Model.ToList()[0].ClassName</p>
+                            }
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="nameTitle">Book: </p>
+                            @if (Model.ToList()[0].BookName.Length > 12)
+                            {
+                                <p class="valueTitle" title="@Model.ToList()[0].BookName">@(Model.ToList()[0].BookName.Substring(0, 12) + "...")</p>
+                            }
+                            else
+                            {
+                                <p class="valueTitle">@Model.ToList()[0].BookName</p>
+                            }
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="nameTitle">Subject: </p>
+                            @if (Model.ToList()[0].SubjectName.Length > 12)
+                            {
+                                <p class="valueTitle" title="@Model.ToList()[0].SubjectName">@(Model.ToList()[0].SubjectName.Substring(0, 12) + "...")</p>
+                            }
+                            else
+                            {
+                                <p class="valueTitle">@Model.ToList()[0].SubjectName</p>
+                            }
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="nameTitle">Lesson: </p>
+                            @if (Model.ToList()[0].LessonName.Length > 12)
+                            {
+                                <p class="valueTitle" title="@Model.ToList()[0].LessonName">@(Model.ToList()[0].LessonName.Substring(0, 12) + "...")</p>
+                            }
+                            else
+                            {
+                                <p class="valueTitle">@Model.ToList()[0].LessonName</p>
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="clearfix"></div>
+                <div class="send-comnt">
+                    <span class="chat-label-icon">
+                        <img src="~/images/chat-lsn.png" />
+                    </span>
+                    <textarea id="txtScopecomment" placeholder="Write Comment" class="form-control" onkeypress="return IsAlphaNumericScope(event);"></textarea>
+                </div>
+
+                <div id="chatholder" class="chat-holder">
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        <input id="senderID" type="hidden" value="@Model.ToList()[Model.Count - 1].SenderID" />
+
+                        foreach (var item in Model)
+                        {
+                            <div class="user-1">
+                                <h2>@item.UserName <span class="chat-time pull-right">@item.CommentTimeAgo</span></h2>
+
+                                <div class="msguser">
+                                    @item.Comment
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+                        <p>You have no messages</p>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+        function CloseModal() {
+            $("#ScopeandSequenceModal").modal('hide');
+            // window.location.reload()
+        }
+    $('#ScopeandSequenceModal').modal({
+        backdrop: 'static',
+        keyboard: false
+    })
+    var LessonId = '@ViewBag.LessonId';
+    var messageID = '@ViewBag.MessageId';
+    $("#ScopeandSequenceModal").modal('show');
+
+    var ownerID = '@SessionManager.Current.UserID'
+    debugger
+    $.ajax({
+        url: '../Comment/UpdateInbox',
+        type: "POST",
+        dataType: 'json',
+        success: function (result)
+        {
+            debugger
+            if (result != null)
+            {
+                if(result.length == 0)
+                {
+                    $("#notificationCount").text('');
+                    $('.menu li').remove();
+                    $('.footer a').text('');
+                    $("#header_msg").text('');
+                    $("#header_msg").text('You have no new messages');
+                }
+                else
+                {
+                    $("#notificationCount").text(result.length);
+                    $("#header_msg").text('You have '+result.length+' new messages');
+                }
+                $(".menu").empty();
+                var html = '';
+                for(var i=0;i<result.length;i++)
+                {
+                    html += '<li id="Inboxcmnt_'+result[i].Message_ID+'" style="background-color:#d4dffd;cursor:pointer">'
+                    if (result[i].WhereFrom == "Inbox")
+                    {
+                        if (result[i].OwnerID == parseInt(ownerID))
+                        {
+                            html += '<a href="../LessonPlanEditor/LessonPlan?LessonId='+result[i].EncLessonID+'&&mode=List">'
+                            html += '<div class="pull-left"><img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image"></div>'
+                            html += '<h4>'+result[i].UserName+'<small><i class="fa fa-clock-o"></i> '+result[i].CommentTimeAgo+'</small></h4>'
+                            if(result[i].Comment.length > 40)
+                            {
+                                html += '<p title="'+result[i].Comment+'">'+result[i].Comment.substr(0,40)+'...</p>'
+                            }
+                            else
+                            {
+                                html += '<p>'+result[i].Comment+'</p>'
+                            }
+                            html += '</a>'
+                        }
+                        else
+                        {
+                            html += '<a href="../LessonPlanEditor/LessonPlan?LessonId='+result[i].EncLessonID+'&&mode=Desktop&&InvitaionID='+result[i].EncMessage_ID+'&&InvitationUserID='+result[i].EncUserID_A+'">'
+                            html += '<div class="pull-left"><img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image"></div>'
+                            html += '<h4>'+result[i].UserName+'<small><i class="fa fa-clock-o"></i> '+result[i].CommentTimeAgo+'</small></h4>'
+                            if(result[i].Comment.length > 40)
+                            {
+                                html += '<p title="'+result[i].Comment+'">'+result[i].Comment.substr(0,40)+'...</p>'
+                            }
+                            else
+                            {
+                                html += '<p>'+result[i].Comment+'</p>'
+                            }
+                            html += '</a>'
+                        }
+                    }
+                    else if (result[i].WhereFrom == "Scope")
+                    {
+                        html += '<a onclick="LoadComments(\''+result[i].EncLessonID+'\',\''+result[i].EncMessage_ID+'\')">'
+                        html += '<div class="pull-left"><img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image"></div>'
+                        html += '<h4>'+result[i].UserName+'<small><i class="fa fa-clock-o"></i> '+result[i].CommentTimeAgo+'</small></h4>'
+                        if(result[i].Comment.length > 40)
+                        {
+                            html += '<p title="'+result[i].Comment+'">'+result[i].Comment.substr(0,40)+'...</p>'
+                        }
+                        else
+                        {
+                            html += '<p>'+result[i].Comment+'</p>'
+                        }
+                        html += '</a>'
+                    }
+                    else if (result[i].WhereFrom == "FeedBack")
+                    {
+                        html += '<a href="../FeedBack/FeedBackProcess?EncFeedBackId='+result[i].EncMessage_ID+'">'
+                        html += '<div class="pull-left"><img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image"></div><h4>'
+                        html += ''+result[i].UserName+'<small><i class="fa fa-clock-o"></i> '+result[i].CommentTimeAgo+'</small></h4>'
+                        if(result[i].Comment.length > 40)
+                        {
+                            html += '<p title="'+result[i].Comment+'">'+result[i].Comment.substr(0,40)+'...</p>'
+                        }
+                        else
+                        {
+                            html += '<p>'+result[i].Comment+'</p>'
+                        }
+                        html += '</a>'
+                    }
+                    html += '</li>'
+                }
+                $(".menu").html(html);
+            }
+        },
+        error: function (ex)
+        {
+            return false
+        }
+    });
+
+     function IsAlphaNumericScope(e) {
+         if (e.keyCode == 13) {
+             var comment = $("#txtScopecomment").val();
+             if (comment != "") {
+                 SendScopeMassge();
+                            } else {
+                 event.preventDefault();
+                            }
+                            }
+         return true;
+                            }
+
+     function SendScopeMassge() {
+         debugger
+         var comment = $('#txtScopecomment').val();
+         if (comment == '') {
+             alert("Message field can't be empty");
+             return false;
+                            }
+         var ReceiverID = 0;
+         if(@SessionManager.Current.EntityID == 3)
+         {
+             if($("#senderID").val() != undefined)
+             {
+                 ReceiverID = $("#senderID").val();
+             }
+         }
+         $.ajax({
+                                url: '../Comment/AddScopeComment',
+                                type: "POST",
+                                dataType: "JSON",
+                                data: { LessonID: LessonId, Comment: comment,ReceiverID:ReceiverID },
+                                success: function (data) {
+                 fill_Scope();
+                 $('#txtScopecomment').val('');
+
+                            }
+                            })
+                            }
+
+
+     function fill_Scope() {
+
+         var html = '';
+         var ShowArchive = 0;
+         if ($('#chkShowAll').is(':checked')) {
+             ShowArchive = 1;
+                            }
+         $('#chatholder').html('');
+         $.ajax({
+                                async: false,
+                                url: '../Comment/Get_Scope_Msg',
+                                type: 'POST',
+                                datatype: 'Json',
+                                data: { 'LessonID': LessonId,'messageID':messageID},
+                                success: function (data) {
+                 debugger
+                 if (data != "-1") {
+                     $.each(data, function (i, ele) {
+                         html += ' <div class="user-1"><h2>' + ele.UserName + '<span class="chat-time pull-right">'+ ele.CommentTimeAgo +'</span></h2>';
+                         html += '<div class="msguser">' + ele.Comment + '</div></div>';
+                            });
+                     $('#chatholder').html(html);
+                            }
+                            else {
+                     alert('Something wents wrong. Please try again later')
+                            }
+                                //}
+                            },
+                                error: function (e) {
+                 html += '<div style="" class="write-text">';
+                                //html += '<textarea type="text" id="txtcomment" class="mention" style="min-height: 40px !important;width:100% !important" placeholder="Type your message here..." onkeypress="return IsAlphaNumeric(event);"></textarea>';
+                 html += '</div>';
+                 $('#chatholder').html(html);
+                            }
+                            });
+
+
+
+                            }
+</script>

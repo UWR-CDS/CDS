@@ -1,0 +1,690 @@
+﻿@{
+    Layout = null;
+}
+<script src="~/Scripts/jquery.ajax-progress.min.js"></script>
+
+    <div class="sectionmodel  modal fade" id="imageModal" role="dialog">
+        <div class="modal-dialog" style="width:70%">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" id="mainheader">
+                    <button id="btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="errorheader">Images</h4>
+                </div>
+
+
+                <div class="modal-body">
+                    <div id="imageLoader" style="position: absolute;z-index: 1200;background: rgba(115, 115, 115, 0.5);width: 96%;height: 600px;display:none">
+                        <img src="../img/icon.gif" style="margin-top: 210px;margin-left: 45%;">
+                    </div>
+                    <ul id="ConfigTab" class="nav nav-tabs nav-images" style="font-weight:bold;">
+
+                        <li id="google" class="active"><a data-toggle="tab" href="#menu1">Google</a></li>
+                        @if (ViewBag.IsIndex == 0)
+                        {
+                            <li id="lessonImages" onclick="LoadLessonImages()"><a data-toggle="tab" href="#menu2">My Images</a></li>
+                        }
+
+                        <li id="uwrImages" onclick="LoadUWRImages()"><a data-toggle="tab" href="#menu3">All Images</a></li>
+                        <li id="driveImages"><a data-toggle="tab" href="#menu4">My Drive</a></li>
+                    </ul>
+
+                    <div class="tab-content tab-mediacontent">
+                        <div id="menu1" class="tab-pane fade in active">
+                            <div class="">
+                                <div class="">
+                                    <input type="hidden" id="image" name="image" />
+                                    <input class="form-control search-image" type="text" id="imageName" name="id" placeholder="Type anything to search" />
+                                    <select  class="form-control select-fld" name="dropdown" id="dropdown">
+                                        <option value="1">All</option>
+                                        <option value="2">Mark with Reuse</option>
+                                        <option value="3">Reuse with modification</option>
+                                    </select>
+                                    
+                                    <a onclick="LoadGoogleImage()" class="btnmedia" style="border-radius:0 4px 4px 0; margin-right:10px;"> <i class="fa fa-search"></i> Search</a>
+
+                                    <a onclick="DownloadImage()"  class="btnmedia" style="border-radius:4px;"> Download</a>
+                                    <div class="">
+                                        <div id="googleImages" class="img-media-box">
+                                            <div style="width:300px;margin:0 auto;">
+                                                <p style="margin:150px 0 ;font-size:30px;color:#ccc;text-align:center">Search images from Google</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (ViewBag.IsIndex == 0)
+                        {
+                            <div id="menu2" class="tab-pane fade">
+   
+                                   
+                                            <div class="col-lg-12" style="">
+                                                <input onkeyup="SearchAllLessonImage()" class="form-control search-image" type="text" id="LessonSearchText" name="id" placeholder="Type anything to search" />
+                                                <a onclick="SearchLessonImage()" style="border-radius:0 4px 4px 0; margin-right:10px;" class="btnmedia"><i class="fa fa-search"></i> Search</a>
+                                                <a onclick="DownloadImage()" class="btnmedia" style="border-radius:4px;"> Download</a>
+                                            </div>
+                                            <div id="lessonImagesdiv" class="img-media-box">
+
+                                            </div>
+                                      
+                               
+                            </div>
+                        }
+
+                        <div id="menu3" class="tab-pane fade">
+                                        <div class="col-lg-12">
+                                            <input onkeyup="SearchAllUWRImage()" class="form-control s-image" type="text" id="UWRSearchText" name="id" placeholder="Type anything to search" />
+                                            <a onclick="SearchUWRImage()" style="border-radius:0 4px 4px 0; margin-right:10px;" class="btnmedia"><i class="fa fa-search"></i> Search</a>
+                                            <a onclick="DownloadImage()" class="btnmedia" style="border-radius:4px;"> Download</a>
+                                        </div>
+                                        <div id="uwrImagesdiv" class="row" style="width:100%; height: 450px;overflow: hidden;overflow-y: auto;">
+
+                                        </div>
+                                    </div>
+
+                        <div id="menu4" class="tab-pane fade">
+                           
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        
+                                            <div id="drivImagesdiv" class="">
+                                                <div class="progress col-lg-4 progressmedia" style="display:none">
+                                                    <div id="progress" class="progress-bar progress-mediabar active" role="progressbar">
+                                                        <span>0%</span>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <div class="f-name-fld">
+
+                                                    <div style="" class="fld-text form-inline">
+                                                        <label>File Name:</label>
+                                                        <input onkeypress="return IsAlphaNumeric(event);" type="text" id="filenameimage" class="input-sm form-control" placeholder="Max 16 Characters" maxlength="16" />
+                                                        <span style="margin-left:17%;"><b>Allowed Extensions</b> : png , jpg , jpeg , gif</span>
+                                                    </div>
+                                                </div>
+                                                <div  class="f-browse">
+                                                    <input type='file' id="imageUploadForm" name="image" multiple="multiple" accept=".png , .jpg , .jpeg , .gif, .PNG, .JPG, .JPEG, .GIF">
+                                                    <span class="btnmedia" id='ImageUploadButton' style="border-radius:0 4px 4px 0; margin-right:10px;">Select File</span>
+                                                </div>
+                                                <div class="f-upload">
+                                                    <div class="upload-btn">
+                                                        <button onclick="SubmitImage()" id="btnuploadimage" style="border-radius:4px;" class="btnmedia" type="button"> <i class="fa fa-upload"></i> Upload Image</button>
+                                                    </div>
+                                                </div>
+
+
+                                                <div style="width:300px;margin:0 auto;">
+                                                    <p style="margin:150px 0 ;font-size:30px;color:#ccc;text-align:center">Search images from your Computer</p>
+                                                </div>
+
+
+
+                                            </div>
+                                        
+                                    </div>
+                                </div>
+                          
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        $('#imageModal').modal('show');
+    var previousTarget = null;
+    function CloseModal()
+    {
+
+        previousTarget = null;
+        closeCheck = 1;
+        //$('#imageModal').modal('hide');
+        ///window.location.reload();
+
+    }
+    var bookID = @ViewBag.BookID;
+        var lessonID = @ViewBag.LessonID;
+    var currentLessonPage = 1
+    var currentUWRPage = 1
+    var isLessonSearch = 0;
+    var isUWRSearch = 0;
+    var PreviousLessonLoad = 0;
+    var PreviousUWRLoad = 0;
+    var googleImageCounter = 0;
+    
+    function LoadLessonImages()
+    {
+        $('#ConfigTab a[href="#menu2"]').tab('show');
+       
+        if(isLessonSearch == 1)
+        {
+            LoadImages(currentLessonPage);
+        }
+        else
+        {
+            if(PreviousLessonLoad != currentLessonPage)
+            {
+                PreviousLessonLoad = currentLessonPage;
+                LoadImages(currentLessonPage);
+            }
+        }
+
+    }
+
+    jQuery(function($) {
+        $('#lessonImagesdiv').on('scroll', function() {
+            if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+                currentLessonPage += 1;
+                LoadImages(currentLessonPage);
+            }
+        });
+        $('#uwrImagesdiv').on('scroll', function() {
+            if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+                currentUWRPage += 1;
+                LoadUImages(currentUWRPage);
+            }
+        });
+    });
+
+    $("#LessonSearchText").keypress(function(e){
+        if(e.keyCode == 13)
+        {
+            SearchLessonImage();
+        }
+
+    })
+
+    $("#UWRSearchText").keypress(function(e){
+        if(e.keyCode == 13)
+        {
+            SearchUWRImage();
+        }
+
+    })
+
+    function SearchAllLessonImage()
+    {
+        if($("#LessonSearchText").val() == "")
+        {
+            SearchLessonImage();
+        }
+    }
+    function SearchAllUWRImage()
+    {
+       if($("#UWRSearchText").val() == "")
+        {
+            SearchUWRImage();
+        }
+    }
+
+    function SearchLessonImage()
+    {
+        isLessonSearch = 1;
+        currentLessonPage = 1;
+        LoadLessonImages()
+    }
+
+    function SearchUWRImage()
+    {
+        isUWRSearch = 1;
+        currentUWRPage = 1;
+        LoadUWRImages()
+    }
+
+    function LoadUWRImages()
+    {
+        
+        $('#ConfigTab a[href="#menu3"]').tab('show');
+        //bookID = 0;
+        if(isUWRSearch == 1)
+        {
+            LoadUImages(currentUWRPage);
+        }
+        else
+        {
+            if(PreviousUWRLoad != currentUWRPage)
+            {
+                PreviousUWRLoad = currentUWRPage;
+                LoadUImages(currentUWRPage);
+            }
+        }
+
+    }
+
+    function LoadUImages(currentUWRPage)
+    {
+        $("#imageLoader").show();
+        var UWRSearchText = $("#UWRSearchText").val();
+        $.ajax({
+            url: "../Image/LessonImages",
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "searchKeyWord":UWRSearchText,"bkid": bookID, "pageNumber":currentUWRPage,"imageType":"All","lid":lessonID },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var savedData = data;
+                $.ajax({
+                    url:'../Image/CheckSession',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    success: function (result) {
+                        if (result == 1)
+                        {
+                            if(isUWRSearch == 1)
+                            {
+                                $("#uwrImagesdiv").html('');
+                                isUWRSearch = 0;
+                            }
+                            $.each(savedData, function (i, value) {
+                                //$("#uwrImagesdiv").append('<div class="main-imgdiv"><i id="' + value.ImageFolderPath + '" class="download-btn fa fa-download"></i><img width="220px" height="150" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + value.ImageFolderPath + '"/></div>')
+                                $("#uwrImagesdiv").append('<div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 img-box-holder""><img onclick="ClickImage('+value.FileID+')"  class="img-responsive Img_'+value.FileID+'" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + value.ImageFolderPath + '"/><input style="text-align:center" id="File_'+ value.FileID +'" onblur="SaveName('+ value.FileID +')" title="Click here to change Name" placeholder="Untitled Image" class="input-image-box" type="text" value="'+ value.NickName +'"/></div>')
+                            });
+                        }
+                        else
+                        {
+                            window.location.href =  "../User/LoginUser";
+                        }
+                    }
+                });
+
+            }
+        }).always(function(){
+            $("#imageLoader").hide();
+        })
+    }
+
+
+    function LoadImages(currentLessonPage)
+    {
+        $("#imageLoader").show();
+        var LessonSearchText = $("#LessonSearchText").val();
+        $.ajax({
+            url: "../Image/LessonImages",
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "searchKeyWord":LessonSearchText, "bkid": bookID, "pageNumber":currentLessonPage,"lid":lessonID },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var savedData = data;
+                $.ajax({
+                    url:'../Image/CheckSession',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    success: function (result) {
+                        if (result == 1)
+                        {
+                            if(isLessonSearch == 1)
+                            {
+                                $("#lessonImagesdiv").html('');
+                                isLessonSearch = 0;
+                            }
+                            $.each(savedData, function (i, value) {
+                                //$("#lessonImagesdiv").append('<div class="main-imgdiv"><i id="' + value.ImageFolderPath + '" class="download-btn fa fa-download"></i><img width="220" height="150" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + value.ImageFolderPath + '"/></div>')
+                                //$("#lessonImagesdiv").append('<div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 img-box-holder"><img class="img-responsive" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + value.ImageFolderPath + '"/><input style="text-align:center" id="File_'+ value.FileID +'" onblur="SaveName('+ value.FileID +')" title="Click here to change Name" placeholder="Untitled Image" class="input-image-box" type="text" value="'+ value.NickName +'"/></div>')
+                                $("#lessonImagesdiv").append('<div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 img-box-holder"><img onclick="ClickImage('+value.FileID+')" class="img-responsive Img_'+value.FileID+'" id="' + value.ImageFolderPath + '" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + value.ImageFolderPath + '"/><input style="text-align:center" id="File_'+ value.FileID +'" onblur="SaveName('+ value.FileID +')" title="Click here to change Name" placeholder="Untitled Image" class="input-image-box" type="text" value="'+ value.NickName +'"/></div>')
+                            
+                            });
+
+                        }
+                        else
+                        {
+                            window.location.href =  "../User/LoginUser";
+                        }
+                    }
+                });
+
+            }
+        }).always(function(){
+            $("#imageLoader").hide();
+        })
+    }
+
+    function SaveName(id)
+    {
+        var ImageName = $("#File_"+id).val();
+        $("body").css("cursor", "progress");
+        $.ajax({
+            url: "../Image/SaveImageName",
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "imageId": id, "description": ImageName },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data == 1) {
+                    $("body").css("cursor", "default");
+                }
+                else {
+                    alert("Problem occurs");
+                }
+            }
+        });
+
+    }
+
+    function LoadGoogleImage()
+    {
+
+        var imageName = $("#imageName").val();
+        var dropdownID = $("#dropdown").val();
+        $("#imageLoader").show();
+        $.ajax({
+            url: "../Image/GoogleImage",
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "id": imageName, "dropdown": dropdownID },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var savedData = data;
+                $.ajax({
+                    url:'../Image/CheckSession',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    success: function (result) {
+                        if (result == 1)
+                        {
+                            $("#googleImages").html('');
+                            $.each(savedData, function (i, value) {
+                                //$("#googleImages").append('<div class="main-imgdiv"><i id="' + value.ImgName + '" class="download-btn fa fa-download"></i><img width="220px" height="150px" id="' + value.ImgName + '" style="cursor:pointer;" src="' + value.ImgSrc + '"/></div>')
+                                $("#googleImages").append('<div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 img-box-holder"><img onclick="ClickImage('+i+')" class="img-responsive Img_'+i+'" id="' + value.ImgName + '" style="cursor:pointer;" src="' + value.ImgSrc + '"/></div>')
+                            });
+                        }
+                        else
+                        {
+                            window.location.href =  "../User/LoginUser";
+                        }
+                    }
+                });
+
+
+            }
+        }).always(function(){
+            $("#imageLoader").hide();
+        })
+    }
+
+    $("#imageName").keypress(function(e){
+        if(e.which == 13)
+        {
+            LoadGoogleImage();
+        }
+    })
+    $("#dropdown").change(function(e){
+        if($("#imageName").val() != null || $("#imageName").val() != "")
+        {
+            LoadGoogleImage();
+        }
+
+    })
+
+    $("#showImageModal").modal("hide");
+    var globalID = 0;
+    function ClickImage(id)
+    {
+         $('.selected').removeClass('selected');
+         $(".Img_"+id).addClass('selected');
+         globalID = id;
+    }
+
+    function DownloadImage()
+    {
+        debugger
+        var img = $("img.selected").attr('id');
+        if(img != undefined)
+        {
+            var bookID = @ViewBag.BookID;
+            var lessonID = @ViewBag.LessonID;
+            var isAandD = @ViewBag.AandD;
+            var isUpdate = @ViewBag.isUpdate;
+            var isIndexPage=@ViewBag.IsIndex;
+            var bktypeid=  @ViewBag.Bktype;
+            var description = $("#imageName").val();
+            if(description.length > 16)
+            {
+                description = description.substring(0,16);
+            }
+            if (img.indexOf("B_") >= 0)
+            {
+                
+                if(description == '')
+                {
+                    var imageName = $("#File_"+globalID).val();
+                    if(imageName != '')
+                    {
+                        description = $("#File_"+globalID).val();
+                    }
+                }
+                $("#imageLoader").show();
+
+                $.ajax({
+                    url: "../Image/SaveImage",
+                    type: 'get',
+                    dataType: 'json',
+                    casync: false,
+                    data: { "image": img, "bkid": bookID, "lesid": lessonID, "isGoogleImage": 0,"description": description,"AandD": isAandD, "isUpdate": isUpdate, "IsIndexPage": isIndexPage, "BooktypeID": bktypeid },
+                    contentType: "application/json; charset=utf-8",
+                    success: function(data) {
+                        
+                        if(data[0] == 1)
+                        {
+                            if(isUpdate == 1)
+                            {
+                                CloseModal();
+                                GetRequest(rid);
+                            }
+                            if (isAandD==0)
+                            {
+                                FillImagesPlanEditor();
+                            }
+
+                            if(isAandD == 1)
+                            {
+                                $("#imageTxt").html('');
+                                $("#imageTxt").html('<img class="img-responsive" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + img + '"/>');
+                                $("#imageId").val('');
+                                $("#imageId").val(data[1]);
+                                $('#imageModal').modal('hide');
+                            }
+                            $("#imageName").val('');
+                            alert("Download Successfully");
+                        }
+                        else
+                        {
+                            $("#imageName").val('');
+
+                            alert("Problem in downloading. Try Again Later");
+                        }
+                    }
+                }).always(function(){
+                    $("#imageLoader").hide();
+                
+                })
+            }
+            else
+            {
+                $("#imageLoader").show();
+
+                $.ajax({
+                    url: "../Image/SaveImage",
+                    type: 'get',
+                    dataType: 'json',
+                    casync: false,
+                    data: { "image": img, "bkid": bookID, "lesid": lessonID, "isGoogleImage": 1,"description": description,"AandD": isAandD, "isUpdate": isUpdate, "IsIndexPage": isIndexPage, "BooktypeID": bktypeid },
+                    contentType: "application/json; charset=utf-8",
+                    success: function(data) {
+                        
+                        if(isUpdate == 1)
+                        {
+                            CloseModal();
+                            GetRequest(rid);
+                        }
+                        if (isAandD==0)
+                        {
+                            FillImagesPlanEditor();
+                        }
+                        if(isAandD == 1)
+                        {
+                            $("#imageTxt").html('');
+                            $("#imageTxt").html('<img class="img-responsive" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + data[2] + '"/>')
+                            //$("#imageTxt").html('<img class="img-responsive" style="cursor:pointer;" src="' + img + '"/>')
+                            $('#imageModal').modal('hide');
+                        }
+                        $("#imageName").val('');
+
+                        alert("Saved Successfully");
+                        //FillImagesPlanEditor();
+                        //alert("Save Successfully")
+                    }
+                }).always(function(){
+                    $("#imageLoader").hide();
+                
+                })
+
+            }
+        }
+        else
+        {
+            $("#imageName").val('');
+
+            alert("Select image first");
+        }
+
+    }
+        $('#ImageUploadButton').click(function () {
+            $("input[type='file']").trigger('click');
+        })
+
+        $("input[type='file']").change(function () {
+            var fullname = this.value.replace(/C:\\fakepath\\/i, '');
+            var name = fullname.split('.');
+            if(name[0].length > 16)
+            {
+                name[0] = name[0].substring(0, 16);
+            }
+            $('#filenameimage').val(name[0]);
+        })
+       
+    function SubmitImage()
+    {
+        $(".progress").show();
+        
+        var bookID = @ViewBag.BookID;
+        var lessonID = @ViewBag.LessonID;
+        var isAandD = @ViewBag.AandD;
+        var isUpdate = @ViewBag.isUpdate;
+        var description = $("#filenameimage").val();
+        var isIndexPage=@ViewBag.IsIndex;
+        var bktypeid=  @ViewBag.Bktype;
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("imageUploadForm").files.length;
+        if(totalFiles == 0)
+        {
+            alert("Select atleast one image to upload");
+            return false;
+        }
+        for (var i = 0; i < totalFiles; i++)
+        {
+            var file = document.getElementById("imageUploadForm").files[i];
+            var ext = file.name.split(".");
+            ext[1] = ext[1].toString().toLowerCase();
+            if(ext[1] == "png" || ext[1] == "jpg" || ext[1] == "jpeg" || ext[1] == "gif")
+            {
+                formData.append("imageUploadForm", file);
+            }
+            else
+            {
+                alert("Invalid Format");
+                return false;
+            }
+        }
+        formData.append('bkid', bookID);
+        formData.append('lesid', lessonID);
+        formData.append('AandD', isAandD);
+        formData.append('isUpdate', isUpdate);
+        formData.append('description', description);
+        formData.append('IsIndexPage', isIndexPage);
+        formData.append('BookTypeID', bktypeid);
+        $("#imageLoader").show();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Upload", "Image")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if(response != null)
+                {
+                    if (isAandD==0)
+                    {
+                        FillImagesPlanEditor();
+                    }
+                    if(isUpdate == 1)
+                    {
+                        CloseModal();
+                        GetRequest(rid);
+                    }
+                    if(isAandD == 1)
+                    {
+                        $("#imageTxt").html('');
+                        $("#imageTxt").html('<img class="img-responsive" style="cursor:pointer;" src="..\\Handler\\ImagesHandler.ashx?LessonFilePath=' + response + '"/>')
+                        $('#imageModal').modal('hide');
+                    }
+                    $("#imageName").val('');
+
+                   // alert("Save Successfully")
+                    //window.location.reload();
+                }
+                else
+                {
+                    alert(response);
+                }
+            },
+            error: function (error) {
+                alert("error");
+            },
+            progress: function(e) {
+                if(e.lengthComputable) {
+                    var progress=e.loaded / e.total * 100;
+                    setProgress(e.loaded / e.total * 100);
+                    if(progress==100){
+                        setTimeout(function() {   //calls click event after a certain time
+                            $('#imageModal').modal('hide');
+                        }, 1000);
+                    }
+                    progress=0;
+                }
+                else {
+                    console.warn('Content Length not reported!');
+                }
+            }
+        }).always(function(){
+            $("#imageLoader").hide();
+        })
+    }
+
+    function setProgress(precis) {
+        
+        var progress = $('#progress');
+
+        progress.toggleClass('active', precis < 100);
+
+        progress.css({
+            width: precis = precis.toPrecision(3)+'%'
+        }).html('<span>'+precis+'</span>');
+    }
+
+    </script>
+
+

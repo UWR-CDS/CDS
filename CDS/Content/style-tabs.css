@@ -1,0 +1,103 @@
+.badge {
+  background-color: #777;
+}
+
+.tabs-left {
+  margin-top:0rem;
+}
+.tabs-left .nav-tabs{
+  position:absolute;
+  top:32px;
+}
+.nav-tabs {
+  float: left;
+  border-bottom: 0;
+}
+.nav-tabs li {
+  float: none;
+  margin:2px 0 0 0;
+}
+.nav-tabs li a {
+  margin-right: 0;
+  border: 0;
+  background-color: #333;
+  padding:0;
+}
+.nav-tabs li a .sidebar-toggle {
+    padding:20px 16px 20px 15px;
+    cursor:pointer
+}
+.nav-tabs li a:hover {
+  background-color: #444;
+}
+.nav-tabs .glyphicon {
+  color: #fff;
+}
+.nav-tabs .active .glyphicon {
+  color: #333;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  border: 0;
+}
+
+.tab-content {
+  margin-left: 45px;
+}
+.tab-content .tab-pane {
+  display: none;
+  background-color:#d5ddeb;
+  padding:0;
+  /*overflow-y: auto;*/
+  border:2px solid #2B4999;
+  border-left:0;
+  position: relative;
+  overflow:hidden;
+}
+.tab-pane h3 {
+  background: #2b4999 none repeat scroll 0 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 18px;
+  margin-top: 0;
+  padding: 6px 5px 8px;
+  text-align: center;
+  overflow:hidden;
+}
+.tab-content .active {
+  display: block;
+}
+
+.list-group {
+  height: 597px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 100%;
+}
+/*.list-group .list-group-item {
+  height: 50px;
+}*/
+/*.list-group .list-group-item h4, .list-group .list-group-item span {
+  line-height: 11px;
+}*/
+
+.nav-tabs .btn-tab{
+  padding: 15px !important;
+  background: #000;
+}
+.img-close {
+  background: red none repeat scroll 0 0;
+  border-radius: 10px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: none;
+  font-size: 14px;
+  height: 20px;
+  line-height: 19px;
+  padding: 0;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  width: 20px;
+}

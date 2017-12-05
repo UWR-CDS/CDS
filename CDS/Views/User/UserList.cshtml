@@ -1,0 +1,507 @@
+﻿@using CDS.Logic
+@model IEnumerable<CDS.Models.UserData>
+@{
+    ViewBag.Title = "User List";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+<style>
+    .chk {
+        float: right;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    .lab {
+        float: right;
+        cursor: pointer;
+    }
+
+    #exTab1 .tab-content {
+        color: white;
+        background-color: #428bca;
+        padding: 5px 15px;
+    }
+
+    #exTab2 h3 {
+        color: white;
+        background-color: #428bca;
+        padding: 5px 15px;
+    }
+
+    /* remove border radius for the tab */
+
+    #exTab1 .nav-pills > li > a {
+        border-radius: 0;
+    }
+
+    /* change border radius for the tab , apply corners on top*/
+
+    #exTab3 .nav-pills > li > a {
+        border-radius: 4px 4px 0 0;
+    }
+
+    #exTab3 .tab-content {
+        color: white;
+        background-color: #428bca;
+        padding: 5px 15px;
+    }
+</style>
+@*<link href="~/Content/jquery-ui.css" rel="stylesheet" />*@
+<script src="~/Scripts/jquery.mask.min.js"></script>
+@*<script src="~/Scripts/jquery-ui.js"></script>*@
+<div class="container-fluid main-con">
+    <div class="title-bar">
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
+                <ul class="breadcrumb-lesson">
+                    @if (SessionManager.Current.PrivigilesID != 3)
+                    {
+                        <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    }
+                    <li><a href="">Users</a></li>
+                </ul>
+            </div>
+            @if (SessionManager.Current.PrivigilesID != 3)
+            {
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+                    <a href="../Home/Index" class="btn-back" title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="grade-box">
+        <!-- /.box-header -->
+        <div class="table-responsive">
+            @*<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">*@
+            <table id="UserTable" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th style="text-align:center">Contact</th>
+                        <th style="text-align:center">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr data-target="#MyModal" data-toggle="modal" onclick="UserManagement(@item.UserID)" style="cursor:pointer">
+                                <td></td>
+                                @if (item.LastActivityTime > 60)
+                                {
+                                    <td><span style="color:red">&#9673;</span>  @item.UserFirstName</td>
+                                }
+                                else
+                                {
+                                    <td><span style="color:green">&#9673;</span>  @item.UserFirstName</td>
+                                }
+                                <td>@item.UserLastName</td>
+                                <td>@item.UserEmail</td>
+                                <td style="text-align:center">@item.UserPhone</td>
+                                @if (item.Status == 1)
+                                {
+                                    <td style="text-align:center"><span class="pros">Waiting for Verification</span></td>
+                                }
+                                else if (item.Status == 2)
+                                {
+                                    <td style="text-align:center"><span class="comp">Active</span></td>
+                                }
+                                else
+                                {
+
+                                    <td style="text-align:center"><span class="block">Blocked</span></td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            @*</div>*@
+        </div>
+        <!-- /.box-body -->
+    </div>
+</div>
+<div id="MyModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog user-list-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">User Management</h4>
+            </div>
+            <div class="col-lg-12">
+                <div class="modal-body body-mang">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12  remove-padding">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label for="UserFName">First Name</label>
+                            <input type="text" class="form-control" id="UserFName" maxlength="20" />
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label for="UserLName">Last Name</label>
+                            <input type="text" class="form-control" id="UserLName" maxlength="20" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label for="UserContact">Contact No</label>
+                            <input type="text" class="form-control" id="UserContact" />
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label for="">Email</label>
+                            <input type="text" class="form-control" id="UserEmail" readonly="readonly" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="StatusDiv">
+                            <label for="Status">Status</label>
+                            <select id="UserStatus" class="form-control Status"><option value="1">Waiting For Verification</option><option value="2">Active</option><option value="3">Deactive</option></select>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label for="">Login As</label>
+                            @Html.DropDownList("EntityDropDown", new SelectList(Enumerable.Empty<SelectListItem>(), "EntityID", "EntityName"), new { @id = "EntityDropDown", @class = "form-control" })
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label class="label-bottom">Privileges</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12  remove-padding">
+                        <label for="Status">User Subjects</label>
+                        <div id="subjects">
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="tab-content tab-user">
+                        <div id="menu1" class="tab-pane fade in active">
+                            <form class="tab-checkbox check-user">
+                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer f-mang">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="SavePriviliges()">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    $("#UserContact").mask("0300-0000000")
+    var PriviligesArray = [];
+    var Privileges = '';
+    var User;
+    var UserFirstName;
+    var UserLastName;
+    var ContactNo;
+    var Status;
+    var LoginAs;
+    function UserManagement(UserID) {
+        GetLoginAs();
+        User = UserID;
+        $.ajax({
+            dataType:"JSON",
+            type:"GET",
+            url:"../UserManagement/GetPriviliges",
+            data:{UserID: UserID},
+            success: function (dbdata) {
+                if (@SessionManager.Current.UserID == dbdata.UserList[0].UserID) {
+                    $("#StatusDiv").hide();
+                }else{
+                    $("#StatusDiv").show()
+                }
+                PriviligesArray = [];
+
+                if (dbdata.UserList != null) {
+
+                    $("#UserFName").val(dbdata.UserList[0].UserFirstName);
+                    $("#UserLName").val(dbdata.UserList[0].UserLastName);
+                    $("#UserContact").val(dbdata.UserList[0].UserPhone);
+                    $("#UserEmail").val(dbdata.UserList[0].UserEmail);
+                    $("#UserStatus").val(dbdata.UserList[0].Status).attr("selected", "selected");
+                    var a = dbdata.UserList[0].LoginAs;
+                    $("#EntityDropDown").val(a).attr("selected", "selected");
+                    setTimeout(function () {
+
+                        $(".a").removeClass('active');
+                        $("#" + dbdata.UserList[0].LoginAs).addClass('active');
+                    }, 300)
+
+                    setTimeout(function () {
+                        $("#ul li").removeClass('active');
+                        $("#li_" + dbdata.UserList[0].LoginAs).addClass('active');
+                    }, 100)
+
+                    if (dbdata.UserList[0].Status == 1) {
+                        $("#UserStatus").attr("disabled",true);
+                    }else{
+                        $("#UserStatus").prop('disabled', false);
+                        $("#UserStatus option[value='1']").prop("disabled", true);
+                    }
+                }
+                debugger
+                if (dbdata.lstUserSubjects != null) {
+
+                    var data = '';
+                    for (var i = 0; i < dbdata.lstUserSubjects.length; i++) {
+                        data += '<div class="u-sbj">' + dbdata.lstUserSubjects[i].ClassName + ": " + dbdata.lstUserSubjects[i].SubjectName + '</div>'
+                    }
+                    $("#subjects").html(data);
+                }
+                if (dbdata.priviligesList != null) {
+                    var html = '';
+                    var divdata = '';
+                    var PreviousEntity;
+                    var PreviousEntityID;
+                    $("#accordion").html('');
+                    if (dbdata.UserList[0].Status != 1) {
+                        html += '<div id="exTab2">'
+                        html += '<ul id="ul" class="nav nav-tabs">'
+                        html += '</ul>'
+                        html += '<div id="data" class="tab-content clearfix">'
+                        html += '</div>'
+                        html += '</div>'
+                        $("#accordion").append(html);
+                        html = '';
+                        for (var i = 0; i < dbdata.priviligesList.length; i++) {
+                            if (PreviousEntity != dbdata.priviligesList[i].EntityName) {
+                                if (i == 0) {
+                                    $("#ul").append('<li id="li_' + dbdata.priviligesList[i].EntityIdFk + '" class="active" data-toggle="tab" href="#' + dbdata.priviligesList[i].EntityIdFk + '">' + dbdata.priviligesList[i].EntityName + '</li>')
+
+                                } else {
+                                    $("#ul").append('<li id="li_' + dbdata.priviligesList[i].EntityIdFk + '" data-toggle="tab" href="#' + dbdata.priviligesList[i].EntityIdFk + '">' + dbdata.priviligesList[i].EntityName + '</li>')
+
+                                }
+
+                                PreviousEntity = dbdata.priviligesList[i].EntityName;
+                            }
+                            if (PreviousEntityID != dbdata.priviligesList[i].EntityIdFk) {
+                                if (i == 0) {
+                                    html += '<div class="a tab-pane active" id="' + dbdata.priviligesList[i].EntityIdFk + '"><div class="col-lg-12 checkbox checkbox-success"><input class="chk_all" type="checkbox" onclick="CheckAll(' + dbdata.priviligesList[i].EntityIdFk + ')" id="chk_' + dbdata.priviligesList[i].EntityIdFk + '"><label class="form-check-label light-txt" for="chk_' + dbdata.priviligesList[i].EntityIdFk + '">Select All</label></div>'
+                                } else {
+                                    html += '<div class="a tab-pane" id="' + dbdata.priviligesList[i].EntityIdFk + '"><div class="col-lg-12 checkbox checkbox-success"><input class="chk_all" type="checkbox" onclick="CheckAll(' + dbdata.priviligesList[i].EntityIdFk + ')"  id="chk_' + dbdata.priviligesList[i].EntityIdFk + '"><label class="form-check-label light-txt" for="chk_' + dbdata.priviligesList[i].EntityIdFk + '">Select All</label></div>'
+                                }
+                                html += ' </div>';
+                                PreviousEntityID = dbdata.priviligesList[i].EntityIdFk
+                                $("#data").append(html);
+                                html = '';
+                            }
+                            divdata += '<div class="col-lg-6 form-check checkbox checkbox-txt checkbox-success tab-pane">';
+                            if (dbdata.priviligesList[i].IsAllow) {
+                                divdata += '<input name="privilige" class="form-check-input" id=p-' + dbdata.priviligesList[i].EntityIdFk + '-' + dbdata.priviligesList[i].PriviligeId + ' type="checkbox" checked="checked" onclick="FillPriviliges(' + dbdata.priviligesList[i].EntityIdFk + ',' + dbdata.priviligesList[i].PriviligeId + ')"/>'
+                                onloadPrivilige(dbdata.priviligesList[i].PriviligeId);
+                            } else {
+                                divdata += '<input name="privilige" class="form-check-input" id=p-' + dbdata.priviligesList[i].EntityIdFk + '-' + dbdata.priviligesList[i].PriviligeId + ' type="checkbox" onclick="FillPriviliges(' + dbdata.priviligesList[i].EntityIdFk + ',' + dbdata.priviligesList[i].PriviligeId + ')"/>'
+                            }
+                            divdata += '<label class="form-check-label light-txt" for=p-' + dbdata.priviligesList[i].EntityIdFk + '-' + dbdata.priviligesList[i].PriviligeId + '>' + dbdata.priviligesList[i].PriviligeName + '</label>'
+                            divdata += ' </div>';
+                            $("#" + dbdata.priviligesList[i].EntityIdFk).append(divdata);
+                            divdata = '';
+                        }
+                        $("#accordion").append(html);
+                    }else{
+                        $("#accordion").append('<div class="col-lg-12"><h2>Kindly Verify Your Email</h2></div>');
+                    }
+                }
+
+            }
+
+        });
+    }
+    $(document).ready(function () {
+
+        var table = $('#UserTable').DataTable({
+            language: {
+                sLengthMenu: "Show _MENU_ Entries"
+            },
+            responsive: {
+                details: true
+            },
+            responsive: true,
+            "ordering": false,
+            "lengthMenu": [[-1, 10, 25, 50, 100], ["All", 10, 25, 50, 100]],
+        });
+        $(".dataTables_filter").append('<div class="search-btn"><a href="#" id="searchbtn"><i class="fa fa-search"></i></a></div>');
+    });
+    $("#EntityDropDown").change(function () {
+        var id = $("#EntityDropDown").val();
+        $("#ul li").removeClass('active');
+        $("#li_" + id).addClass('active');
+        $(".a").removeClass('active');
+        $("#" + id).addClass('active');
+        $('.form-check-input').prop('checked', false);
+        $('.chk_all').prop('checked', false);
+        $("[id^=p-" + parseInt(id) + "]").prop('checked', true);
+        $("#chk_"+id).prop('checked', true);
+    })
+    function CheckAll(entid) {
+        debugger
+        if ($('#chk_' + entid).is(":checked")) {
+            $("[id^=p-" + parseInt(entid) + "]").prop('checked', true);
+        } else {
+            $("[id^=p-" + parseInt(entid) + "]").prop('checked', false);
+        }
+    }
+    function onloadPrivilige(pvlid) {
+
+        //var insert = true;
+
+        //if (insert) {
+        //    for (var i = 0; i < PriviligesArray.length; i++) {
+        //        var c = PriviligesArray[i][1];
+        //        if (PriviligesArray[i][1] == pvlid) {
+
+        //            insert = false;
+
+        //            break;
+        //        }
+        //    }
+        //}
+
+        //if (insert) {
+        //    if (PriviligesArray.indexOf(pvlid) != -1) {
+        //        PriviligesArray.push([pvlid]);
+        //    }
+        //}
+    }
+    function FillPriviliges(ent, pvlid) {
+        debugger
+        if ($("[id^=p-" + parseInt(ent) + "]").length == $("[id^=p-" + parseInt(ent) + "]:checked").length) {
+            $('#chk_' + ent).prop("checked", "checked");
+        } else {
+            $('#chk_' + ent).prop("checked", false);
+        }
+        //debugger
+        //if ($('#p-' + ent + '-' + pvlid).is(":checked")) {
+        //    $('#p-' + ent + '-' + pvlid).attr("checked", true);
+        //} else {
+        //    $('#p-' + ent + '-' + pvlid).attr("checked", false);
+        //}
+
+        //
+        //if ($("#p-" + pvlid).is(":checked")) {
+        //    var insert = true;
+        //    if (insert) {
+        //        for (var i = 0; i < PriviligesArray.length; i++) {
+        //            var c = PriviligesArray[i];
+        //            if (PriviligesArray[i] == pvlid) {
+        //                insert = false;
+        //                break;
+        //            }
+        //        }
+        //    }
+
+        //    if (insert) {
+        //        PriviligesArray.push([pvlid]);
+        //    }
+
+        //}
+        //else {
+        //    for (var i = 0; i < PriviligesArray.length; i++) {
+        //        var c = PriviligesArray[i];
+        //        if (PriviligesArray[i] == pvlid) {
+        //            PriviligesArray.splice(i, 1);
+        //            break;
+        //        }
+        //    }
+        //}
+    }
+
+    function SavePriviliges() {
+
+        UserFirstName= $("#UserFName").val();
+        UserLastName= $("#UserLName").val();
+        ContactNo = $("#UserContact").val().replace(/-/g, '');;
+        Status = $("#UserStatus").val();
+        LoginAs = $("#EntityDropDown").val();
+        //if($(".usercheck").is(":disabled")){
+        //    Status=1;
+        //}else{
+        //    if($(".usercheck").is(":checked")){
+        //        Status=2;
+        //    }else{
+        //        Status=3;
+        //    }
+        //}
+        if ((UserFirstName).trim() == "") {
+            alert("First Name is Required");
+            return false;
+        } else if ((UserLastName).trim() == "") {
+            alert("Last Name is Required");
+            return false;
+        } else if ((ContactNo).trim() == "") {
+
+        }
+        $("input:checkbox[name=privilige]:checked").each(function () {
+            debugger
+            PriviligesArray.push($(this).attr("id").substring($(this).attr("id").lastIndexOf("-") + 1, $(this).attr("id").length));
+        });
+        Privileges = '';
+        PriviligesArray = jQuery.unique(PriviligesArray);
+        for (var i = 0; i < PriviligesArray.length; i++) {
+
+            if (i == PriviligesArray.length - 1) {
+                var s = PriviligesArray[i];
+                //Privileges.append(s);
+                //Privileges=PriviligesArray[i][1].join(',');
+                Privileges = Privileges.concat(s);
+            } else {
+                var s = PriviligesArray[i] + ',';
+                //Privileges.append(PriviligesArray[i][1]+',');
+                //Privileges=PriviligesArray[i][1].join(',');
+                Privileges = Privileges.concat(s);
+
+            }
+        }
+        $.ajax({
+            dataType: "JSON",
+            type: "GET",
+            url: "../UserManagement/SavePriviliges",
+            data: { UserID: User, PriviligeID: Privileges, UserFirstName: UserFirstName, UserLastName: UserLastName, ContactNo: ContactNo, Status: Status, LoginAs: LoginAs },
+            success: function (data) {
+                if (data != 0) {
+                    $("#MyModal").modal('hide');
+                    window.location.href = "../User/UserList"
+                } else {
+                    alert("Something went wrong...!")
+                }
+            }
+
+        });
+    }
+    function GetLoginAs() {
+        $.ajax({
+            dataType: "JSON",
+            type: "GET",
+            url: "../UserManagement/UserLoginAs",
+            success: function (dbdata) {
+                if (dbdata != null) {
+
+                    $('#EntityDropDown').html("");
+                    //$("#EntityDropDown").append
+                    //   (
+                    //   $('<option></option>').val(0).html('Select'))
+
+                    $.each(dbdata, function (i, sub) {
+                        $("#EntityDropDown").append
+                        (
+                        $('<option></option>').val(sub.EntityIdFk).html(sub.EntityName));
+
+                    });
+
+                } else {
+                    alert("Something went wrong...!")
+                }
+            }
+
+        });
+    }
+</script>

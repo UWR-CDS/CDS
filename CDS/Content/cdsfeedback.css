@@ -1,0 +1,630 @@
+﻿.title-stud h2 {
+    font-size: 23px;
+    margin: 3px 0;
+}
+.stud-info {
+    padding: 30px;
+}
+.student-btn {
+    text-align: right;
+}
+.btn-holder-bar {
+    overflow: hidden;
+    padding: 8px 0;
+}
+.leaf-school {
+    background: #fff;
+    border-top: 3px solid #5bbd8e;
+}
+.sch-regis {
+    background: #fff none repeat scroll 0 0;
+    overflow: hidden;
+    padding: 15px 10px;
+    border-top: 3px solid #5bbd8e;
+}
+.change-pic {
+    margin-bottom: 10px;
+}
+.img-upload-box {
+    width: 100%;
+    overflow: hidden;
+}
+.multi-box {
+    border: 1px solid #E4E4E4;
+    width: 100%;
+    padding: 14px 0 10px 31px;
+}
+.multi-checkbox {
+    background: #F0F0F0;
+    width: 100%;
+    padding: 15px 0 16px 31px;
+}
+.uploadxl-file {
+    margin: 0 15px;
+    padding: 0px;
+}
+.uploadxl-file span {
+    border: 1px solid #c0c0c0;
+    border-left: 0px;
+    display: inline-block;
+    margin: 0 0 0 -4px;
+    padding: 7px 14px;
+    width: 40%;
+}
+.action-box {
+    margin-bottom: 20px;
+}
+.modal-attand {
+    width: 1000px;
+    margin: 30px auto;
+}
+.attand-modal {
+    overflow-y: scroll;
+    height: 600px;
+}
+/*feedback list css*/
+.title-fback h2 {
+    font-size: 23px;
+    margin: 3px 0;
+}
+.btn-feedback {
+    overflow: hidden;
+    padding: 8px 0;
+}
+.table-feedback {
+    background: #fff;
+}
+
+.table-feedback tr th {
+    background: #5c54a9;
+    color: #fff;
+    font-size: 12px;
+}
+
+.table-feedback > thead > tr > th, .table-feedback > tbody > tr > th, .table-feedback > tfoot > tr > th, .table-feedback > thead > tr > td, .table-feedback > tbody > tr > td, .table-feedback > tfoot > tr > td {
+    padding: 8px 5px !important;
+}
+/*feedback list css end*/
+
+
+/*feedback process css start*/
+.table-inner {
+    margin-bottom: 35px;
+}
+.table-inner tr td {
+    border-top: none !important;
+}
+.class-bold {
+    font-weight: bold;
+    text-align: left;
+}
+.remarks-box {
+    border: 1px solid #e4e4e4;
+    height: 120px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-bottom: 30px;
+    padding: 5px;
+}
+.remarks-box-reloc {
+    border: 1px solid #c8c8c8;
+    height: 120px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-bottom: 30px;
+    padding: 5px;
+}
+.status-width {
+    width: 30%;
+    float: left;
+    margin-right: 5%;
+}
+.comments-box {
+    border-top: 3px solid #5bbd8e;
+    margin-bottom: 5px;
+    padding: 20px 0;
+    overflow: hidden;
+}
+.comments-box-holder {
+    border: 1px solid #bfbfbf;
+    /*height: 300px;*/
+    margin-bottom: 5px;
+    /*overflow-x: hidden;
+   overflow-y: auto;*/
+    border-radius: 4px;
+}
+.msg-box-new {
+    background-color: transparent;
+    height: auto;
+    padding: 2px 5px;
+}
+.msg-text-new {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    position: relative;
+}
+.img-msg-new {
+    float: left;
+    margin: 0 2px 0 0px;
+    width: 5%;
+}
+.name-msg {
+    color: #a393da;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 10px 0 0;
+    width: 15%;
+}
+.msg-time {
+    float: left;
+    font-size: small;
+    padding-left: 5px;
+}
+.img-msg-right {
+    float: right;
+    width: 17%;
+}
+.msg-text-right {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: small;
+    font-weight: bold;
+    padding: 5px;
+    text-align: left;
+    width: 79%;
+}
+.msg-right-text {
+    float: left;
+    font-size: small;
+    font-weight: normal;
+}
+.chat-time {
+    position: absolute;
+    font-size: 10px;
+    right: 5px;
+    bottom: 2px;
+}
+.chat-text-box {
+    color: #67666c;
+    float: left;
+    font-size: 12px;
+    line-height: 16px;
+    margin: 10px 0;
+    width: 75%;
+}
+.feedback-process {
+    background: #fff none repeat scroll 0 0;
+    border-top: 3px solid #5bbd8e;
+    margin-top: 10px;
+    overflow: hidden;
+    padding: 25px 0;
+}
+.forum-title {
+    font-weight: bold;
+    padding: 0 0 5px 0;
+}
+.view-icon {
+    background-image: url('../images/view.png');
+    width: 25px;
+    height: 25px;
+}
+.view-icon:hover {
+    background-image: url('../images/view-hover.png');
+}
+.p-icon {
+    background-image: url('../images/process.png');
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-right: 8px;
+}
+.p-icon:hover {
+    background-image: url('../images/process-hover.png');
+}
+.route-icon {
+    background-image: url('../images/route_to.png');
+    width: 25px;
+    height: 25px;
+    float: left;
+}
+.route-icon:hover {
+    background-image: url('../images/route_to_hover.png');
+}
+.container-feedback {
+    width: 864px;
+    margin: 10px auto;
+    background: #fff none repeat scroll 0 0;
+    overflow: hidden;
+    padding: 25px;
+}
+.fb-id {
+    background: #F1F1F1;
+    padding: 6px 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+.fb-id span {
+    float: left;
+    font-weight: bold;
+}
+.fb-id span + span {
+    float: right;
+    font-weight: bold;
+}
+.fb-id .feed-date {
+    float: right;
+    font-weight: normal;
+}
+.label-box {
+    overflow: hidden;
+    padding: 5px 0 0px 10px;
+    margin-bottom: 5px;
+}
+.label-box .lbl {
+    float: left;
+    width: 22%;
+}
+.label-box .lbl-value {
+    float: left;
+    font-weight: bold;
+}
+.label-box .src-value {
+    float: left;
+}
+.mat-box {
+    background: #d0f0e0 none repeat scroll 0 0;
+    float: right;
+    padding: 5px 20px;
+    text-align: right;
+}
+.text-box {
+    float: right;
+    padding: 5px;
+    text-align: right;
+    width: 20%;
+}
+.status-box {
+    float: right;
+    padding: 0;
+    width: 58%;
+}
+.status-box span {
+    display: inline-block;
+    padding: 8px 0 0;
+}
+.status-box select {
+    float: right;
+    margin-bottom: 0;
+    padding: 5px;
+    width: 68%;
+}
+.status-box-process {
+    display: inline-block;
+    float: right;
+    padding: 0;
+    width: 50%;
+}
+.status-box-process span {
+    display: inline-block;
+    padding: 5px 0 0;
+}
+.status-box-process select {
+    float: right;
+    margin-bottom: 0;
+    padding: 5px 15px;
+    width: 71%;
+}
+.label-box .lbl-remarks {
+    float: left;
+    width: 10.5%;
+}
+.text-area textarea {
+    background: #ebe6fa none repeat scroll 0 0;
+    border: medium none;
+    color: #67666C;
+    height: 100px;
+    outline: medium none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 89%;
+    padding: 8px;
+    margin-bottom: 0px;
+    line-height: 18px;
+}
+.chta-fld {
+    overflow: hidden;
+    /*padding: 0 10px;*/
+}
+.chta-fld img {
+    float: left;
+    height: 35px;
+    margin-right: 5px;
+    width: 35px;
+}
+.chta-fld input {
+    float: left;
+    margin-right: 5px;
+    width: 84%;
+}
+.chta-fld button {
+    float: left;
+}
+.img-view {
+    overflow: hidden;
+}
+
+/*feedback process css end*/
+
+
+/*Import excel file*/
+.import-main {
+    border: 2px dashed #ccc;
+    margin: 15px 15px 20px;
+}
+.import-box {
+    background: #fff none repeat scroll 0 0;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 40px 50px;
+}
+.uploadxlx-file {
+    margin: 0 auto;
+    padding: 0;
+    width: 70%;
+}
+.uploadxlx-file p {
+    color: #4e4e4e;
+    font-size: 20px;
+    line-height: 26px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.uploadxlx-file span {
+    background: #EBEBEB;
+    display: inline-block;
+    padding: 7px 14px;
+    width: 30%;
+    border: 1px solid #ccc;
+}
+.action-box1 {
+    margin: 0px auto;
+    text-align: center;
+}
+/*import excel file*/
+/*unit -lsn*/
+.main-lsn {
+  background: #fff none repeat scroll 0 0;
+  border-top: 3px solid #5bbd8e;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+}
+.unit-title {
+  background: #f0f0f0 none repeat scroll 0 0;
+  border: 1px solid #d9d9d9;
+  padding: 12px 15px 7px;
+  margin-bottom:20px;
+}
+.unit-holder {
+    overflow:hidden;
+    border-top: 3px solid #5bbd8e;
+    padding:15px;
+    background:#fff;
+}
+/*unit lsn*/
+
+    #feedback-div {
+      background: #fff none repeat scroll 0 0;
+      padding: 50px 240px;
+      border-top:3px solid #5bbd8e;
+    }
+    #feedback-div  #remarks {
+        margin-top:10px;
+        margin-bottom:10px;
+        padding:10px;
+     }
+    .feed-img{
+        float:left;margin-right:2%;cursor:pointer; width:100px; height:80px;
+    }
+
+
+@media only screen and (min-width:300px) and (max-width:480px) {
+    .change-pic {
+        text-align: left;
+    }
+    .modal-attand {
+        width: 100%;
+        margin: 30px auto;
+        padding: 10px;
+    }
+    .attand-modal {
+        height: 300px;
+        overflow-y: scroll;
+        padding: 15px !important;
+    }
+    .uploadxl-file span {
+        margin: 0 0 10px -4px;
+        width: 64%;
+    }
+    /*import excel file*/
+    .import-box {
+        padding: 40px 0;
+    }
+    .uploadxlx-file {
+        width: 100%;
+    }
+    .uploadxlx-file span {
+        width: 95%;
+        margin-bottom: 20px;
+    }
+    /*import excel file*/
+    /*feedback process*/
+    .container-feedback {
+        width: 100%;
+        padding: 25px 0;
+    }
+    .title-fback h2 {
+        font-size: 18px;
+    }
+    .text-box {
+        width: 100%;
+    }
+    .label-box .lbl, .status-box-process, .status-box-process select, .label-box .lbl-remarks, .text-area textarea {
+        width: 100%;
+    }
+    .label-box .lbl-remarks {
+        margin-bottom: 5px;
+    }
+    .label-box {
+        padding-left: 0px;
+    }
+    .img-view {
+        overflow: visible;
+    }
+    .chta-fld {
+        margin-bottom: 15px;
+    }
+    .chta-fld input {
+        width: 80%;
+    }
+    .img-msg-new {
+        width: 15%;
+    }
+    .name-msg {
+        width: 83%;
+    }
+    #feedback-div {
+        padding: 40px;
+    }
+    .feed-img{
+       width:50px; height:50px;
+    }
+    /*feedback process*/
+}
+
+@media only screen and (min-width:481px) and (max-width:767px) {
+    .modal-attand {
+        width: 100%;
+        margin: 30px auto;
+        padding: 10px;
+    }
+    .attand-modal {
+        height: 300px;
+        overflow-y: scroll;
+        padding: 15px !important;
+    }
+    /*import excel file*/
+    .import-box {
+        padding: 40px 0;
+    }
+    .uploadxlx-file {
+        width: 100%;
+    }
+    .uploadxlx-file span {
+        width: 51%;
+        margin-bottom: 20px;
+    }
+    /*import excel file*/
+    /*feedback process*/
+    .container-feedback {
+        width: 100%;
+        padding: 25px 0;
+    }
+    .text-box {
+        width: 100%;
+    }
+    .label-box {
+        padding-left: 0px;
+    }
+    .label-box .lbl-remarks {
+        margin-bottom: 5px;
+        width: 14%;
+    }
+    .text-area textarea {
+        width: 100%;
+    }
+    .chta-fld {
+        margin-bottom: 15px;
+    }
+    .img-msg-new {
+        width: 15%;
+    }
+    .name-msg {
+        width: 83%;
+    }
+    #feedback-div {
+      padding: 50px;
+    }
+    /*feedback process*/
+}
+
+@media only screen and (min-width:768px) and (max-width:1024px) {
+    .modal-attand {
+        width: 100%;
+        margin: 30px auto;
+        padding: 10px;
+    }
+    .attand-modal {
+        height: 300px;
+        overflow-y: scroll;
+        padding: 15px !important;
+    }
+    /*import excel file*/
+    .uploadxlx-file {
+        width: 100%;
+    }
+    /*import excel file*/
+    /*feedback process*/
+    .container-feedback {
+        width: 100%;
+        padding: 25px 0;
+    }
+    .text-box {
+        width: 100%;
+    }
+    .chta-fld {
+        margin-bottom: 15px;
+    }
+    .chta-fld input {
+        width: 80%;
+    }
+#feedback-div {
+  padding: 50px 100px;
+}
+    /*feedback process*/
+
+}
+
+@media only screen and (min-width:1025px) and (max-width:1200px) {
+    .modal-attand {
+        width: 100%;
+        margin: 30px auto;
+        padding: 10px;
+    }
+    .attand-modal {
+        height: 400px;
+        overflow-y: scroll;
+        padding: 15px !important;
+    }
+        #feedback-div {
+      padding: 50px 150px;
+    }
+}
+
+
+@media only screen and (min-width:1201px) and (max-width:1599px) {
+    .attand-modal {
+        height: 400px;
+        overflow-y: scroll;
+        padding: 15px !important;
+    }
+}
+
+@media only screen and (min-width:992px) and (max-width:1199px) {
+    .tab-res {
+        margin-bottom: 62px;
+    }
+}
+

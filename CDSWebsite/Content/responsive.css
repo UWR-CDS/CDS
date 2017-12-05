@@ -1,0 +1,87 @@
+@media only screen and (min-width:320px) and (max-width:480px){
+	.logo-holder .logo {
+	  margin-bottom: 15px;
+	  text-align: center;
+	}
+	.contetn-box {
+	  margin-bottom: 40px;
+	}
+	.aboutus-uwr .uwr-desc {
+	  padding: 10px 15px;
+	}
+	.btnaction .btn-pakweb{
+		margin-bottom: 10px;
+	}
+	.btnaction .btn-inter{
+		margin-bottom: 10px;
+	}
+	.footer-holder .copyright {
+	  text-align: center;
+	}
+	.aboutus-uwr h2 {
+	  padding: 10px 0 10px 15px;
+	}
+}
+
+@media only screen and (min-width:481px) and (max-width:767px){
+
+	.logo-holder .logo {
+	  margin-bottom: 15px;
+	  text-align: center;
+	}
+	.contetn-box {
+	  margin-bottom: 40px;
+	}
+	.content-area {
+  padding: 40px 0 70px;
+}
+	.aboutus-uwr .uwr-desc {
+	  padding: 10px 15px;
+	}
+	.btnaction .btn-pakweb{
+		margin-bottom: 10px;
+	}
+	.btnaction .btn-inter{
+		margin-bottom: 10px;
+	}
+	.footer-holder .copyright {
+	  text-align: center;
+	}
+	.aboutus-uwr h2 {
+	  padding: 10px 0 10px 15px;
+	}
+}
+
+@media only screen and (min-width:768px) and (max-width:1024px){
+	.btnaction {
+	  margin-left: -15px;
+	  padding: 0 15px;
+	}
+	.aboutus-uwr h2 {
+	  padding: 10px 0 10px 15px;
+	}
+	.content-area {
+  padding: 40px 0 70px;
+}
+	.aboutus-uwr .uwr-desc {
+	  padding: 10px 15px;
+	}
+
+}
+
+@media only screen and (min-width:1024px) and (max-width:1366px){
+	.btnaction {
+	  margin-left: -15px;
+	  padding: 0 15px;
+	}
+	.aboutus-uwr h2 {
+	  padding: 10px 0 10px 15px;
+	}
+	.content-area {
+  padding: 40px 0 70px;
+}
+	.aboutus-uwr .uwr-desc {
+	  padding: 10px 15px;
+	}
+
+}

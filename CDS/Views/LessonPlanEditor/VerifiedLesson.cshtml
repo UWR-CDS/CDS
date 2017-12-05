@@ -1,0 +1,318 @@
+﻿@model CDS.Models.ListLessonInfo
+@{
+    ViewBag.Title = "All Approved Lessons";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+
+<style>
+    table.dataTable thead tr + tr #srno::after,
+    table.dataTable thead tr + tr #Totalunits::after,
+    table.dataTable thead tr + tr #TotalLessons::after,
+    table.dataTable thead tr + tr #Status::after,
+    table.dataTable thead tr + tr #Ratings::after {
+        display: none;
+        opacity: 0;
+    }
+</style>
+<style>
+    pre {
+        display: block;
+        padding: 9.5px;
+        margin: 0 0 10px;
+        font-size: 13px;
+        line-height: 1.42857143;
+        color: #333;
+        word-break: break-all;
+        word-wrap: break-word;
+        background-color: #F5F5F5;
+        border: 1px solid #CCC;
+        border-radius: 4px;
+    }
+
+    .header {
+        padding: 20px 0;
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+        .header:after {
+            content: "";
+            display: block;
+            height: 1px;
+            background: #eee;
+            position: absolute;
+            left: 30%;
+            right: 30%;
+        }
+
+        .header h2 {
+            font-size: 3em;
+            font-weight: 300;
+            margin-bottom: 0.2em;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+
+    .success-box {
+        margin: 50px 0;
+        padding: 10px 10px;
+        border: 1px solid #eee;
+        background: #f9f9f9;
+    }
+
+        .success-box img {
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .success-box > div {
+            vertical-align: top;
+            display: inline-block;
+            color: #888;
+        }
+
+
+
+    /* Rating Star Widgets Style */
+    .rating-stars ul {
+        list-style-type: none;
+        padding: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+    }
+
+        .rating-stars ul > li.star {
+            display: inline-block;
+        }
+
+            /* Idle State of the stars */
+            .rating-stars ul > li.star > i.fa {
+                font-size: 2.5em; /* Change the size of the stars */
+                color: #ccc; /* Color on idle state */
+            }
+
+            /* Hover state of the stars */
+            .rating-stars ul > li.star.hover > i.fa {
+                color: #FFCC36;
+            }
+
+            /* Selected state of the stars */
+            .rating-stars ul > li.star.selected > i.fa {
+                color: #FFCC36;
+            }
+</style>
+<style>
+    table {
+        width: 100% !important;
+    }
+</style>
+
+<div class="container-fluid main-con">
+    <div class="title-bar">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">All Approved Lessons</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="grade-box">
+        <div class="search-box search-box-lsn" id="searchbox" style="display:none">
+            <form>
+                <div id="form">
+                </div>
+            </form>
+        </div>
+        <!-- /.box-header -->
+        <div class="table-responsive">
+            @*<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">*@
+            <table id="example" class="table table-striped table-bordered dataTable" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Lesson</th>
+                        <th>Class</th>
+                        <th>Subject</th>
+                        <th style="text-align:center">Creation Date</th>
+                        <th style="text-align:center">Author By</th>
+                        <th style="text-align:center">Submission Date</th>
+                        <th style="text-align:center">Approve Date</th>
+                        <th>Approved By</th>
+                        <th>Ratings</th>
+
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.lstLessonInfo != null)
+                    {
+                        foreach (var lesson in Model.lstLessonInfo)
+                        {
+                            <tr>
+                                <td></td>
+                                <td><a href="../LessonPlanEditor/LessonPlan?LessonId=@lesson.EncryptLessonID&&mode=UserVerified&&VerifiedUserID=@lesson.EncLessonOwnerID" class="book-link">@lesson.LessonTitle</a></td>
+                                <td>@lesson.ClassName</td>
+                                <td>@lesson.SubjectName</td>
+                                <td style="text-align:center">@lesson.StartTime</td>
+                                <td style="text-align:center">@lesson.CreatedBy</td>
+
+                                <td style="text-align:center">@lesson.CompleteDate</td>
+                                <td style="text-align:center">@lesson.VerificationDate  </td>
+                                <td>@lesson.VerifiedBy</td>
+                                <td>
+                                    <div class='rating-stars text-center' style="font-size:6px;width: 105px;float:left;">
+                                        <ul id="rating_@lesson.LessonPlanID" class='stars'>
+                                            <li class='star' title='Poor' data-value='1'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Fair' data-value='2'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Good' data-value='3'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Very Good' data-value='4'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Excellent' data-value='5'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    @if (lesson.LessonPlanStatus == 1)
+                                    {
+                                        <span>
+                                            <i class="fa fa-close" title="Delete" data-val="@lesson.LessonPlanID"> </i>
+                                        </span>
+                                    }
+
+                                    <script>
+                                            $(function () {
+                                                var onStar = @lesson.Rating;
+                                                var stars = $('#rating_@lesson.LessonPlanID').children('li.star');
+
+                                                for (i = 0; i < stars.length; i++) {
+                                                    $(stars[i]).removeClass('selected');
+                                                }
+
+                                                for (i = 0; i < onStar; i++) {
+                                                    $(stars[i]).addClass('selected');
+                                                }
+                                            });
+                                    </script>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            @*</div>*@
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+
+
+</div>
+<script>
+    $(document).ready(function () {
+        var table = $('#example').DataTable({
+            language: {
+                sLengthMenu: "Show _MENU_ Entries"
+            },
+
+            responsive: {
+                details: true
+            },
+            responsive: true,
+            "ordering": false,
+            "lengthMenu": [[-1,10, 25, 50,100], ["All",10, 25, 50,100]],
+            initComplete: function () {
+                this.api().columns("2").every( function () {
+                    $('select').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                    var column = this;
+                    var select = $('<select class="g-search"><option value="">All Classes</option></select>').appendTo($("#form")).on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^'+val+'$' : '', true, false )
+                            .draw();
+
+                    });
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        if(d!=""){
+
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        }
+                    });
+                });
+                this.api().columns("3").every( function () {
+                    $('select').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                    var column = this;
+                    var select = $('<select class="g-search"><option value="">All Subjects</option></select>').appendTo($("#form")).on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^'+val+'$' : '', true, false )
+                            .draw();
+
+                    });
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        if(d!=""){
+
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        }
+                    } );
+                });
+            }
+
+        });
+        $(".dataTables_filter").append('<div class="search-btn"><a href="#" id="searchbtn"><i class="fa fa-search"></i></a></div>')
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+
+            $('input', table.column(colIdx).header()).on('keyup change', function () {
+                table.column(colIdx).search(this.value).draw();
+
+            });
+
+            $('input', table.column(colIdx).header()).on('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+
+        }).draw();
+
+    });
+</script>
+<script>
+</script>
+
+<script>
+    $(function(){
+        $("#searchbtn").click(function(){
+                     $("#searchbox").toggle();
+                });
+    });
+</script>

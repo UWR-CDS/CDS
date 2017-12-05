@@ -1,0 +1,123 @@
+﻿@model CDS.Models.LessonInfo
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="shortcut icon" href="~/images/favicon5.png" />
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <link href='~/Content/LessonWordPreview.css' rel='stylesheet' />
+    <link href='~/Content/bootstrap.min.css' rel='stylesheet' />
+    <link href="~/Content/all-fonts.css" rel="stylesheet" />
+    <link href="~/Content/TinyMceCustom.css" rel="stylesheet" />
+    @*<link href="~/Content/printpdf.css" rel="stylesheet" media="print" />*@
+    <title>EnglishLessonPDF</title>
+
+</head>
+
+<body>
+    <div id="main-content" class="mainwordcontent container">
+        <div class="page mainwordpage" id="inner-contents">
+
+            @* new pdf html *@
+            <div class="header-pdf">
+                <table class="table-header">
+
+                    <tr>
+                        <td rowspan="2"><img src="../images/pdf-logo.png" alt="logo" /></td>
+                        <td class="list-pdf">@Model.ClassName <img src="../images/pdf-grade.png" width="30" height="30" /> </td>
+                    </tr>
+                    <tr>
+                        <td class="list-pdf">@Model.SubjectName <img src="../images/pdf-subj.png" width="30" height="30" /></td>
+                    </tr>
+                    <tr>
+                        <td class="table-title" rowspan="2">
+
+                        <span class="title-pdf">Lesson: @Model.LessonNumber</span><br />
+                        <span class="lsn-pdf">@Model.LessonTitle</span>
+                        
+                        </td>
+                        <td class="list-pdf">Unit: @Model.UnitNumber @Model.UnitName <img src="../images/pdf-unit.png" width="30" height="30" /></td>
+                    </tr>
+                    <tr>
+                       
+                        <td class="list-pdf">@Model.Duration Min <img src="../images/pdf-time.png" width="30" height="30" /></td>
+                    </tr>
+
+
+                </table>
+
+
+
+
+                @*<table class="table-title" border="0">
+                <tr>
+                    <td>
+                        <p>Lesson: @Model.LessonNumber</p>
+                    </td>
+                </tr>
+                <tr>
+                   <td>
+                       <h3>@Model.LessonTitle</h3>
+                   </td>
+                </tr>
+            </table>*@
+            </div>
+                @*<div class="table-title">
+                    <span class="title-pdf">Lesson: @Model.LessonNumber</span><br />
+                    <span class="lsn-pdf">@Model.LessonTitle</span>
+                </div>*@
+                    @if (Model.sections != null)
+                    {
+                        <table class="tabledata">
+                            @foreach (var item in Model.sections)
+                            {
+
+                                if (Model.subsections != null)
+                                {
+                                    CDS.Models.SubSection obj = Model.subsections.Where(x => x.SectionId == item.Id).FirstOrDefault();
+                                    if (obj != null)
+                                    {
+                                        <tr>
+                                            <td class="blue">
+                                                @item.Name
+                                            </td>
+                                        </tr>
+                                    }
+                                    foreach (var j in Model.subsections)
+                                    {
+                                        if (j.SectionId == item.Id && !(string.IsNullOrWhiteSpace(j.LessonPlanScript)))
+                                        {
+                                            int count = Model.subsections.Count(x => x.SectionId == item.Id);
+                                            if (count != 1)
+                                            {
+                                                <tr>
+                                                    <td class="blue1">
+                                                        @j.SubSectionName
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td class="mceContentBody">
+                                                    @MvcHtmlString.Create(j.LessonPlanScript)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        </table>
+                    }
+                      
+
+           
+
+
+                </div>
+            </div>
+</body>
+</html>

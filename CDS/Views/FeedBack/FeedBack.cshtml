@@ -1,0 +1,370 @@
+﻿@model IEnumerable<CDS.Models.mdl_FeedBack>
+@{
+    ViewBag.Title = "FeedBack";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+
+<style>
+    grade-box-feedback {
+        background: #fff none repeat scroll 0 0;
+        /*border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 15px 15px 10px;
+        margin-bottom: 30px;
+        position: relative;*/
+    }
+</style>
+
+
+<div class="container">
+    <div class="title-bar">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">Feed Back</a></li>
+                </ul>
+                <div class="pull-right">
+                    <a href="../Home/Index" class="btn-back" title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="feedback-div">
+        <div class="col-lg-12">
+
+            <div class="feed-box">
+
+
+                <div class="form-group">
+                    <h2>Give your  precious feedback</h2>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" id="title" placeholder="Title" maxlength="50" style="width: 88%;" />
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="remarks" placeholder="Say something here"></textarea>
+                </div>
+                <div class="form-group">
+
+                    <div class="btn-fdbak">
+                        <input id="imageUploadForm" name="image" class="inputfile" multiple="multiple" accept=".jpg , .JPG" type="file">
+                        <label for="imageUploadForm"> Browse</label>
+                        <button onclick="UploadImage();" type="button" class="btnmedia"> Upload Image</button>
+                        <button class="btnmedia pull-right" onclick="SaveFeedBack();">Submit</button>
+                    </div>
+
+                    <div id="image-div"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row"></div>
+        <div class="feed-box" id="dvUserFeedback" style="margin:10px 15px">
+            <div class="table-responsive">
+                <table id="feedBackTable" class="table table-hover table-feedback">
+                    <thead>
+                        <tr>
+                            <th>Sr#</th>
+                            <th>From</th>
+                            <th> Title</th>
+                            <th> Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data">
+                        @if (Model != null && Model.Count() > 0)
+                        {
+                            for (int i = 0; i < Model.Count(); i++)
+                            {
+
+                                <tr>
+                                    <td>
+                                        @(i + 1)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.ToList()[i].UserName)
+                                    </td>
+                                    <td>
+                                        @if (Model.ToList()[i].Title.Length > 21)
+                                        {
+                                            <span style="" title="@Model.ToList()[i].Title">@(Model.ToList()[i].Title.Substring(0, 21) + "...")</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="">@Model.ToList()[i].Title</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Model.ToList()[i].Date.ToString("dd/MM/yyyy")
+                                    </td>
+                                    @if (Model.ToList()[i].FeedbackStatusID == 1)
+                                    {
+                                        <td style="text-align:left">
+                                            <span class="pros">
+                                                @Html.DisplayFor(modelItem => Model.ToList()[i].Status)
+                                            </span>
+                                        </td>
+                                    }
+                                    else if (Model.ToList()[i].FeedbackStatusID == 2)
+                                    {
+                                        <td style="color:#5C54A9;text-align:left;">
+                                            @Html.DisplayFor(modelItem => Model.ToList()[i].Status)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align:left">
+                                            <span class="comp">
+                                                @Html.DisplayFor(modelItem => Model.ToList()[i].Status)
+                                            </span>
+                                        </td>
+                                    }
+                                    <td>
+                                        <a href="@Url.Action("FeedBackProcess", "FeedBack", new { @EncFeedBackId = Model.ToList()[i].FeedBackID, returnPage = "m9kApm+erCCgPxx/joiy/w=="}, null)" title="View" class="">
+                                            <div class="p-icon">View</div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loader() {
+        
+        $.loadingBlockShow({
+            imgPath: "../img/icon.gif",
+            text: 'jQuery Script Loading ...',
+            style: {
+                position: 'fixed',
+                width: '100%',
+                height: '100%',
+                background: 'rgba(0, 0, 0, .8)',
+                left: 0,
+                top: 0,
+                zIndex: 10000
+            }
+        })
+    };
+    function SaveFeedBack() {
+        
+        if ($("#title").val().trim() == '') {
+            $("#TypeErr").html("");
+            $("#TypeErr").html("Plesae Enter Title First..");
+            alert('Plesae Enter Title First..');
+            return false;
+        }
+        if ($("#remarks").val().trim() == '') {
+            $("#TypeErr").html("");
+            $("#TypeErr").html("Please Enter Remarks First..");
+            alert("Please Enter Remarks First..");
+            return false;
+        }
+        var txttitle = $('#title').val();
+        var txtremarks = $("#remarks").val();
+       loader();
+        $.ajax({
+            url: '@Url.Action("SaveFeedBack", "FeedBack")',
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { title: txttitle, remarks: txtremarks },
+            contentType: "application/json; charset=utf-8",
+            success: function (dbdata) {
+                if (dbdata != null) {
+                    var html = '';
+                    var sr = 1;
+                    for (var i = 0; i < dbdata.length; i++) {
+                        html += '<tr>'
+                        html+='<td>'+sr+'</td>'
+                        html += '<td>' + dbdata[i].UserName + '</td>'
+                        if (dbdata[i].Remarks.length > 21) {
+                            html += '<td title="' + dbdata[i].Title + '">' + dbdata[i].Title.substr(0, 21) + "..." + '</td>'
+                        } else {
+                            html += '<td>' + dbdata[i].Remarks + '</td>'
+                        }
+                        html += '<td>' + ConvertJsonDateString(dbdata[i].Date) + '</td>'
+                        if (dbdata[i].FeedbackStatusID == 1) {
+                            html += '<td style="text-align:left"><span class="pros">' + dbdata[i].Status + '</span></td>'
+
+                        }
+                        else if (dbdata[i].FeedbackStatusID == 2) {
+                            html += '<td style="color:#5C54A9;text-align:left">' + dbdata[i].Status + '</td>'
+                        }
+                        else {
+                            html += '<td style="text-align:left"><span class="comp">' + dbdata[i].Status + '</span></td>'
+                        }
+                        html += '<td><a href="../FeedBack/FeedBackProcess?EncFeedBackId=' + dbdata[0].FeedBackID + '&&returnPage =m9kApm+erCCgPxx/joiy/w==" title="View" class=""><div class="p-icon">View</div></a></td>'
+                        html += '</tr>'
+                        sr++;
+                    }
+                   
+                   // alert("Save Successfully");
+                    $('#title').val('');
+                    $('#remarks').val('');
+                    $("#image-div").html('');
+                    var file = document.getElementById("imageUploadForm");
+                    file.value = file.defaultValue;
+                    $("#image-div").hide();
+                    $("#data").html('');
+                    $("#data").append(html);
+                }
+                else {
+                    alert("Something wents wrong. Try Again Later");
+                    $('#remarks').val('');
+                    $('#title').val('');
+                    $("#image-div").html('');
+                    var file = document.getElementById("imageUploadForm");
+                    file.value = file.defaultValue;
+                }
+                var savedData = data;
+
+            }
+        }).done(function (response) {
+            $("#loading_block").hide()
+        });
+
+    }
+
+    function ClearSpan(id) {
+        if (id == 'type') {
+            $("#TypeErr").html("");
+        }
+        if (id == 'frequency') {
+            $("#FrequencyErr").html("");
+        }
+    }
+
+
+    function UploadImage() {
+        var formData = new FormData();
+        var totalFiles = document.getElementById("imageUploadForm").files.length;
+        if (totalFiles == 0) {
+            alert("Select atleast one image to upload");
+            return false;
+        }
+        if (totalFiles > 3) {
+            alert("Maximum 3 pictures are allowed");
+            return false;
+        }
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("imageUploadForm").files[i];
+            var ext = file.name.split(".");
+            ext[1] = ext[1].toString().toLowerCase();
+            if (ext[1] == "jpg") {
+                formData.append("imageUploadForm", file);
+            }
+            else {
+                alert("Invalid Format");
+                return false;
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Upload", "FeedBack")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                
+                if (response != null) {
+                    $("#image-div").html('');
+                    var imageHtml = null;
+                    for (var i = 0; i < response.length; i++) {
+                        if (i == 0) {
+                            imageHtml = $('<div class="img-up"><img  class="img-responsive feed-img" src="..\\Handler\\ImagesHandler.ashx?FeedBackFilePath=' + response[i] + '"/>');
+                        }
+                        else {
+                            imageHtml.append('<img style=""  class="img-responsive feed-img" src="..\\Handler\\ImagesHandler.ashx?FeedBackFilePath=' + response[i] + '"/>');
+                            if (i == response.length - 1) {
+                                imageHtml.append('</div>')
+                            }
+                        }
+                    }
+                    $("#image-div").html(imageHtml);
+                    $("#image-div").show();
+                    var file = document.getElementById("imageUploadForm");
+                    file.value = file.defaultValue;
+                }
+                else {
+                    alert(response);
+                }
+            },
+            error: function (error) {
+                alert("error");
+            }
+        });
+    }
+
+    function CloseAction() {
+        $.ajax({
+            url: '@Url.Action("DeleteImage", "FeedBack")',
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+            }
+        });
+        tinyMCE.activeEditor.buttons.Jsvk.onclick();
+    }
+    function ConvertJsonDateString(jsonDate) {
+        var shortDate = null;
+        if (jsonDate) {
+            var regex = /-?\d+/;
+            var matches = regex.exec(jsonDate);
+            var dt = new Date(parseInt(matches[0]));
+            var month = dt.getMonth() + 1;
+            var monthString = month > 9 ? month : '0' + month;
+            var day = dt.getDate();
+            var dayString = day > 9 ? day : '0' + day;
+            var year = dt.getFullYear();
+
+            var hours = (dt.getHours() < 10) ? "0" + dt.getHours() : dt.getHours();
+            var minutes = (dt.getMinutes() < 10) ? "0" + dt.getMinutes() : dt.getMinutes();
+            var formattedTime = hours + ":" + minutes;
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+                 "July", "August", "September", "October", "November", "December"
+            ];
+            shortDate = dayString + '/' + month + '/' + year;
+        }
+        return shortDate;
+    };
+</script>
+
+
+@*<script>
+        $(document).ready(function () {
+            $('html, body').css("cursor", "wait");
+            var usrID = $('#userID').val();
+            $.ajax({
+                url: '@Url.Action("FeedBackList", "FeedBack")',
+                type: 'get',
+                cache: false,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                data: { 'userID': usrID },
+                success: function (result) {
+                    var savedData = result;
+                    $("#dvUserFeedback").html('');
+                    savedData.replace('grade-box', 'grade-box-feedback');
+                    $("#dvUserFeedback").html(savedData);
+                }
+            });
+            $('html, body').css("cursor", "default");
+        })
+    </script>*@
+

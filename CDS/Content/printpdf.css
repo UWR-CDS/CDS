@@ -1,0 +1,52 @@
+﻿
+@media print {
+        body{
+        -webkit-print-color-adjust: exact !important;
+        }   
+        @page {
+            size: auto; /* auto is the initial value */
+            margin: 0mm; /* this affects the margin in the printer settings */
+        }
+        .container {
+            display: inline;
+        }
+        div{
+            page-break-inside: avoid;
+        }
+        /*.table-title{
+        background:#5BC510 !important;
+        color:#fff !important;
+        margin-bottom:30px !important;
+        }
+        .table-title p {
+          font-family: "ROBOTO-REGULAR" !important;
+          font-size: 18px !important;
+          line-height: 20px !important;
+          margin: 0 !important;
+          padding: 10px 0 0 !important;
+        }
+        .table-title h3 {
+             font-family: "ROBOTO-REGULAR" !important;
+          font-size: 24px !important;
+          line-height: 26px !important;
+          margin: 4px 0 10px !important;
+          padding-right: 56px !important;
+        }*/
+        .table-title .title-pdf {
+          background:blue !important;
+          display: block;
+          font-size: 18px;
+          line-height: 20px;
+          padding: 5px 0 5px 15px;
+        }
+        .table-title .lsn-pdf {
+          background: orange  !important;
+          display: block;
+          font-size: 22px;
+          line-height: 24px;
+          padding: 0 0 5px 15px;
+        }
+        
+
+
+    }

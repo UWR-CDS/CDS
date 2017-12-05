@@ -1,0 +1,1026 @@
+﻿@using CDS.Models
+@using CDS.Logic
+@using LEAF_Logic
+@model CDS.Models.LessonInfo
+@{
+    ViewBag.Title = "LessonPlanEnglish";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+    int UnreadCount = 0;
+    List<int> UnreadMessageID = new List<int>();
+    <section id="pagescripts">
+        <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+        <link href="~/Content/watchbootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/style-tabs.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery.ui.widget.js"></script>
+        <script src="~/Scripts/adminlte.min.js"></script>
+        <link href="~/Content/star-rating.min.css" rel="stylesheet" />
+        <script src="~/Scripts/star-rating.min.js"></script>
+        <link href="~/Content/TinyMceCustom.css" rel="stylesheet" />
+
+    </section>
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <input type="hidden" value="@SessionManager.Current.UserID" id="currentUser" />
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar left-bar-tiny">
+        <section class="sidebar">
+            <!--tabs-sidebar-->
+            <div class="tabs-left">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a href="#chat" data-toggle="tab">
+                            <span class="sidebar-toggle" data-toggle="push-menu">
+                                <span class="glyphicon glyphicon-comment"></span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="chat" style="height:680px; overflow:hidden;">
+                        <h3>Discussion panel</h3>
+
+                        @*<input id="tagcomment" type="text" class="form-control mention" />*@
+                        <div id="commentLoader" style="position: absolute;z-index: 1200;background: rgba(115, 115, 115,0.5);top: 31px;width: 100%;height: 100vh;display:none">
+                            <img src="../img/icon.gif" style="margin-top: 210px;margin-left: 25%;">
+                        </div>
+                        <div id="dvMsgHolder" class=user-chat>
+                            @if (Model.lstComments != null)
+                            {
+                                foreach (var item in Model.lstComments)
+                                {
+                                    UnreadCount = item.ReceiverUnreadCount;
+
+                                    if (SessionManager.Current.UserID == item.UserID_A)
+                                    {
+                                        <div id="cmnt_@item.Message_ID" class="chat-box">
+                                            <p class="user-label">
+                                                @item.FirstName  @item.LastName
+                                            </p>
+                                            @if (item.isRead)
+                                            {
+                                                <div id="cmntBody_@item.Message_ID" onclick="ShowComment(@item.textID,@item.sectionID,@item.Message_ID)" class="arrow_box_left">
+                                                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Comment))
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div style="background-color:#d4dffd" id="cmntBody_@item.Message_ID" onclick="ShowComment(@item.textID,@item.sectionID,@item.Message_ID)" class="arrow_box_left">
+                                                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Comment))
+                                                </div>
+
+                                            }
+                                            <p class="time-msg">
+                                                @item.CommentTimeAgo
+                                            </p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div id="cmnt_@item.Message_ID" class="chat-box chat-right">
+                                            <p class="user-label">
+                                                @item.FirstName  @item.LastName
+                                            </p>
+                                            @if (item.isRead)
+                                            {
+                                                <div id="cmntBody_@item.Message_ID" onclick="ShowComment(@item.textID,@item.sectionID)" class="arrow_box_right">
+                                                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Comment))
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                UnreadMessageID.Add(@item.Message_ID);
+                                                <div style="background-color:#d4dffd" id="cmntBody_@item.Message_ID" onclick="ShowComment(@item.textID,@item.sectionID)" class="arrow_box_right">
+                                                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Comment))
+                                                </div>
+                                            }
+                                            <p class="time-msg">
+                                                @item.CommentTimeAgo
+                                            </p>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                        <div style="position: absolute; width: 100%; background: rgb(204, 204, 204) none repeat scroll 0% 0%; bottom: 0px; padding: 7px 20px 6px 8px;">
+                            <textarea placeholder='Type your message here...' id="txtcomment" class="msg-textarea" onkeypress="return IsAlphaNumeric(event);"></textarea>
+                            <span style="cursor:pointer" onclick="SendMassge()" class="btn-sendmsg">
+                                <i class="fa fa-send"></i>
+                            </span>
+                        </div>
+                        <div class="tab-pane" id="f" style="height:680px;"></div>
+                    </div>
+
+                    <!-- /tab-content -->
+                </div>
+                <!--tabs sidebar-->
+            </div>
+
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper main-tiny">
+        <!-- Content Header (Page header) -->
+        <!-- Main header content -->
+        <section class="content">
+            <!-- Info boxes -->
+            @if (Model.LessonPlanStatus == 3)
+            {
+                if (SessionManager.Current.UserID != Model.OwnerId)
+                {
+                    if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanRateLesson, Convert.ToInt32(SessionManager.Current.UserID)))
+                    {
+                        if (Model.Rating == 0)
+                        {
+                            <div id="ratediv" class="col-lg-12">
+                                <div class="rating-lesson">
+                                    <input id="input-1" name="input-1" class="rating rating-loading" data-min="0" data-max="5" data-step="1" value="0">
+                                    <a href="#" onclick="RateLesson();">Rate This Lesson</a>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="ratediv" class="">
+                                <div class="rating-lesson" style="background-color:white !important;padding:4px 35px 0px 8px !important;text-align:right;cursor:default;margin-right:15px;border-bottom:0;">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= Model.Rating)
+                                        {
+                                            <i class="fa fa-star"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-star-o"></i>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            }
+            <div class="row">
+                <div class="editor-box">
+                    <div class="header-editor">
+                        <div class="col-lg-4 col-md-4 col-xs-12 col-xs-12 lsn-t">
+                            <h2>@Model.SubjectName</h2>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-12 col-xs-12">
+                            <ul class="editor-btn">
+                                <li class="btn-icon" title="Back" onclick="GoBack();"><a href=""></a> <i class="fa fa-arrow-left"></i></li>
+                                <li class="btn-icon" title="Get PDF" onclick="getpdf();"><a href=""></a> <i class="fa fa-file-pdf-o"></i></li>
+                                @if (Model.LessonPlanStatus == 2 && SessionManager.Current.UserID != Model.OwnerId)
+                                {
+                                    if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanRejectLesson, Convert.ToInt32(SessionManager.Current.UserID)))
+                                    {
+                                        <li class="btn-ver" id="rejectbtn"><a href="#" onclick="Modification();" title="Reject and send back to author">Reject</a></li>
+                                    }
+                                }
+                                @if (Model.LessonPlanStatus != 3 && Model.LessonPlanStatus == 2)
+                                {
+                                    if (SessionManager.Current.UserID != Model.OwnerId)
+                                    {
+                                        if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanVerifiyLesson, Convert.ToInt32(SessionManager.Current.UserID)))
+                                        {
+                                            <li class="btn-ver"><a href="#" onclick="VerifyLesson();" title="Mark as Approved">Approve</a></li>
+                                        }
+                                    }
+                                }
+                            </ul>
+
+                        </div>
+                        <div class="">
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                <div class="lsn-selection">
+                                    <span class="lsn-unit">Unit: @Model.UnitNumber </span>
+                                    <p class="lsn-name-list">Lesson @Model.LessonNumber <span class="chp-name">@Model.LessonTitle</span></p>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                <ul class="editor-btn">
+                                    <li class="btn-simple"><a href="#">@Model.ClassName</a></li>
+                                    <li class="btn-simple"><a href="#">@Model.Duration mins</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!--ck editor-->
+                <div class="col-md-12">
+                    <div class="tinymc-box" style="height:auto !important">
+                        @{
+
+                            if (Model.sections != null)
+                            {
+                                for (int i = 0; i < Model.sections.Count; i++)
+                                {
+                                    int count = Model.subsections.Count(x => x.SectionId == Model.sections[i].Id);
+                                    <span class="title-editor">
+                                        <span>@Model.sections[i].Name </span>
+                                        <span class="duration">@Model.sections[i].Duration.Replace("(", "").Replace(")", "").Replace("minute", "mins")</span>
+                                    </span>
+                                    <div class="clearfix"></div>
+
+                                    if (Model.subsections != null)
+                                    {
+                                        for (int j = 0; j < Model.subsections.Count; j++)
+                                        {
+                                            if (Model.subsections[j].SectionId == Model.sections[i].Id)
+                                            {
+                                                if (count != 1)
+                                                {
+                                                    <span class="sub-section" style="cursor:default">
+                                                        <span id="spn_@Model.subsections[j].SubSectionId">@Model.subsections[j].SubSectionName</span>
+                                                    </span>
+                                                    <div class="clearfix"></div>
+                                                }
+                                                if (Model.subsections[j].SubSectionId == 3 || Model.subsections[j].SubSectionId == 5 || Model.subsections[j].SubSectionId == 2)
+                                                {
+                                                    <div id="txt_@Model.subsections[j].LessonPlanScriptId" class="subsectiondata" style="padding:0px 30px 0px 30px !important">
+                                                        @MvcHtmlString.Create(Model.subsections[j].LessonPlanScript)
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                }
+                                                else
+                                                {
+                                                    <div id="txt_@Model.subsections[j].LessonPlanScriptId" class="subsectiondata  editedsubsection">
+                                                        @MvcHtmlString.Create(Model.subsections[j].LessonPlanScript)
+                                                    </div>
+
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+
+                    </div>
+                    @*<div class="clearfix"></div>
+                        <div id="dummydiv"></div>*@
+                </div>
+
+            </div>
+        </section>
+    </div>
+    <aside class="control-sidebar  control-sidebar-open sidebar-colaspe right-bar-tiny">
+            @*Users working on this lesson*@
+            <div class="" id="userWorking colaspe-tabs">
+                @if (Model.lstLessonUsers.LessonOwner != null)
+                {
+                    <div class="sidebar-head verif sub-detail">
+                        <h3 style="width:100%">Submission Detail</h3>
+
+                        <div class="box-info">
+                            @if (Model.lstLessonUsers.LessonOwner.StartTime != null && Model.lstLessonUsers.LessonOwner.StartTime != "")
+                            {
+                                <h2 style="width:100%;margin-top:10px">Creation Date: <label>@Convert.ToDateTime(Model.lstLessonUsers.LessonOwner.StartTime).ToString("dd/MM/yyyy")</label></h2>
+                            }
+                            @if (Model.lstLessonUsers.LessonOwner.CompleteDate != null && Model.lstLessonUsers.LessonOwner.CompleteDate != "")
+                            {
+                                <h2 style="width:100%">Submission Date: <label>@Convert.ToDateTime(Model.lstLessonUsers.LessonOwner.CompleteDate).ToString("dd/MM/yyyy")</label></h2>
+                            }
+                           @if (Model.lstLessonUsers.LessonOwner.TimeConsumed != null && Model.lstLessonUsers.LessonOwner.TimeConsumed != "")
+                           {
+
+                            <h2 style="width:100%;">Time Consumed: <label>@Model.lstLessonUsers.LessonOwner.TimeConsumed</label></h2>
+                           }
+                            @if (Model.lstLessonUsers.LessonOwner.Rating != 0)
+                            {
+                                <h2 style="width:100%">
+                                Rating:
+                                <label>
+                                    @for (int i = 1; i <= Model.lstLessonUsers.LessonOwner.Rating; i++)
+                                    {
+                                        if (i <= Model.lstLessonUsers.LessonOwner.Rating)
+                                        {
+                                            <i class="fa fa-star"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-star-o"></i>
+                                        }
+                                    }
+                                </label>
+                            </h2>
+                            }
+                           @if (Model.lstLessonUsers.LessonOwner.LastVerifiyBy != null && Model.lstLessonUsers.LessonOwner.LastVerifiyBy != "")
+                           {
+                            <h2 style="width:100%;margin-bottom:10px">Approved by: <label>@Model.lstLessonUsers.LessonOwner.LastVerifiyBy</label></h2>
+                           }
+
+                        </div>
+                    </div>
+                }
+                <div class="panel-group right-bar" id="accordion">
+                    @if (Model.lstLessonUsers != null && Model.lstLessonUsers.LessonOwner.OwnerID != SessionManager.Current.UserID)
+                    {
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a id="member" data-toggle="collapse" class="collapsed" onclick="Tab(this)" data-parent="#accordion" href="#collapse2">
+                                        Members
+                                        @*@if (Model.lstLessonUsers.LessonUserRightList != null)
+                                        {
+                                            <span> (@Model.lstLessonUsers.LessonUserRightList.Count)</span>
+                                        }
+                                        else
+                                        {
+                                            <span> (0)</span>
+                                        }*@
+                                        <span class="fa fa-plus"></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div id="workingUserList" class="thumb-read fix-height-member">
+                                        @if (Model.lstLessonUsers.LessonOwner != null)
+                                        {
+                                            <div class="user-name-box">
+                                                <span class="user-rights">
+                                                    <img src="..\\Handler\\UserImageHandler.ashx?key=@Model.lstLessonUsers.LessonOwner.OwnerID&&Time=@DateTime.Now.Millisecond" class="img-responsive" alt="user-icon" />
+                                                </span>
+                                                <span class="user-work">
+                                                    @Model.lstLessonUsers.LessonOwner.OwnerName (Owner)<br />
+                                                    @Model.lstLessonUsers.LessonOwner.OwnerEmail <br />
+                                                    @Model.lstLessonUsers.LessonOwner.ContactNo
+                                                </span><br />
+                                            </div>
+                                        }
+                                        @if (Model.lstLessonUsers.LessonUserRightList != null && Model.lstLessonUsers.LessonUserRightList.Count > 0)
+                                        {
+                                            foreach (var item in Model.lstLessonUsers.LessonUserRightList)
+                                            {
+                                                <div class="user-name-box readmode-title" id="lessonuser_@item.UserID">
+                                                    @if (Model.lstLessonUsers.LessonOwner.OwnerID == SessionManager.Current.UserID)
+                                                    {
+
+
+                                                        <span class="user-rights">
+                                                            <img src="..\\Handler\\UserImageHandler.ashx?key=@item.UserID&&Time=@DateTime.Now.Millisecond" class="img-responsive" alt="user-icon" />
+                                                        </span>
+                                                        <span class="user-work">
+                                                            <span class="name-icon-box" onclick="GetLessonRights(@item.UserID)">
+                                                                @item.UserName
+                                                                <span class="newtooltips">
+                                                                    <span class="tooltxt"><b><i class="fa fa-envelope"> </i> </b>@item.UserEmail<span class="clearfix"></span>  <b><i class="fa fa-phone"></i> </b>@item.UserContactNo</span>
+                                                                </span>
+
+                                                                @if (item.Icon == "View")
+                                                                {
+                                                                    <span class="icon-v"><i id="edit_@item.UserID" class="fa fa-eye"></i></span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="icon-edit"><i id="edit_@item.UserID" class="fa fa-edit"></i></span>
+                                                                }
+                                                            </span>
+                                                        </span>
+                                                        <span class="icon-cl"><i style="cursor:pointer" onclick="Revoke(@item.UserID)" class="fa fa-close"></i></span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <span class="user-rights">
+                                                            <img src="..\\Handler\\UserImageHandler.ashx?key=@item.UserID&&Time=@DateTime.Now.Millisecond" class="img-responsive" alt="user-icon" />
+                                                        </span>
+
+                                                        @*<span class="user-work title-tooltip" title="@item.UserEmail &#013; @item.UserContactNo">*@
+                                                        <span class="user-work title-tooltip">
+                                                            @item.UserName
+                                                            <span class="newtooltips">
+                                                                <span class="tooltxt"><b><i class="fa fa-envelope"> </i> </b>@item.UserEmail<span class="clearfix"></span> <b><i class="fa fa-phone"></i> </b>@item.UserContactNo</span>
+                                                            </span>
+
+                                                        </span>
+
+                                                    }
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.LessSourinfo != null)
+                    {
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a id="source" data-toggle="collapse" class="collapsed" onclick="Tab(this)" data-parent="#accordion" href="#collapse3">
+                                        Source
+                                        <span class="fa fa-plus"></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse3" class="panel-collapse collapse">
+                                <div class="panel-body source-info">
+                                    <div class="fix-height-source">
+
+                                        <div class="temp-source">
+                                            <img src="/CDS/images/thumbnail-template.png">
+                                        </div>
+
+                                        <h2>@Model.LessSourinfo.Name</h2>
+                                        <p>Email: @Model.LessSourinfo.Email</p>
+                                        <p>
+                                            Rating:
+                                            <span>
+                                                @for (int i = 1; i <= Convert.ToInt32(Model.LessSourinfo.Rating); i++)
+                                                {
+                                                    <i class="fa fa-star"></i>
+                                                }
+                                            </span>
+                                        </p>
+                                        <p>Total Lessons: @Model.LessSourinfo.ToatlLessons</p>
+                                        <p>Total Votes: @Model.LessSourinfo.ToatlVotes</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.VocabloryCount != null && Model.VocabloryCount!="")
+                    {
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a id="vocabulary" data-toggle="collapse" class="collapsed" onclick="Tab(this)" data-parent="#accordion" href="#collapse4">
+                                        Vocabulary
+                                        <span class="fa fa-plus"></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse4" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="fix-height-voc">
+                                        @MvcHtmlString.Create(Model.VocabloryCount)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+    </aside>
+    <div id="UserLessonBrowser"></div>
+    <div class="modal fade" id="confirmLessonRights" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-confirm" role="document">
+            <div class="modal-content" style="">
+                <div class="modal-body" style="">
+                    <p style="font-size:18px;">Are you sure you want to remove this user?</p>
+                    <button onclick="CloseConfirmModal()" class="btn-close">No</button>
+                    <button onclick="RevokeUser()" style="" class="btn-blue">Yes</button>
+                    <input type="hidden" id="deleteUserID" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="control-sidebar-bg"></div>
+    <div id="RejectModel" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-default">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Rejection Notes</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            Comments:
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                            <textarea required="required" id="txtreject" maxlength="2000" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-close" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn-blue" onclick="onOKClick();">OK</button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+<section id="GlobelVariables">
+    <script>
+        $(function(){
+            CloseMenu = true;
+        });
+        var EncBookID='@Model.EncBookID';
+        var BookID='@Model.BookID';
+        var LessonID='@Model.LessonID';
+        var ChapterID='@Model.ChapterID';
+        var imageUpdateID, soundUpdateID, videoUpdateID;
+        var imgbookid = 0;
+        var lessonplanid='@Model.LessonPlanID';
+        var direction='@Model.LanguageID';
+        var lessonplanidint=@Model.LessonPlanIDDecr;
+        var closeCheck = 0;
+        var isindexpage=false;
+        var OwnerID = '@Model.OwnerId';
+        var VerifiedID=@Model.VerifiedID;
+    </script>
+</section>
+<section id="comment">
+    <script>
+        function ShowComment(id,secId,cmntId)
+        {
+            return false;
+        }
+        function IsAlphaNumeric(e)
+        {
+            if (e.keyCode == 13)
+            {
+                var comment=$("#txtcomment").val();
+                if(comment!=""){
+                    SendMassge();
+                }else{
+                    event.preventDefault();
+                }
+            }
+
+            return true;
+        }
+        var globalUserId = @SessionManager.Current.UserID
+        function SendMassge()
+        {
+
+            var ids = '';
+            var emails = '';
+
+            var userid = globalUserId;
+            var comment = $('#txtcomment').val();
+            if(comment == '')
+            {
+                alert("Message field can't be empty");
+                return false;
+            }
+            var bktypeId= 1;
+            var cmnt1=comment. replace(/\[/g, "<b>");
+            var cmnt2=cmnt1.replace(/\]/g,"</b>");
+
+            if (comment != 0)
+            {
+                $("#commentLoader").show();
+                $.ajax({
+                    url: '../Comment/AddComment',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { LessonID: LessonID , userid: userid , Comment: cmnt2 ,BookTypeID:bktypeId,LessonPlanID: lessonplanidint,OwnerID:OwnerID },
+                    success: function (data) {
+                        fill_MsgHeader();
+                        $('#txtcomment').val('');
+                    }
+                }).done(function (response){
+                    $("#commentLoader").hide();
+                });
+            }
+        }
+
+        function fill_MsgHeader()
+        {
+
+            var html = '';
+            var ShowArchive = 0;
+            $('#dvMsgHolder').html('');
+            $.ajax({
+                async:false,
+                url:'../LessonPlanEditor/Get_Msg',
+                type:'POST',
+                datatype:'Json',
+                data:{LessonID:LessonID,BookTypeId :1, ShowArchive: ShowArchive,isSorted:true,LessonPlanID:lessonplanidint },
+                success:function(data)
+                {
+                    if(data != "-1")
+                    {
+                        $.each(data,function(i,ele){
+
+                            if(globalUserId == ele.UserID_A)
+                            {
+                                html +=  '<div id="cmnt_'+ele.Message_ID+'" class="chat-box"> <p class="user-label">'+ele.FirstName +' '+ ele.LastName+'</p>';
+                                html +=  '<div id="cmntBody_'+ele.Message_ID+'" class="arrow_box_left" onclick="ShowComment('+ele.textID+','+ele.sectionID+','+ele.Message_ID+')">'+ele.Comment +'</div>';
+                                html +=  '<p class="time-msg">'+ele.CommentTimeAgo +'</p></div>';
+                            }
+                            else{
+                                html +=  '<div id="cmnt_'+ele.Message_ID+'" class="chat-box chat-right"> <p class="user-label">'+ele.FirstName +' '+ ele.LastName+'</p>';
+                                html +=  '<div id="cmntBody_'+ele.Message_ID+'" class="arrow_box_left" onclick="ShowComment('+ele.textID+','+ele.sectionID+','+ele.Message_ID+')">'+ele.Comment +'</div>';
+                                html +=  '<p class="time-msg">'+ele.CommentTimeAgo +'</p></div>';
+                            }
+                        });
+                        $('#dvMsgHolder').html(html);
+                    }
+                    else
+                    {
+                        window.location.href="../User/LoginUser";
+                    }
+                    //}
+                },
+                error:function(e)
+                {
+                    html += '<div style="" class="write-text">';
+                    //html += '<textarea type="text" id="txtcomment" class="mention" style="min-height: 40px !important;width:100% !important" placeholder="Type your message here..." onkeypress="return IsAlphaNumeric(event);"></textarea>';
+                    html += '</div>';
+                    $('#dvMsgHolder').html(html);
+                }
+            });
+
+
+
+        }
+
+        var mode='@ViewBag.Mode';
+        var Rcount = '@UnreadCount';
+
+        if(mode == "Desktop" || mode == "Message")
+        {
+            activaTab('chat');
+        }
+        function activaTab(tab){
+            $('a[href="#' + tab + '"]').tab('show');
+            $("body").removeClass('sidebar-collapse');
+        };
+        if(Rcount != 0)
+        {
+            setTimeout(ChangeReadStatus, 5000)
+        }
+        function ChangeReadStatus()
+        {
+            $.ajax({
+                url: '../Comment/ChangeReadStatus',
+                type: "POST",
+                dataType: 'json',
+                data: { LessonPlanID:lessonplanidint },
+                success: function (result)
+                {
+                    if (result != null)
+                    {
+                        if(result.unReadObj.UnreadCount == 0)
+                        {
+                            $("#notificationCount").text('');
+                            $('.menu li').remove();
+                            $('.footer a').text('');
+                            $("#header_msg").text('');
+                            $("#header_msg").text('You have no new messages');
+                        }
+                        else
+                        {
+                            $("#notificationCount").text(result.unReadObj.UnreadCount);
+                            $("#header_msg").text('You have '+result.unReadObj.UnreadCount+'no new messages');
+                        }
+                        for(var i=0;i<result.unReadObj.MessageList.length;i++)
+                        {
+                            $("#cmntBody_" + result.unReadObj.MessageList[i]).css('background-color', '#fff');
+                            $("#Inboxcmnt_" + result.unReadObj.MessageList[i]).remove();
+                        }
+                    }
+                },
+                error: function (ex)
+                {
+                    return false
+                }
+            });
+        }
+    </script>
+</section>
+<section id="pdf">
+    <script>
+        var mode='@ViewBag.Mode';
+
+        function GoBack()
+        {
+            UpdateVerifiedTrackID();
+            $.ajax({
+
+                url: '../LessonPlanEditor/ResetLock',
+                type: "GET",
+                datatype: "json",
+                data: { ID: lessonplanidint },
+                success: function (data)
+                {
+                    var url="";
+                    if (mode=="List") {
+                        url = "../LessonPlanEditor/LessonList";
+                    }
+                    else if (mode=="SS") {
+                        url = "../ScopeSequence/BookConfig?BookID="+BookID;
+                    }
+                    else if (mode=="Temp") {
+                        url = "../LessonTemplates/Index?LessonID="+LessonID;
+                    }
+                    else if (mode=="Desktop") {
+                        url = "../Home/Index";
+                    }
+                    else if (mode=="Message") {
+                        url = "../Comment/CommentInbox";
+                    }
+                    else if (mode=="Verify" || mode=="Verified")
+                    {
+                        url = "../LessonPlanEditor/UnderVerificationLessons";
+                    }
+                    var win = window.open(url, '_self');
+                }
+            });
+
+        }
+        function getpdf()
+        {
+            var win=window.open();
+            document.body.style.cursor = 'wait';
+            $.ajax({
+                type: 'GET',
+                url: '../HTMLTOWORD/Index',
+                async:false,
+                data: {LessonPlanID: lessonplanid},
+                success: function(result)
+                {
+                    if (result!=null)
+                    {
+                        document.body.style.cursor = 'default';
+                        win.location.replace(result);
+                    }
+                },
+                error:function(result){
+
+                    alert('error');
+                }
+            });
+        }
+        function Modification(){
+            if(confirm("Are you Sure you want to reject this Lesson?"))
+            {
+                $("#RejectModel").modal('show');
+
+            }
+        }
+        function UpdateVerifiedTrackID()
+        {
+            if (lockbytrackid!=0) {
+                $.ajax({
+                    type: 'GET',
+                    url: '../LessonPlanEditor/UpdateVerifiedTracking',
+                    data: { ID: lockbytrackid},
+                    success: function (result) {
+                    },
+                    error: function (result) {
+                    }
+                });
+            }
+        }
+        function onOKClick()
+        {
+            var msg=$("#txtreject").val();
+            if (msg==null || msg=="") {
+                alert("Please Add Reason for rejection.");
+                $("#txtreject").focus();
+                return false;
+            }
+            UpdateVerifiedTrackID();
+            $.ajax({
+                type: 'GET',
+                url: '../LessonPlanEditor/RejectLesson',
+                async: false,
+                data: { LessonPlanID: lessonplanid,LessonID:LessonID,OwnerID:OwnerID,Masg:msg},
+                success: function (result) {
+                    if (result != null)
+                    {
+                        var url="";
+                        if (mode=="List") {
+                            url = "../LessonPlanEditor/LessonList";
+                        }
+                        else if (mode=="SS") {
+                            url = "../ScopeSequence/BookConfig?BookID="+BookID;
+                        }
+                        else if (mode=="Temp") {
+                            url = "../LessonTemplates/Index?LessonID="+LessonID;
+                        }
+                        else if (mode=="Desktop") {
+                            url = "../Home/Index";
+                        }
+                        else if (mode=="Message") {
+                            url = "../Comment/CommentInbox";
+                        }
+                        else if (mode=="Verify" || mode=="Verified")
+                        {
+                            url = "../LessonPlanEditor/UnderVerificationLessons";
+                        }
+                        var win = window.open(url, '_self');
+                    }
+                },
+                error: function (result) {
+
+
+                }
+            });
+        }
+    </script>
+</section>
+<section id="verify">
+
+    <script>
+        $("#input-id").rating();
+        $('.glyphicon-minus-sign').hide();
+        $('.caption').hide();
+    </script>
+    <script>
+        function VerifyLesson()
+        {
+            if(confirm("Are you Sure to Approve this Lesson?")){
+                $.ajax({
+                    type: 'GET',
+                    url: '../LessonPlanEditor/VerifyLesson',
+                    data: { LessonPlanID: lessonplanid,LessonID:LessonID,OwnerID:OwnerID},
+                    success: function (result) {
+                        if (result != null) {
+                            window.location.reload();
+                        }
+                    },
+                    error: function (result) {
+                    }
+                });
+            }
+        }
+        function RateLesson()
+        {
+            var val= $('.filled-stars').width();
+            var parentWidth = $('.filled-stars').offsetParent().width();
+            var percent = 100*val/parentWidth;
+            val=percent/20;
+            val=parseInt(val);
+            if (val==0) {
+                return;
+            }
+                $.ajax({
+                    type: 'GET',
+                    url: '../LessonPlanEditor/RateLesson',
+                    data: { LessonPlanID:lessonplanid,Rating:val,VerifiedID:VerifiedID },
+                    success: function (result) {
+                        if (result != null)
+                        {
+                            window.location.reload();
+                        }
+                    },
+                    error: function (result) {
+                    }
+                });
+        }
+    </script>
+</section>
+<section id="Lock">
+    <script>
+        //window.onerror = function (errorMsg, url, lineNumber,error) {
+        //    alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber + 'ErrorObj' + error);}
+        var lockby='@Model.LockedBy';
+        var lockbytrackid='@Model.VerifiedLockTrackId';
+        var islockbyverifier='@Model.IsLockByVerifier';
+        var int;
+        $(function()
+        {
+            if (islockbyverifier!='0' && islockbyverifier!='')
+            {
+                int=setInterval(UpdateLock, 10000);
+            }
+
+        });
+        function UpdateLock()
+        {
+            $.ajax({
+                type: 'GET',
+                url: '../LessonPlanEditor/UpdateLock',
+                data: { ID: lessonplanidint,VerifiedLockTrackid:lockbytrackid},
+                success: function (result) {
+                },
+                error: function (result) {
+                }
+            });
+        }
+        function GetLessonRights(userID)
+        {
+            loader();
+            $.ajax({
+                url: "../LessonPlanEditor/GetLessonRights",
+                type: 'GET',
+                cache: false,
+                async: true,
+                data: { "userID":userID,"lessonPlanID":lessonplanidint },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    var savedData = data;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (result) {
+                            if (result == 1)
+                            {
+                                $("#UserLessonBrowser").html('');
+                                $("#UserLessonBrowser").html(savedData);
+                            }
+                            else
+                            {
+                                window.location.href =  "../User/LoginUser";
+                            }
+                        }
+                    }).done(function (response) {
+                        $("#loading_block").hide()
+                    });
+
+                }
+            });
+        }
+        function Revoke(userID)
+        {
+            $("#confirmLessonRights").modal('show');
+            $("#deleteUserID").val(userID);
+
+        }
+        function RevokeUser()
+        {
+            var userID =  $("#deleteUserID").val();
+            var $URL = '../LessonPlanEditor/UpdateUserLessonRights';
+            $.ajax({
+                url: $URL,
+                type: "POST",
+                dataType: "json",
+                data: { userID:userID,lessonPlanID:lessonplanidint, lst: null,isRevoke:true },
+                success: function (data) {
+                    if (data != null && data == "Done") {
+                        alert("Saved Successfully.");
+                        $("#lessonuser_"+userID).remove();
+                        $("#confirmLessonRights").modal('hide');
+                    }
+
+                },
+                error: function () {
+                    alert("Sorry Something went Wrong.");
+                    $("#confirmLessonRights").modal('hide');
+
+                }
+            });
+        }
+        function CloseConfirmModal(){$("#confirmLessonRights").modal('hide');}
+    </script>
+</section>
+<section id="multimediascripts">
+    <script>
+        function ImageModal(id,nickname,src) {return false}
+        function SoundModal(id, nickname,src) {return false}
+        function VideoModal(id, nickname,src) {return false}
+
+    </script>
+
+    <script>
+        function Tab(e)
+        {
+            var id = e.id;
+            if($("#"+id).hasClass('collapsed'))
+            {
+                e.childNodes[1].className = "fa fa-minus";
+            }
+            else
+            {
+                e.childNodes[1].className = "fa fa-plus";
+            }
+            if(id == "member")
+            {
+                $("#source span").removeClass("fa fa-minus").addClass("fa fa-plus");
+                $("#vocabulary span").removeClass("fa fa-minus").addClass("fa fa-plus");
+            }
+            else if(id == "source")
+            {
+                $("#member span").removeClass("fa fa-minus").addClass("fa fa-plus");
+                $("#vocabulary span").removeClass("fa fa-minus").addClass("fa fa-plus");
+            }
+            else if(id == "vocabulary")
+            {
+                $("#member span").removeClass("fa fa-minus").addClass("fa fa-plus");
+                $("#source span").removeClass("fa fa-minus").addClass("fa fa-plus");
+            }
+        }
+    </script>
+</section>

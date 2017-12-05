@@ -1,0 +1,176 @@
+﻿@model CDS.Models.TemplateModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+<link href="~/Content/TinyMceCustom.css" rel="stylesheet" />
+
+<div class="container-fluid main-con">
+    <div class="title-bar">
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">Available Templates</a></li>
+                </ul>
+                <div class="pull-right">
+                    <a href="../ScopeSequence/BookConfig?BookID=@Model.SeletedBookID" class="btn-back" title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="template-box">
+        <div class="temp-thumb">
+            @if (Model.lst != null && Model.lst.Count != 0)
+            {
+                foreach (var item in Model.lst)
+                {
+                    string cls = "";
+                    if (item.TemplateID == Model.SeletedTemplate)
+                    {
+                        cls = "grade-active";
+                    }
+                    else
+                    {
+                        cls = "";
+                    }
+                    <div class="thumb text-center" style="margin-top:15px">
+                        <a href="../LessonTemplates/Index?TemplID=@item.TemplateID&&LessonID=@Model.SeletedLessonId" target="_self" title="Get Details">
+                            <img src="../images/thumbnail-template.png" class="@cls">
+                        </a>
+                        <p>@item.Name</p>
+                        <div class="rating">
+                            @if (item.TemplateID != -1)
+                    {
+                        for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= item.Rating)
+                            {
+                                        <i class="fa fa-star"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-star-o"></i>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="thumb">
+                </div>
+            }
+        </div>
+        <div class="compose-temp">
+            <div class="lsn-title">
+                @if (Model.lst != null && Model.lst.Count != 0)
+                {
+                    string cls = "";
+                    if (Model.LanguageID == 1)
+                    {
+                        cls = "";
+                    }
+                    else
+                    {
+                        cls = "mainTxt17";
+                    }
+                    <h2 class="@cls">@Model.lst.Where(x => x.TemplateID == Model.SeletedTemplate).FirstOrDefault().Title</h2>
+                        <div class="rating">
+                            @if (Model.SeletedTemplate != -1)
+                            {
+                                for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= Model.lst.Where(x => x.TemplateID == Model.SeletedTemplate).FirstOrDefault().Rating)
+                                    {
+                                        <i class="fa fa-star"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-star-o"></i>
+                                    }
+                                }
+                            }
+                        </div>
+                }
+                else
+                {
+                    <h2></h2>
+                    <div class="rating fa">
+                    </div>
+                }
+            </div>
+            <div class="temp-btn">
+                @if (Model.IsExist != 0)
+                {
+                    <a title="Open Lesson" href="../LessonPlanEditor/LessonPlan?LessonId=@CDS.Logic.EncyptionDcryption.GetEncryptedText(Model.SeletedLessonId.ToString())&&mode=SS">Open</a>
+                }
+                else
+                {
+                    if (Model.lst != null && Model.lst.Count != 0)
+                    {
+                        <a title="Create your own Lesson" href="../LessonPlanEditor/LessonPlan?LessonId=@CDS.Logic.EncyptionDcryption.GetEncryptedText(Model.SeletedLessonId.ToString())&&mode=SS">Create</a>
+                        <a href="../LessonTemplates/SaveTemp?TempID=@Model.SeletedTemplate&&LessonId=@Model.SeletedLessonId" title="Import this Lesson">Save As</a>
+                    }
+                }
+            </div>
+            @if (Model.obj != null)
+            {
+                string cls = "";
+                if (Model.LanguageID == 1)
+                {
+                    cls = "";
+                }
+                else
+                {
+                    cls = "urdudivdirection mainTxt17";
+                }
+                <div class="temp-body @cls" style="padding-bottom:0;">
+                    @if (Model.obj.lstSection != null)
+                    {
+                        for (int i = 0; i < Model.obj.lstSection.Count; i++)
+                        {
+                            <span class="title-editor" style="padding:0px 10px 0 30px !important">
+                                <span>@Model.obj.lstSection[i].Name </span>
+                            </span>
+                                <div class="clearfix"></div>
+
+                            if (Model.obj.lstSubsection != null)
+                            {
+                                for (int j = 0; j < Model.obj.lstSubsection.Count; j++)
+                                {
+                                    if (Model.obj.lstSubsection[j].SectionId == Model.obj.lstSection[i].Id)
+                                    {
+                                        int count = Model.obj.lstSubsection.Count(x => x.SectionId == Model.obj.lstSection[i].Id);
+                                        if (count != 1)
+                                        {
+                                            <span class="sub-section" style="padding:0px 10px 0 30px !important">
+                                                <span id="spn_@Model.obj.lstSubsection[j].SubSectionId">@Model.obj.lstSubsection[j].SubSectionName</span>
+                                            </span>
+                                                <div class="clearfix"></div>
+                                        }
+                                        <div id="txt_@Model.obj.lstSubsection[j].LessonPlanScriptId" class="subsectiondata" style="padding:0px 30px 0px 30px !important">
+                                            @MvcHtmlString.Create(Model.obj.lstSubsection[j].LessonPlanScript)
+                                        </div>
+                                            <div class="clearfix"></div>
+                                    }
+                                }
+                            }
+                        }
+                    }
+                </div>
+            }
+            else if (Model.IsExist == 0)
+            {
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center create-temp">
+                    <h3>Sorry there is no template available for this lesson. Click below to create your own lesson.</h3>
+                    <a title="Create your own Lesson" class="btntemplate" href="../LessonPlanEditor/LessonPlan?LessonId=@CDS.Logic.EncyptionDcryption.GetEncryptedText(Model.SeletedLessonId.ToString())&&mode=Temp">Create</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

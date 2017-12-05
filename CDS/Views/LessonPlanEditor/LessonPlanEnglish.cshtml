@@ -1,0 +1,2843 @@
+﻿@using LEAF_Logic
+@using CDS.Models
+@model CDS.Models.LessonInfo
+@{
+    ViewBag.Title = "LessonPlanEnglish";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+    int UnreadCount = 0;
+    List<int> UnreadMessageID = new List<int>();
+    int ModelCount = 0;
+    if (Model.LessonUserAccess != null && Model.LessonUserAccess.Count() > 0)
+    {
+        ModelCount = 1;
+    }
+    string tinymcestyle = "";
+    if (Model.LockedBy!=null && Model.LockedBy!="")
+    {
+        tinymcestyle = "height:auto !important";
+    }
+
+    <section id="pagescripts">
+        <link href="~/Scripts/tinymce/ui.css" rel="stylesheet" />
+        <link href='~/Content/MyTinyMce.css' rel='stylesheet' />
+        <script src="~/Scripts/tinymce/tiny_mce.js"></script>
+        <script src="~/Scripts/tinymce/tiny_mce_src.js"></script>
+        <link href="~/Content/watchbootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/TinyMceCustom.css" rel="stylesheet" />
+        <link href="~/Content/style-tabs.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery.ui.widget.js"></script>
+        <script src="~/Scripts/jquery.fileupload.js"></script>
+        <script src="~/Scripts/adminlte.min.js"></script>
+        <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+        <link href="~/Tagging/Content/jquery.mentionsInput.css" rel="stylesheet" />
+        <script src="~/Tagging/Scripts/underscore.js"></script>
+        <script src="~/Tagging/lib/jquery.elastic.js"></script>
+        <script src="~/Tagging/Scripts/jquery.mentionsInput.js"></script>
+        <script src="~/Tagging/assets/examples.js"></script>
+        <link href="~/Content/star-rating.min.css" rel="stylesheet" />
+        <script src="~/Scripts/star-rating.min.js"></script>
+
+
+    </section>
+}
+<style>
+
+
+    .line {
+      width: 100%;
+      color: black;
+      height: 1px;
+      background-color: black;
+      position: absolute;
+      top: 0;
+      z-index: 120000;
+    }
+    .rename-media {
+        background: transparent none repeat scroll 0 0;
+        border: 1px solid #fff;
+        bottom: -38px;
+        box-shadow: none;
+        left: 0;
+        position: absolute;
+        text-align: center;
+    }
+
+</style>
+<section id="GlobelVariables">
+    <script>
+        //$(document).ajaxStart(function(){
+        //    loader();
+        //});
+        //$(document).ajaxComplete(function(){
+        //    $("#loading_block").hide();
+        //});
+        $(window).load(function(){
+            $("#loading_block").hide();
+        });
+        var EncBookID='@Model.EncBookID';
+        var BookID='@Model.BookID';
+        var LessonID='@Model.LessonID';
+        var ChapterID='@Model.ChapterID';
+        var imageUpdateID, soundUpdateID, videoUpdateID;
+        var imgbookid = 0;
+        var lessonplanid='@Model.LessonPlanID';
+        var direction='@Model.LanguageID';
+        var lessonplanidint=@Model.LessonPlanIDDecr;
+        var closeCheck = 0;
+        var isindexpage=false;
+        var lessonownerid=@Model.OwnerId;
+    </script>
+</section>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Leaf New Design</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    @*<div class="line"></div>*@
+    <input type="hidden" value="@SessionManager.Current.UserID" id="currentUser" />
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar left-bar-tiny">
+        <section class="sidebar">
+            <!--tabs-sidebar-->
+            <div class="tabs-left">
+                @if (Model.LessonUserAccess != null && Model.LessonUserAccess.Count() > 0)
+                {
+                <ul class="nav nav-tabs">
+
+                    @if (Model.LessonUserAccess.ToList()[0].LessonOwnerID == SessionManager.Current.UserID)
+                    {
+                    <li onclick="ManageTabs('image')">
+                        <a id="ImageIcon" href="#Imagestab" data-toggle="tab">
+                            <span class="sidebar-toggle" data-toggle="push-menu">
+                                <span class="glyphicon glyphicon-picture">
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                    <li onclick="ManageTabs('video')">
+                        <a id="VideoIcon" href="#VideoTab" data-toggle="tab">
+                            <span class="sidebar-toggle" data-toggle="push-menu">
+                                <span class="glyphicon glyphicon-facetime-video"></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li onclick="ManageTabs('audio')">
+                        <a id="AudioIcon" href="#AudioTab" data-toggle="tab">
+                            <span class="sidebar-toggle" data-toggle="push-menu">
+                                <span class="glyphicon glyphicon-headphones"></span>
+                            </span>
+                        </a>
+                    </li>
+                        if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanSendComment, Convert.ToInt32(SessionManager.Current.UserID)))
+                        {
+                        <li onclick="ManageTabs('chat')">
+                            <a href="#chat" data-toggle="tab">
+                                <span class="sidebar-toggle" data-toggle="push-menu">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                </span>
+                            </a>
+                        </li>
+                        }
+                    }
+                    else
+                    {
+                        if (Model.LessonUserAccess.ToList()[1].HasRights)
+                        {
+                        <li onclick="ManageTabs('image')">
+                            <a id="ImageIcon" href="#Imagestab" data-toggle="tab">
+                                <span class="sidebar-toggle" data-toggle="push-menu">
+                                    <span class="glyphicon glyphicon-picture">
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+                        <li onclick="ManageTabs('video')">
+                            <a id="VideoIcon" href="#VideoTab" data-toggle="tab">
+                                <span class="sidebar-toggle" data-toggle="push-menu">
+                                    <span class="glyphicon glyphicon-facetime-video"></span>
+                                </span>
+                            </a>
+                        </li>
+                        <li onclick="ManageTabs('audio')">
+                            <a id="AudioIcon" href="#AudioTab" data-toggle="tab">
+                                <span class="sidebar-toggle" data-toggle="push-menu">
+                                    <span class="glyphicon glyphicon-headphones"></span>
+                                </span>
+                            </a>
+                        </li>
+                        }
+                        if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanSendComment, Convert.ToInt32(SessionManager.Current.UserID)))
+                        {
+
+                            <li onclick="ManageTabs('chat')">
+                                <a href="#chat" data-toggle="tab">
+                                    <span class="sidebar-toggle" data-toggle="push-menu">
+                                        <span class="glyphicon glyphicon-comment"></span>
+                                    </span>
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+                }
+                else
+                {
+                <ul class="nav nav-tabs">
+
+                            <li onclick="ManageTabs('image')">
+                                <a id="ImageIcon" href="#Imagestab" data-toggle="tab">
+                                    <span class="sidebar-toggle" data-toggle="push-menu">
+                                        <span class="glyphicon glyphicon-picture">
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li onclick="ManageTabs('video')">
+                                <a id="VideoIcon" href="#VideoTab" data-toggle="tab">
+                                    <span class="sidebar-toggle" data-toggle="push-menu">
+                                        <span class="glyphicon glyphicon-facetime-video"></span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li onclick="ManageTabs('audio')">
+                                <a id="AudioIcon" href="#AudioTab" data-toggle="tab">
+                                    <span class="sidebar-toggle" data-toggle="push-menu">
+                                        <span class="glyphicon glyphicon-headphones"></span>
+                                    </span>
+                                </a>
+                            </li>
+                            @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanSendComment, Convert.ToInt32(SessionManager.Current.UserID)))
+                            {
+                                <li onclick="ManageTabs('chat')">
+                                    <a href="#chat" data-toggle="tab">
+                                        <span class="sidebar-toggle" data-toggle="push-menu">
+                                            <span class="glyphicon glyphicon-comment"></span>
+                                        </span>
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                }
+                <div class="tab-content">
+                    <div class="tab-pane " id="Imagestab">
+                        <h3>
+                            Images Library
+                            @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanAddMedia, Convert.ToInt32(SessionManager.Current.UserID)))
+                            {
+                                <span class="upload-btn"><i style="cursor:pointer" id="uploadimgbtn" class="fa fa-upload pull-right"></i></span>
+                            }
+                        </h3>
+                        <select id="imageType" class="view-img form-control">
+                            <option value="My Images"> My Images </option>
+                            <option value="View All">View All</option>
+                        </select>
+
+                        <ul id="ImagesBox" class="list-group pull-left">
+                            @if (Model.ListImages != null)
+                            {
+                                foreach (var item in Model.ListImages)
+                                {
+                                    <li class="list-group-item">
+                                        <span class="media-img">
+                                            <img onclick="ShowImages(@item.FileID,1)" id="image_@item.FileID" src="..\\Handler\\ImagesHandler.ashx?from=false&&key=@item.ImageName" alt="gallery img" class="img-responsive" width="80" height="60">
+                                        </span>
+                                        @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanDeleteMedia, Convert.ToInt32(SessionManager.Current.UserID)))
+                                        {
+                                            <span class="img-close"><i class="fa fa-close" onclick="DeleteImages(@item.FileID,@item.UserID,'@item.ImageName')"></i> </span>
+                                        }
+                                        <input id="FileImage_@item.FileID" onblur="SaveImageName(@item.FileID)" title="Click here to change Name" placeholder="Untitled Image" type="text" class="form-control" value="@item.NickName" />
+                                        }
+                                    </li>
+                                }
+                            }
+
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="VideoTab" style="height:680px">
+                        <h3>
+                            Video Library
+                            @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanAddMedia, Convert.ToInt32(SessionManager.Current.UserID)))
+                            {
+                                <span class="upload-btn"><i style="cursor:pointer" id="uploadvideobtn" class="fa fa-upload pull-right"></i></span>
+                            }
+                        </h3>
+
+                        <select id="videoType" class="view-video form-control">
+
+                            <option value="My Videos" selected> My Video </option>
+                            <option value="View All">View All</option>
+                        </select>
+
+
+                        <ul id="VideoBox" class="list-group pull-left">
+                            @if (Model.ListVideos != null)
+                            {
+                                foreach (var item in Model.ListVideos)
+                                {
+                                    <li class="list-group-item vid-file">
+                                        <img onclick="ShowImages(@item.FileID , 3);" id="video_@item.FileID" src="../images/video-file.png" width="80" height="60">
+                                        <audio style="display:none;" controls>
+                                            <source id="vid_@item.FileID" src="..\Handler\SoundsHandler.ashx?key=@item.ImageName">
+                                        </audio>
+                                        @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanDeleteMedia, Convert.ToInt32(SessionManager.Current.UserID)))
+                                        {
+                                            <span class="img-close"><i onclick="DeleteImages(@item.FileID,@item.UserID,'@item.ImageName')" class="fa fa-close"></i> </span>
+                                        }
+                                        <input id="FileImage_@item.FileID" onblur="SaveImageName(@item.FileID)" title="Click here to change Name" placeholder="Untitled Image" type="text" class="form-control" value="@item.NickName" />
+                                    </li>
+
+
+                                }
+                            }
+
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="AudioTab" style="height:680px;">
+                        <h3>
+                            Audio Library
+                            @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanAddMedia, Convert.ToInt32(SessionManager.Current.UserID)))
+                            {
+                                <span class="upload-btn"><i style="cursor:pointer" id="uploadaudiobtn" class="fa fa-upload pull-right"></i></span>
+                            }
+                        </h3>
+                        <select id="audioType" class="view-audio form-control">
+                            <option value="My Audios" selected> My Audios </option>
+                            <option value="View All">View All</option>
+                        </select>
+
+                        <ul id="AudioBox" class="list-group pull-left">
+                            @if (Model.ListSounds != null)
+                            {
+                                foreach (var item in Model.ListSounds)
+                                {
+                                    <li class="list-group-item aud-file">
+                                        <img onclick="ShowImages(@item.FileID,2);" id="audio_@item.FileID" src="../images/sound-file.png" width="80" height="60">
+                                        <audio style="display:none;" controls>
+                                            <source id="aud_@item.FileID" src="..\Handler\SoundsHandler.ashx?key=@item.ImageName">
+                                        </audio>
+                                        @if (new CommonLogic().CanAccessPrivilige((int)Priviliges.CanDeleteMedia, Convert.ToInt32(SessionManager.Current.UserID)))
+                                        {
+                                            <span class="img-close"><i onclick="DeleteImages(@item.FileID,@item.UserID,'@item.ImageName')" class="fa fa-close"></i> </span>
+                                        }
+                                        <input id="FileImage_@item.FileID" onblur="SaveImageName(@item.FileID)" title="Click here to change Name" placeholder="Untitled Image" type="text" class="form-control" value="@item.NickName" />
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="chat" style="height:680px; overflow:hidden;">
+                        <h3>Discussion panel</h3>
+
+                        @*<input id="tagcomment" type="text" class="form-control mention" />*@
+                        @if (ViewBag.OwnerID == SessionManager.Current.UserID)
+                        {
+                            <textarea placeholder='Invite here...' id="tagcomment" class="msg-textarea-tag mention"></textarea>
+                        }
+                        else if (Model.LessonUserAccess != null && Model.LessonUserAccess.Count() > 0)
+                        {
+                            if (Model.LessonUserAccess.ToList()[4].HasRights)
+                            {
+                                <textarea placeholder='Invite here...' id="tagcomment" class="msg-textarea-tag mention"></textarea>
+                            }
+                        }
+                        <div id="commentLoader" style="position: absolute;z-index: 1200;background: rgba(115, 115, 115,0.5);top: 31px;width: 100%;height: 100vh;display:none">
+                            <img src="../img/icon.gif" style="margin-top: 210px;margin-left: 25%;">
+                        </div>
+                        <div id="dvMsgHolder" class=user-chat>
+                            @if (Model.lstComments != null)
+                            {
+                                foreach (var item in Model.lstComments)
+                                {
+                                    UnreadCount = item.ReceiverUnreadCount;
+
+                                    if (SessionManager.Current.UserID == item.UserID_A)
+                                    {
+                                        <div id="cmnt_@item.Message_ID" class="chat-box">
+                                            <p class="user-label">
+                                                @item.FirstName  @item.LastName
+                                            </p>
+                                            @if (item.isRead)
+                                            {
+                                                <div id="cmntBody_@item.Message_ID" onclick="ShowComment(@item.Message_ID,@item.sectionID)" class="arrow_box_left">
+                                                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Comment))
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div style="background-color:#d4dffd" id="cmntBody_@item.Message_ID" onclick="ShowComment(@item.Message_ID,@item.sectionID)" class="arrow_box_left">
+                                                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Comment))
+                                                </div>
+
+                                            }
+                                            <p class="time-msg">
+                                                @item.CommentTimeAgo
+                                            </p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div id="cmnt_@item.Message_ID" class="chat-box chat-right">
+                                            <p class="user-label">
+                                                @item.FirstName  @item.LastName
+                                            </p>
+                                            @if (item.isRead)
+                                            {
+                                                <div id="cmntBody_@item.Message_ID" onclick="ShowComment(@item.Message_ID,@item.sectionID)" class="arrow_box_right">
+                                                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Comment))
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                UnreadMessageID.Add(@item.Message_ID);
+                                                <div style="background-color:#d4dffd" id="cmntBody_@item.Message_ID" onclick="ShowComment(@item.Message_ID,@item.sectionID)" class="arrow_box_right">
+                                                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Comment))
+                                                </div>
+                                            }
+                                            <p class="time-msg">
+                                                @item.CommentTimeAgo
+                                            </p>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                        <div style="position: absolute; width: 100%; background: rgb(204, 204, 204) none repeat scroll 0% 0%; bottom: 0px; padding: 7px 20px 6px 8px;">
+                            <textarea placeholder='Type your message here...' id="txtcomment" class="msg-textarea" onkeypress="return IsAlphaNumeric(event);"></textarea>
+                            <span style="cursor:pointer" onclick="SendMassge()" class="btn-sendmsg">
+                                <i class="fa fa-send"></i>
+                            </span>
+                        </div>
+                        <div class="tab-pane" id="f" style="height:680px;">FFFFFFThirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae.</div>
+                    </div>
+                </div> <!-- /tab-content -->
+                <!--tabs sidebar-->
+            </div>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper main-tiny">
+        <!-- Content Header (Page header) -->
+        <!-- Main header content -->
+        <section class="content">
+            <!-- Info boxes -->
+            <div class="row">
+                <div class="editor-box">
+
+                    <div class="header-editor">
+                        <div class="col-lg-4 col-md-4 col-xs-12 col-xs-12 lsn-t">
+                            <h2>@Model.SubjectName</h2>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-12 col-xs-12">
+                            <ul class="editor-btn">
+
+                                <li class="btn-icon" title="Back" onclick="GoBack();"><a href=""></a> <i class="fa fa-arrow-left"></i></li>
+                                <li class="btn-icon" title="Get PDF" onclick="getpdf();"><a href=""></a> <i class="fa fa-file-pdf-o"></i></li>
+                                @if (Model.LockedBy == null || Model.LockedBy == "")
+                                {
+                                    if (Model.LessonPlanStatus == 1)
+                                    {
+                                        <li class="btn-ver"><a href="#" onclick="VerifiyLesson()" title="Submit for Review">Submit</a></li>
+                                    }
+                                    else if (Model.LessonPlanStatus == 2)
+                                    {
+                                        <li class="btn-ver"><a href="#" onclick="VerifiyLesson()" title="Resubmit for Review">Resubmit</a></li>
+                                    }
+
+                                }
+                                @if (Model.LockedBy != null && Model.LockedBy != "" && Model.OwnerId == SessionManager.Current.UserID && Model.IsLockByVerifier==0)
+                                {
+                                <li class="btn-ver"><a href="#" onclick="ResetLock();" title="Release the lock">Unlock</a></li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
+                            <div class="lsn-selection">
+                                <span class="lsn-unit">Unit @Model.UnitNumber </span>
+                                <p class="lsn-name-list">Lesson @Model.LessonNumber <span class="chp-name">@Model.LessonTitle</span></p>
+                                <ul class="editor-btn" style="padding-top:0;">
+                                    <li class="btn-simple"><a href="#">@Model.ClassName</a></li>
+                                    <li class="btn-simple"><a href="#">@Model.Duration mins</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                            @if (Model.LockedBy != null && Model.LockedBy != "")
+                            {
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12" style="border:1px solid gray;margin-top:-30px;background:#cdd9ea;">
+                                    <h4 style="color:red">@Model.LockedBy</h4>
+                                </div>
+                            }
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!--ck editor-->
+                <div class="col-md-12">
+                    <div class="tinymc-box" style="@tinymcestyle">
+                        @{
+                            if (Model.sections != null)
+                            {
+                                for (int i = 0; i < Model.sections.Count; i++)
+                                {
+                                    int count = Model.subsections.Count(x => x.SectionId == Model.sections[i].Id);
+                                    if (count == 1)
+                                    {
+                                        CDS.Models.SubSection obj = Model.subsections.Where(x => x.SectionId == Model.sections[i].Id).FirstOrDefault();
+                                        /////Section//////////
+                                        <span class="title-editor" onclick="LoadEditor1('txt_@obj.LessonPlanScriptId')">
+                                            <span>@Model.sections[i].Name </span>
+                                            <span class="duration">@Model.sections[i].Duration.Replace("(", "").Replace(")", "").Replace("minute", "mins")</span>
+                                        </span>
+                                            <span class="history">
+                                                <img src="~/images/history.png" onclick="getsectiondetail('@obj.LessonPlanScriptId','@Model.sections[i].Name')" alt="history" title="Section History" />
+                                            </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="title-editor">
+                                            <span>@Model.sections[i].Name </span>
+                                            <span class="duration">@Model.sections[i].Duration.Replace("(", "").Replace(")", "").Replace("minute", "mins")</span>
+                                        </span>
+                                    }
+                                    <div class="clearfix"></div>
+
+                                    if (Model.subsections != null)
+                                    {
+                                        for (int j = 0; j < Model.subsections.Count; j++)
+                                        {
+                                            if (Model.subsections[j].SectionId == Model.sections[i].Id)
+                                            {
+                                                if (count != 1)
+                                                {
+                                                    if (Model.subsections[j].SubSectionId != 3 && Model.subsections[j].SubSectionId != 5 && Model.subsections[j].SubSectionId != 2)
+                                                    {
+                                                        <span onclick="LoadEditor1('txt_@Model.subsections[j].LessonPlanScriptId')" class="sub-section">
+                                                            <span id="spn_@Model.subsections[j].SubSectionId">@Model.subsections[j].SubSectionName</span>
+                                                        </span>
+                                                            <span class="history">
+                                                                <img src="~/images/history.png" onclick="getsectiondetail('@Model.subsections[j].LessonPlanScriptId','@Model.subsections[j].SubSectionName')" alt="history" title="Section History" />
+                                                            </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="sub-section" style="cursor:default">
+                                                            <span id="spn_@Model.subsections[j].SubSectionId">@Model.subsections[j].SubSectionName</span>
+                                                        </span>
+
+                                                    }
+                                                    <div class="clearfix"></div>
+                                                }
+                                                if (Model.subsections[j].SubSectionId == 3 || Model.subsections[j].SubSectionId == 5 || Model.subsections[j].SubSectionId == 2)
+                                                {
+                                                    <div id="txt_@Model.subsections[j].LessonPlanScriptId" class="subsectiondata">
+                                                        @MvcHtmlString.Create(Model.subsections[j].LessonPlanScript)
+                                                    </div>
+                                                        <div class="clearfix"></div>
+                                                }
+                                                else
+                                                {
+                                                    <div id="txt_@Model.subsections[j].LessonPlanScriptId" class="subsectiondata  editedsubsection" onclick="LoadEditor1('txt_@Model.subsections[j].LessonPlanScriptId')" style="padding:30px 30px 30px 30px !important;margin:0px 0px 10px !important;cursor:pointer">
+                                                        @MvcHtmlString.Create(Model.subsections[j].LessonPlanScript)
+                                                    </div>
+
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+    <aside class="control-sidebar  control-sidebar-open siderbar-left right-bar-tiny">
+        @*Users working on this lesson*@
+        @if (Model.lstLessonUsers.LessonUserRightList != null && Model.lstLessonUsers.LessonUserRightList.Count > 0)
+        {
+                <div class="user-list-det" id="userWorking">
+                    <div class="sidebar-head">
+                        <h2 style="width:100%">Members</h2>
+                    </div>
+                    <div id="workingUserList" class="thumb-user-list">
+                       @if (Model.lstLessonUsers.LessonOwner.OwnerID != SessionManager.Current.UserID)
+                       {
+                         <div class="user-name-box">
+                            <span class="user-rights">
+                                <img src="..\\Handler\\UserImageHandler.ashx?key=@Model.OwnerId&&Time=@DateTime.Now.Millisecond" class="img-responsive" alt="user-icon" />
+                            </span>
+                                <span class="user-work">@Model.lstLessonUsers.LessonOwner.OwnerName (Owner)</span>
+                            </div>
+                       }
+                                    @foreach (var item in Model.lstLessonUsers.LessonUserRightList)
+                                    {
+                                    <div class="user-name-box" id="lessonuser_@item.UserID">
+                                    @if (Model.lstLessonUsers.LessonOwner.OwnerID == SessionManager.Current.UserID)
+                                    {
+
+                                            <span class="user-rights">
+                                                <img src="..\\Handler\\UserImageHandler.ashx?key=@item.UserID&&Time=@DateTime.Now.Millisecond" class="img-responsive" alt="user-icon" />
+                                            </span>
+
+
+                                            <span class="user-work">
+                                                <span class="name-icon-box" onclick="GetLessonRights(@item.UserID)">
+                                                    @item.UserName
+
+                                                    @if (item.Icon == "View")
+                                                    {
+                                                        <span class="icon-v"><i id="edit_@item.UserID" class="fa fa-eye"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="icon-v"><i id="edit_@item.UserID" class="fa fa-edit"></i></span>
+                                                    }
+
+                                                </span>
+                                                <span class="icon-cl"><i style="cursor:pointer" onclick="Revoke(@item.UserID)" class="fa fa-close"></i></span>
+                                            </span>
+
+
+
+
+                                    }
+                                    else
+                                    {
+                                        <span class="user-work">@item.UserName</span>
+                                    }
+                                </div>
+                                    }
+                    </div>
+                </div>
+        }
+        <div class="sidebar-head">
+                <h2>Available Templates</h2>
+            </div>
+        <div class="temp-editor">
+            @if (Model.lstTemplates != null)
+            {
+                foreach (var item in Model.lstTemplates)
+                {
+                    <div class="thumb-temp-editor">
+                        <a href="#" title="Get Detail" style="cursor:pointer;" onclick="onTemplateClick('@item.TemplateID','open','@item.Rating','@item.TotalVotes','@item.TempLessonPlanID')">
+                            <img src="~/images/thumbnail-template.png" />
+                        </a>
+                            @if (item.TemplateID != -1)
+                            {
+                                <p class="tooltip" style="margin-bottom:12px">
+                                    @item.Name
+                                    <span class="tooltiptext">
+                                        <span><b><i class="fa fa-user"></i> </b> @item.Name </span>
+                                        <span class="email-user"><b><i class="fa fa-envelope"> </i> </b> @item.Email</span>
+                                        <span><b><i class="fa fa-phone"></i> </b> @item.Phone</span>
+                                        <span class="lsn-link" style="cursor:default !important;text-align:center;">
+                                            <a href="#">
+                                                <span class="lsn-link-no">@item.TotalLessons</span>
+                                                Lesson
+
+                                            </a>
+                                        </span>
+                                        <span class="lsn-link verify">
+                                            <a href="#"  style="cursor:default !important;text-align:center;">
+                                                <span class="lsn-link-no">@item.VerifiedLessons</span>
+                                                Approved
+                                            </a>
+                                        </span>
+                                    </span>
+                                </p>
+                                <div class="rating">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= item.Rating)
+                                        {
+                                            <i class="fa fa-star"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-star-o"></i>
+                                        }
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="tooltip" style="margin-bottom:12px">
+                                    @item.Name
+                                </p>
+                            }
+                    </div>
+                }
+            }
+        </div>
+    </aside>
+    <div class="control-sidebar-bg"></div>
+    @if (Model.lstTemplates != null)
+    {
+        <div class="template-sidebar template-sidebar-bg temp-close" id="templtinfo">
+            <div class="title-temp">
+                <h2>Template Information</h2>
+            </div>
+            <div class="title-a">
+                <span title="Close" style="cursor:pointer" onclick="onTemplateClick('0','close',0,0,0)"><i class="fa fa-arrow-right"></i></span>
+            </div>
+            <div id="ratediv" class="">
+                <div class="rating-lesson template-improt">
+                    <div class="rate-star">
+                            <span class="avg-rate" id="tempavgrate">4.6</span>
+                            <span class="temp-star-box">
+                            </span>
+                            <span class="likes-count" id="tempvotes" title="Total Votes">123,11 <i class="fa fa-user"></i></span>
+                        <!-- Button trigger modal -->
+                         <a href="#" class="rt-lsn-txt" onclick="TemplateRating();" data-toggle="modal" data-target="#exampleModalLong" >Rate It</a>
+                    </div>
+                    @if (Model.LockedBy == null || Model.LockedBy == "")
+                    {
+                        <a href="#" onclick="onImportClick()" title="Import this Template" class="pull-right import-tmp">Import <i class="fa fa-download"></i></a>
+                    }
+                </div>
+            </div>
+            <div class="temp-holder" id="templbody">
+            </div>
+        </div>
+        //modal rating
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content star-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Rating</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                    <div class="modal-body">
+                        <div class="avg-graph-box">
+                        <div class="avg-box">
+                            <div class="avg-bold" id="tempavgrat">4.6</div>
+                            <div class="avg-star" id="temstars">
+                            </div>
+                        </div>
+                        @*graph one*@
+                        <div class="progress-holder">
+                            <div class="star-list">
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                            </div>
+                            <div class="progress p1">
+                                <div id="fivestarpers" class="progress-bar green" role="progressbar" aria-valuenow="100"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                </div>
+                            </div>
+                            <span class="graph-no" id="tempfivestar">1213131</span>
+                        </div>
+                        @*graph two*@
+                        <div class="progress-holder">
+                            <div class="star-list">
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+
+                            </div>
+                            <div class="progress p2">
+                                <div id="fourstarpers" class="progress-bar light-green" role="progressbar" aria-valuenow="80"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:80%">
+                                </div>
+                            </div>
+                            <span class="graph-no" id="tempfourstar">1213131</span>
+                        </div>
+                        @*graph three*@
+                        <div class="progress-holder">
+                            <div class="star-list">
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+
+                            </div>
+                            <div class="progress p3">
+                                <div id="threestarpers" class="progress-bar yellow" role="progressbar" aria-valuenow="70"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                                </div>
+                            </div>
+                            <span class="graph-no" id="tempthreestar">1213131</span>
+                        </div>
+                        @*graph four*@
+                        <div class="progress-holder">
+                            <div class="star-list">
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+
+                            </div>
+                            <div class="progress p4">
+                                <div id="twostarpers" class="progress-bar ligh-orange" role="progressbar" aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:50%">
+                                </div>
+                            </div>
+                            <span class="graph-no" id="temptwostar">1213131</span>
+                        </div>
+                        @*graph five*@
+                        <div class="progress-holder">
+                            <div class="star-list">
+                                <span>
+                                    <i class="fa fa-star"></i>
+                                </span>
+
+                            </div>
+                            <div class="progress p5">
+                                <div id="onestarpers" class="progress-bar orange" role="progressbar" aria-valuenow="250"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:25%">
+                                </div>
+                            </div>
+                            <span class="graph-no" id="temponestar">1</span>
+                        </div>
+
+                        <div class="rating-lesson">
+                            <div class="" id="btnratetemplate">
+                                <input id="input-1" name="input-1" class="rating rating-loading" data-min="0" data-max="5" data-step="1" value="0">
+                                <a href="#" class="rt-lsn-txt" onclick="RateLesson();">Submit</a>
+                            </div>
+                        </div>
+                        </div>
+                        @*review-star*@
+                       <div class="rating-info" id="tempratedby">
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        //modal rating
+    }
+</body>
+</html>
+<section id="newTinyMce">
+    <script type="text/javascript">
+        $(function(){
+            CloseMenu = true;
+            });
+        var buttonclickdivid=0;
+        var trackingid=0;
+        var mainhtml=0;
+        var int;
+        var isReplace=false;
+        var arrid=[];
+        var arrdata=[];
+        var autosavetime=@Model.AutoSaveTime;
+        var counter=autosavetime;
+        var canLoadEditor=false;
+        var isnew=false;
+        var isautosave = false;
+        isimportclick = false;
+        var selectedsubSectionID=@Model.SelectedLesspnPlanSection,logid=@Model.LogId;
+        var OwnerID = '@Model.OwnerId'
+        var lockby='@Model.LockedBy';
+        function GetSelectedText()
+        {
+            var node = tinyMCE.activeEditor.selection.getContent();
+            tinyMCE.execCommand('mceInsertContent', false, '<b>'+ node +'</b> <img src="../images/Speaker.png" onclick="showToast(\''+ node + '\');" style="height:32px;width:32px"/>');
+        }
+        $(function()
+        {
+            LoadEditor1("txt_"+selectedsubSectionID);
+            int=setInterval(AutoSave1, 1000);
+        });
+        function LoadEditor1(id)
+        {
+            if (lockby!=null && lockby!='')
+            {
+                return false;
+            }
+            if (id!="txt_"+selectedsubSectionID)
+            {
+                logid=0;
+            }
+            if(buttonclickdivid!=0)
+            {
+                isautosave=true;
+                SaveHtml();
+                tinymce.EditorManager.execCommand('mceRemoveControl',true,buttonclickdivid);
+            }
+            buttonclickdivid=id;
+            var select =id;
+            tinyMCE.init({
+                mode : "exact",
+                elements : select,
+                theme : "advanced",
+                plugins: "autoresize,autolink,preview,inlinepopups,advimage,table,searchreplace,noneditable",
+
+                object_resizing: true,
+                inline: true,
+                theme_advanced_buttons1: "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright, justifyfull,bullist,numlist,undo,redo,link,unlink,separator,sub,sup,replace,MySearch,speachscript,|,forecolor,backcolor,image,|,savescript,|,SavedLabel",
+                theme_advanced_toolbar_location : "top",
+
+                theme_advanced_toolbar_align : "left",
+                theme_advanced_statusbar_location : "bottom",
+                theme_advanced_resizing: true,
+                theme_advanced_resizing_use_cookie : false,
+                force_br_newlines : true,
+                force_p_newlines : false,
+                forced_root_block : '', // Needed for 3.x
+                theme_advanced_toolbar_location: "top",
+                theme_advanced_toolbar_align: "left",
+                theme_advanced_statusbar_location: "bottom",
+                theme_advanced_path : false,
+                paste_data_images: true,
+
+                cleanup_on_startup : true,
+                content_css : "../Content/TinyMceCustom.css",
+                browser_spellcheck : true,
+                noneditable_leave_contenteditable : true,
+                setup: function (ed)
+                {
+                    //ed.onClick.add(function(ed, e) {
+                    //    if (e.target.nodeName.toLowerCase() == 'img')
+                    //    {
+                    //        debugger
+                    //        var a=e.target.id;
+                    //        ShowImages(a,-1);
+                    //    }
+                    //});
+                    ed.addButton('MySearch',
+                       {
+                           title: 'Find and Replace',
+                           image: '../Scripts/tinymce/themes/advanced/img/find-512.gif',
+                           onclick: function () {
+                               tinyMCE.activeEditor.buttons.replace.onclick()
+                               isReplace=false;
+
+                           }
+                       });
+
+                    ed.addButton('speachscript',
+                        {
+                            title: 'Speach',
+                            image: '../Scripts/tinymce/themes/advanced/img/output_yuMlBm.gif',
+                            onclick: function () {
+                                GetSelectedText();
+                            }
+                        });
+                    ed.addButton('savescript',
+                        {
+                            title: 'Save',
+                            onclick: function ()
+                            {
+                                isautosave=false;
+                                SaveHtml();
+                                //tinymce.EditorManager.execCommand('mceRemoveControl', true, buttonclickdivid);
+                            }
+                        });
+                    ed.onInit.add(function (ed)
+                    {
+                        ed.getBody().style.fontSize = '18px';
+                        var ifrid=id+"_ifr";
+                        resizeIframe(ifrid,"load");
+                        var txt=tinyMCE.activeEditor.getContent();
+                        if (txt==null || txt =="") {
+                            tinyMCE.activeEditor.focus();
+                            tinyMCE.activeEditor.selection.select(tinyMCE.activeEditor.getBody(), true);
+                            tinyMCE.activeEditor.selection.collapse(false);
+                        }
+
+                        $(ed.getBody()).on("mouseleave", function()
+                        {
+                            isautosave=false;
+                            SaveHtml();
+                        });
+
+                    });
+
+                },
+            });
+        }
+        function resizeIframe(id,con)
+        {
+            var obj=document.getElementById(id);
+            if (con=="load")
+            {
+                var a=id.replace("_ifr","");
+                a=a+"_toolbargroup";
+                $("#"+a).css({"position": "absolute !important", "top": "   % !important"});
+                $("#"+a).addClass("ifr_position");
+                obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+            }
+        }
+        function SaveHtml()
+        {
+            if (lockby!=null && lockby!='')
+            {
+                return false;
+            }
+            if(buttonclickdivid!=0)
+            {
+                if(typeof(tinyMCE) != "undefined" && tinyMCE.activeEditor != null)
+                {
+                    var html="";
+                    var id=buttonclickdivid.replace("txt_", " ");
+                    id=id.trim();
+                    try
+                    {
+                        html=tinyMCE.activeEditor.getContent();
+                        if (html.indexOf("jquery-ui.css") !=-1 || html.indexOf("jquery-2.2.3") !=-1
+                            || html.indexOf("TinyMceCustom") !=-1 || html.indexOf("adminlte") !=-1
+                            || html.indexOf("Admincds") !=-1 || html.indexOf("sidebar-main") !=-1
+                            || html.indexOf("nav sidebar-nav") !=-1 || html.indexOf("btn-icon") !=-1)
+                        {
+                            return false;
+                        }
+                        html=tinyMCE.activeEditor.getContent();
+                        if (html.indexOf('src="http') !== -1 || html.indexOf("src='http") !== -1)
+                        {
+                            savehtimage(html,id);
+                            return false;
+                        }
+                        if (isautosave==true && (html==null || html=="" || html==undefined))
+                        {
+                            isautosave=false;
+                            return false;
+                        }
+
+                    }
+                    catch (ex)
+                    {
+
+                    }
+                    ManageTime();
+                    $.ajax({
+                        url: '../LessonPlanEditor/SaveData',
+                        type: "POST",
+                        dataType: "json",
+                        data: { LessonPlanScriptId:id, Data: html,trackid:trackingid,LessonPlanID:lessonplanid },
+                        success: function (data)
+                        {
+                            if (data != null)
+                            {
+                                if (data=="Login")
+                                {
+                                    var url="../User/LoginUser"
+                                    var win = window.open(url, '_self');
+                                }
+                                else
+                                {
+                                    trackingid=data.Trackingid;
+                                }
+
+                            }
+                            console.log('SAVE');
+                        },
+                        error: function(xhr, status, err)
+                        {
+                            if ((xhr.status >= 400 && xhr.status <=417) || (xhr.status>500 && xhr.status <510))
+                            {
+                                // alert("Err :#"+xhr.status +"\n Error in Network connection.Please save your recent edits in a text file and re-login.");
+
+                            }
+                            return false;
+                        },
+
+                    });
+                }
+            }
+        }
+        function AutoSave1()
+        {
+
+            if (counter>0)
+            {
+                counter--;
+            }
+            if (counter==0)
+            {
+                counter=autosavetime;
+                clearInterval(int);
+                isautosave=true;
+                SaveHtml();
+                int=setInterval(AutoSave1, 1000);
+            }
+        }
+        function oncancleClick()
+        {
+            isimportclick=false;
+        }
+        function ManageTime()
+        {
+
+            var id = buttonclickdivid.replace("txt_", " ");
+            id = id.trim();
+            $.ajax({
+                url: '../LessonPlanEditor/ManageLessonTime',
+                type: "GET",
+                dataType: "json",
+                data: { LogId: logid, LessonPalnID: lessonplanidint, LesPlansecID: id },
+                success: function (data)
+                {
+                    if (data != null)
+                    {
+                        logid=data;
+                    }
+                },
+                error: function (xhr, status, err)
+                {
+                    if ((xhr.status >= 400 && xhr.status <= 417) || (xhr.status > 500 && xhr.status < 510)) {
+                    }
+                    return false;
+                },
+
+            });
+        }
+        function savehtimage(data,lessectionid)
+        {
+            if(buttonclickdivid==0)
+            {
+                return false;
+            }
+            if (data!=null && data!="" && lessectionid!=0)
+            {
+                tinymce.EditorManager.execCommand('mceRemoveControl',true,buttonclickdivid);
+                $.ajax({
+                    url: '../LessonPlanEditor/SaveHttpImage',
+                    type: "POST",
+                    datatype: "JSON",
+                    data: {data1:data,lessonplansectionid:lessectionid,bkid:BookID,lesid:LessonID,LessonPlanID:lessonplanid },
+                    success: function (data)
+                    {
+                        $("#"+buttonclickdivid).empty();
+                        $("#"+buttonclickdivid).html(data);
+                        LoadEditor1(buttonclickdivid);
+
+                    },
+                    error: function(xhr, status, err)
+                    {
+                        if ((xhr.status >= 400 && xhr.status <=417) || (xhr.status>500 && xhr.status <510))
+                        {
+                        }
+                        return false;
+                    },
+                });
+
+            }
+        }
+    </script>
+</section>
+<section id="UserLesson">
+    <script>
+        function loader() {
+            $.loadingBlockShow({
+                imgPath: "../img/icon.gif",
+                text: 'jQuery Script Loading ...',
+                style: {
+                    position: 'fixed',
+                    width: '100%',
+                    height: '100%',
+                    background: 'rgba(0, 0, 0, .8)',
+                    left: 0,
+                    top: 0,
+                    zIndex: 10000
+                }
+            })
+        };
+        function GetLessonRights(userID)
+        {
+            loader();
+            $.ajax({
+                url: "../LessonPlanEditor/GetLessonRights",
+                type: 'GET',
+                cache: false,
+                async: true,
+                data: { "userID":userID,"lessonPlanID":lessonplanidint },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    var savedData = data;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (result) {
+                            if (result == 1)
+                            {
+                                $("#UserLessonBrowser").html('');
+                                $("#UserLessonBrowser").html(savedData);
+                            }
+                            else
+                            {
+                                window.location.href =  "../User/LoginUser";
+                            }
+                        }
+                    }).done(function (response) {
+                        $("#loading_block").hide()
+                    });
+
+                }
+            });
+        }
+        function RevokeUser()
+        {
+            var userID =  $("#deleteUserID").val();
+            var $URL = '../LessonPlanEditor/UpdateUserLessonRights';
+            $.ajax({
+                url: $URL,
+                type: "POST",
+                dataType: "json",
+                data: { userID:userID,lessonPlanID:lessonplanidint, lst: null,isRevoke:true },
+                success: function (data) {
+                    if (data != null && data == "Done") {
+                        alert("Saved Successfully.");
+                        $("#lessonuser_"+userID).remove();
+                        $("#confirmLessonRights").modal('hide');
+                    }
+
+                },
+                error: function () {
+                    alert("Sorry Something went Wrong.");
+                    $("#confirmLessonRights").modal('hide');
+
+                }
+            });
+        }
+        function CloseConfirmModal(){$("#confirmLessonRights").modal('hide');}
+        function Revoke(userID)
+        {
+            $("#confirmLessonRights").modal('show');
+            $("#deleteUserID").val(userID);
+
+        }
+    </script>
+</section>
+<section id="CommentSection">
+    <script>
+        function IsAlphaNumeric(e)
+        {
+            if (e.keyCode == 13)
+            {
+                var comment=$("#txtcomment").val();
+                if(comment!=""){
+                    SendMassge();
+                }else{
+                    event.preventDefault();
+                }
+            }
+
+            return true;
+        }
+        var rid, lid;
+        var NewRequestID = 0;
+
+
+        var intervel=0;
+
+        var globalUserId = @SessionManager.Current.UserID
+
+        function isValidEmailAddress(emailAddress) {
+            var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+            return pattern.test(emailAddress);
+        };
+        var CommentName = [];
+        var CommentID = [];
+        function SendMassge()
+        {
+
+            var ids = '';
+            var emails = '';
+
+            var userid = globalUserId;
+            var comment = $('#txtcomment').val();
+            if(comment == '')
+            {
+                alert("Message field can't be empty");
+                return false;
+            }
+            $("#commentLoader").show();
+            var bktypeId= 1;
+            var cmnt1=comment. replace(/\[/g, "<b>");
+            var cmnt2=cmnt1.replace(/\]/g,"</b>");
+
+            $('#tagcomment').mentionsInput('getMentions', function (data) {
+
+                $.each(data,function (i,d) {
+
+                ids = ids.concat(data[i].id + ',');
+                CommentName.push(data[i].name);
+                CommentID.push(data[i].id);
+                    //alert(ids);
+                })
+
+            });
+            var commentText = $('#tagcomment').val();
+            if(commentText.indexOf(',') != -1)
+            {
+                var splitCommentText = commentText.split(',');
+
+                var count=0;
+                var splitCount = 0;
+
+                for(count; count<splitCommentText.length; count++)
+                {
+                    if(splitCommentText[count].indexOf('@@') != -1)
+                    {
+                        if(splitCommentText[count].indexOf(' ') != -1)
+                        {
+                            var separateEmail = splitCommentText[count].split(' ');
+                            for(splitCount;splitCount < separateEmail.length; splitCount++)
+                            {
+                                if(separateEmail[splitCount].indexOf('@@') != -1)
+                                {
+                                    if( !isValidEmailAddress( separateEmail[splitCount] ) )
+                                    {
+                                        emails = emails.concat(separateEmail[splitCount] + ',')
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            emails = emails.concat(splitCommentText[count] + ',')
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if(commentText.indexOf('@@') != -1)
+                {
+                    emails = emails.concat(commentText + ',')
+                }
+            }
+
+            if (comment != 0)
+            {
+
+                var tID = false;
+                var chkspan = "";
+                var texID = 0;
+                var sectionId = 0;
+                var selectedtexttinymce="";
+                if(buttonclickdivid != 0)
+                {
+                    sectionId=buttonclickdivid.replace("txt_", " ");
+                    sectionId=sectionId.trim();
+                }
+                if(typeof(tinyMCE) != "undefined" && tinyMCE.activeEditor != null)
+                {
+                    if(tinyMCE.activeEditor.selection.getContent() != "")
+                    {
+                        tID = true;
+                        selectedtexttinymce=tinymce.activeEditor.selection.getContent({format : "text"});
+                        if(tinyMCE.activeEditor.selection.getNode() != null)
+                        {
+                            chkspan = tinyMCE.activeEditor.selection.getNode().id;
+                            if(chkspan != "" && chkspan.indexOf("txt_") == -1)
+                            {
+                                var arr = chkspan.split('_');
+                                texID = arr[1];
+
+                            }
+
+                        }
+                    }
+                }
+
+                $.ajax({
+                    url: '../Comment/AddComment',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { LessonID: LessonID , userid: userid , Comment: cmnt2 , Tagid: ids,TagEmail:emails,LessonPlanID: lessonplanidint,secId:sectionId,selectedtext:selectedtexttinymce },
+                    success: function (data) {
+                        fill_MsgHeader();
+                        //$("#txtcomment").focus();
+                        //$("#txtcomment").empty();
+                        if(typeof(tinyMCE) != "undefined" && tinyMCE.activeEditor != null)
+                        {
+                            if(tinyMCE.activeEditor.selection.getContent() != "")
+                            {
+                                tinyMCE.activeEditor.selection.setContent('<span contenteditable="false" id="comment_'+ data + '_sectionId_'+sectionId+'">'+ tinyMCE.activeEditor.selection.getContent() +'</span>');
+                                isautosave=true;
+                                SaveHtml();
+                            }
+                        }
+                        else
+                        {
+                            AddMAsgToDiv(comment);
+                            //  intervel=setInterval(setFocusonbutton, 200);
+                        }
+
+                    }
+                }).done(function (response){
+                    $("#commentLoader").hide();
+                    $('#txtcomment').val('');
+                    $('#tagcomment').val('');
+                    $('.mention').empty();
+                    $('#tagcomment').mentionsInput('reset');
+                    ids = "";
+                    emails = "";
+                });
+            }
+        }
+        var tinymceTop=0;
+        var tinymceLeft=0;
+        var isActive=false;
+        //function ShowComment(id,secId,cmntId)
+            function ShowComment(id,secId,cmntId)
+        {
+            if(id != 0)
+            {
+                var mystr="#comment_"+id+"_sectionId_"+secId;
+                var selcetdsecid="#txt_"+secId;
+
+                if(typeof(tinyMCE) != "undefined" && tinyMCE.activeEditor != null)
+                {
+                    if (buttonclickdivid!=0)
+                    {
+                        isautosave=true;
+                        SaveHtml();
+                        tinymce.EditorManager.execCommand('mceRemoveControl',true,buttonclickdivid);
+                    }
+                }
+                //SelectReadonlyComment(id,mystr,selcetdsecid,cmntId);
+                SelectReadonlyComment(id,mystr,selcetdsecid);
+
+            }
+
+        }
+
+        function DrawLineBetweenPoints(a, b) {
+
+            var pointA = $(a).offset();
+            var pointB = $(b).offset();
+            var pointAcenterX = $(a).width() / 2;
+            var pointAcenterY = $(a).height() / 2;
+            var pointBcenterX = $(b).width() / 2;
+            var pointBcenterY = $(b).height() / 2;
+            var angle = Math.atan2(pointB.top - pointA.top, pointB.left - pointA.left) * 180 / Math.PI;
+            var distance = lineDistance(pointA.left, pointA.top, pointB.left, pointB.top);
+            var line = $(".line");
+            // Set Angle
+            $(line).css('transform', 'rotate(' + (parseInt(angle) - parseInt(2)) + 'deg)');
+
+            // Set Width
+            $(line).css('width', (parseInt(distance) - parseInt(109)) + 'px');
+
+            // Set Position
+            $(line).css('position', 'absolute');
+            if(pointB.left < pointA.left) {
+                $(line).offset({top: pointA.top + pointAcenterY - 9, left: pointB.left + pointBcenterX - 2});
+            } else {
+                $(line).offset({top: pointA.top + pointAcenterY - 9, left: pointA.left + pointAcenterX - 2});
+            }
+        }
+
+        function lineDistance(x, y, x0, y0){
+            return Math.sqrt((x -= x0) * x + (y -= y0) * y);
+        };
+
+
+        var offwindow2=0;
+        function SelectReadonlyComment(cmntdivid,str,selcetdsecid)
+        {
+            if (str!=null && str!="")
+            {
+                var cmntdiv="cmnt_"+cmntdivid;
+                var strnew = str;
+                str=str.replace("#", " ");
+                str=str.trim();
+                var container = $("#maindiveditor");
+                var scrollTo = $("#"+str);
+                var spn=  document.getElementById(str);
+                if (spn!=null && spn !=undefined)
+                {
+                    //if(Status==4)
+                    //{
+                    //    container=$(selcetdsecid);
+                    //    $("body, html").animate({
+                    //        scrollTop: $("#"+str).offset().top-30
+                    //    }, 600);
+                    //}
+                    //else
+                    //{
+                    //    container.animate({
+                    //        scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()-30
+                    //    });
+                    //}
+                    container=$(selcetdsecid);
+
+                    $("body, html").animate({
+                        scrollTop: $("#"+str).offset().top-30
+                    }, 600);
+
+                    var div1 = document.getElementById(str);
+                    var div2 = document.getElementById(cmntdiv)
+                    //offwindow2 = getOffset(maindiveditor);
+                    //offwindow2.left+=tinymceLeft;
+                    //offwindow2.top+=20;
+                }
+                tt= setTimeout(function(){
+                    //DrawLineBetweenPoints("#cmnt_"+cmntId,strnew)
+                    DrawLine(div1,div2)
+                },600);
+            }
+        }
+        var tt=0,t=0,t1=0,t3=0;
+        function DrawLine(d1,d2)
+        {
+            window.clearInterval(tt);
+            var blink_speed =400;
+            if (t3!=0)
+            {
+                var ele = document.getElementById(t3);
+                ele.style.visibility = (ele.style.visibility == 'visible' ? '' : 'visible');
+                $("#"+t3).css('background-color', 'white');
+            }
+            t3=d1.id;
+             t = setInterval(function ()
+            {
+                var ele = document.getElementById(t3);
+                ele.style.visibility = (ele.style.visibility == 'hidden' ? '' : 'hidden');
+                $("#"+t3).css("background-color","yellow");
+            }, blink_speed);
+            t1= setInterval(Blink,7000);
+        }
+        function Blink()
+        {
+            window.clearInterval(t);
+            window.clearInterval(t1);
+            var ele = document.getElementById(t3);
+            ele.style.visibility = (ele.style.visibility == 'visible' ? '' : 'visible');
+            $("#"+t3).css('background-color', 'white');
+
+            //if (buttonclickdivid!=0)
+            //{
+            //    LoadEditor1(buttonclickdivid);
+            //}
+        }
+        function AddMAsgToDiv(masg)
+        {
+            var objDiv = document.getElementById("dvMsgHolder");
+            objDiv.scrollTop = objDiv.scrollHeight;
+
+        }
+
+        function fill_MsgHeader()
+        {
+
+            var html = '';
+            var ShowArchive = 0;
+            if($('#chkShowAll').is(':checked'))
+            {
+                ShowArchive = 1;
+            }
+            $('#dvMsgHolder').html('');
+            $.ajax({
+                async:false,
+                url:'../LessonPlanEditor/Get_Msg',
+                type:'POST',
+                datatype:'Json',
+                data:{LessonID:LessonID,BookTypeId :1, ShowArchive: ShowArchive,isSorted:true,LessonPlanID:lessonplanidint },
+                success:function(data)
+                {
+                    if(data != "-1")
+                    {
+                        $.each(data,function(i,ele){
+
+                            if(globalUserId == ele.UserID_A)
+                            {
+                                html +=  '<div id="cmnt_'+ele.Message_ID+'" class="chat-box"> <p class="user-label">'+ele.FirstName +' '+ ele.LastName+'</p>';
+                                html +=  '<div id="cmntBody_'+ele.Message_ID+'" class="arrow_box_left" onclick="ShowComment('+ele.Message_ID+','+ele.sectionID+')">'+ele.Comment +'</div>';
+                                html +=  '<p class="time-msg">'+ele.CommentTimeAgo +'</p></div>';
+                            }
+                            else{
+                                html +=  '<div id="cmnt_'+ele.Message_ID+'" class="chat-box chat-right"> <p class="user-label">'+ele.FirstName +' '+ ele.LastName+'</p>';
+                                html +=  '<div id="cmntBody_'+ele.Message_ID+'" class="arrow_box_left" onclick="ShowComment('+ele.Message_ID+','+ele.sectionID+')">'+ele.Comment +'</div>';
+                                html +=  '<p class="time-msg">'+ele.CommentTimeAgo +'</p></div>';
+                            }
+                        });
+                        $('#dvMsgHolder').html(html);
+                        for(var count=0;count<CommentName.length;count++)
+                        {
+                            $("#workingUserList").append('<div class="col-lg-12" id="lessonuser_'+CommentID[count]+'"><span>'+CommentName[count]+'</span><span><i id="edit_'+CommentID[count]+'" style="cursor:pointer" onclick="GetLessonRights('+CommentID[count]+')" class="fa fa-eye"></i></span><span><i style="cursor:pointer" onclick="Revoke('+CommentID[count]+')" class="fa fa-close"></i></span></div>')
+                        }
+                    }
+                    else
+                    {
+                        window.location.href="../User/LoginUser";
+                    }
+                    //}
+                },
+                error:function(e)
+                {
+                    html += '<div style="" class="write-text">';
+                    //html += '<textarea type="text" id="txtcomment" class="mention" style="min-height: 40px !important;width:100% !important" placeholder="Type your message here..." onkeypress="return IsAlphaNumeric(event);"></textarea>';
+                    html += '</div>';
+                    $('#dvMsgHolder').html(html);
+                }
+            });
+
+
+
+        }
+
+    </script>
+</section>
+<section id="changelesson">
+    <script>
+        function OnLessonChange(url)
+        {
+            if (buttonclickdivid!=0)
+            {
+                isautosave=true;
+                SaveHtml();
+            }
+            var win = window.open(url, '_self');
+        }
+        function onDropDownChange(val)
+        {
+            if (buttonclickdivid!=0)
+            {
+                isautosave=true;
+                SaveHtml();
+            }
+            var id=$("#cmbbklesson").val();
+            if (val!=id)
+            {
+                url = "../LessonPlanEditor/LessonPlan?LessonId=" + id + "&&BookTypeID=" + EncBookID + "&&mode=List";
+                var win = window.open(url, '_self');
+            }
+
+        }
+    </script>
+</section>
+<section id="PopupModels">
+    <div id="getsechistory">
+    </div>
+    <div id="imageModalBrowser"></div>
+    <div id="UserLessonBrowser"></div>
+    <div id="imageDeleteModalBrowser"></div>
+        <div class="modal fade" id="confirmLessonRights" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-confirm" role="document">
+                <div class="modal-content" style="">
+                    <div class="modal-body" style="">
+                        <p style="font-size:18px;">Are you sure you want to remove this user?</p>
+                        <button onclick="CloseConfirmModal()" class="btn-close">No</button>
+                        <button onclick="RevokeUser()" style="" class="btn-blue">Yes</button>
+                        <input type="hidden" id="deleteUserID" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+</section>
+<section id="sectiondetail">
+    <script type="text/javascript">
+
+        function parseJsonDate(jsonDateString) {
+            return new Date(parseInt(jsonDateString.replace('/Date(', '')));
+        }
+        function getsectiondetail(id,name)
+        {
+            if (buttonclickdivid!=0)
+            {
+                isautosave=true;
+                SaveHtml();
+            }
+            $("body").css("cursor", "wait");
+            $.ajax({
+                url:'../SectionsHistory/GetSectionHistoryDetail',
+                type: 'POST',
+                data: { "ID": id,"LessonPlanId": lessonplanidint, "BooktypeId": 1,"SectionName":name,"Direction":"English","IsindexPage":0 },
+                success: function (result)
+                {
+                    var savedData = result;
+                    $("#getsechistory").html(savedData);
+                },
+            });
+            $("body").css("cursor", "default");
+
+        }
+        function RestoreData(secid,LogId)
+        {
+            var AlertMsg ='Are you sure, to restore this Data.';
+            if(LogId!=0)
+            {
+                if(confirm(AlertMsg))
+                {
+                    if(typeof(tinyMCE) != "undefined" && tinyMCE.activeEditor != null)
+                    {
+                        if(buttonclickdivid!=0)
+                        {
+                            tinymce.EditorManager.execCommand('mceRemoveControl',true,buttonclickdivid);
+                        }
+                    }
+                    $.ajax({
+                        url: '../LessonPlanEditor/RestoreSectionHistory',
+                        type: "POST",
+                        dataType: 'json',
+                        data: { LogId:LogId },
+                        success: function (data)
+                        {
+                            if (data != null)
+                            {
+                                $("#txt_"+secid).empty();
+                                $("#txt_"+secid).html(data);
+                                trackingid=0;
+                                if(buttonclickdivid!=0)
+                                {
+                                    LoadEditor1(buttonclickdivid);
+                                }
+                            }
+                        },
+                        error: function (ex)
+                        {
+
+                            return false
+                        }
+                    });
+                }
+            }
+
+        }
+    </script>
+</section>
+<section id="Verification">
+    <script>
+
+        function VerifiyLesson()
+        {
+            if (buttonclickdivid!=0)
+            {
+                isautosave=true;
+                SaveHtml();
+            }
+
+            var AlertMsg ='Are you sure you want to submit this Lesson for review?';
+            if(confirm(AlertMsg))
+            {
+                $.ajax({
+                    type: 'GET',
+                    url: '../LessonPlanEditor/VerifyLessonPlan',
+                    dataType: 'json',
+                    data: { LessonId: LessonID,BooktypeID:1 },
+                    success: function (data)
+                    {
+                        if(data!=null && data=="Done")
+                        {
+                            window.location.reload();
+                        }
+                        else {
+                            alert(data);
+                        }
+                    },
+                    error: function (ex)
+                    {
+                        alert("error");
+                    }
+                });
+            }
+        }
+
+    </script>
+
+</section>
+<section id="comment">
+    <script>
+        var mode='@ViewBag.Mode';
+        var Rcount = '@UnreadCount';
+        var commentRights = 0;
+        var modelCom = '@ModelCount';
+        var ownerID = '@SessionManager.Current.UserID'
+        if(modelCom > 0 && ('@ViewBag.OwnerID' != '@SessionManager.Current.UserID')){
+            commentRights = '@Model.LessonUserAccess.ToList()[4].HasRights';
+        }
+
+        if(mode == "Desktop" || mode == "Message")
+        {
+            if(commentRights == "True")
+            {
+                activaTab('chat');
+            }
+        }
+        function activaTab(tab){
+            $('a[href="#' + tab + '"]').tab('show');
+            $("body").removeClass('sidebar-collapse');
+        };
+        if(Rcount != '0')
+        {
+            setTimeout(ChangeReadStatus, 5000)
+        }
+        function ChangeReadStatus()
+        {
+            debugger
+            $.ajax({
+                url: '../Comment/ChangeReadStatus',
+                type: "POST",
+                dataType: 'json',
+                data: { LessonPlanID:lessonplanidint },
+                success: function (result)
+                {
+                    if (result != null)
+                    {
+
+
+                        $.ajax({
+                            url: '../Comment/UpdateInbox',
+                            type: "POST",
+                            dataType: 'json',
+                            success: function (dbdata)
+                            {
+                                debugger
+                                if (dbdata != null)
+                                {
+                                    if(dbdata.length == 0)
+                                    {
+                                        $("#notificationCount").text('');
+                                        $('.menu li').remove();
+                                        $('.footer a').text('');
+                                        $("#header_msg").text('');
+                                        $("#header_msg").text('You have no new messages');
+                                    }
+                                    else
+                                    {
+                                        $("#notificationCount").text(dbdata.length);
+                                        $("#header_msg").text('You have '+dbdata.length+' new messages');
+                                    }
+                                    $(".menu").empty();
+                                    var html = '';
+                                    for(var i=0;i<dbdata.length;i++)
+                                    {
+                                        html += '<li id="Inboxcmnt_'+dbdata[i].Message_ID+'" style="background-color:#d4dffd;cursor:pointer">'
+                                        if (dbdata[i].WhereFrom == "Inbox")
+                                        {
+                                            if (dbdata[i].OwnerID == parseInt(ownerID))
+                                            {
+                                                html += '<a href="../LessonPlanEditor/LessonPlan?LessonId='+dbdata[i].EncLessonID+'&&mode=List">'
+                                                html += '<div class="pull-left"><img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image"></div>'
+                                                html += '<h4>'+dbdata[i].UserName+'<small><i class="fa fa-clock-o"></i> '+dbdata[i].CommentTimeAgo+'</small></h4>'
+                                                if(dbdata[i].Comment.length > 40)
+                                                {
+                                                    html += '<p title="'+dbdata[i].Comment+'">'+dbdata[i].Comment.substr(0,40)+'...</p>'
+                                                }
+                                                else
+                                                {
+                                                    html += '<p>'+dbdata[i].Comment+'</p>'
+                                                }
+                                                html += '</a>'
+                                            }
+                                            else
+                                            {
+                                                html += '<a href="../LessonPlanEditor/LessonPlan?LessonId='+dbdata[i].EncLessonID+'&&mode=Desktop&&InvitaionID='+dbdata[i].EncMessage_ID+'&&InvitationUserID='+dbdata[i].EncUserID_A+'">'
+                                                html += '<div class="pull-left"><img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image"></div>'
+                                                html += '<h4>'+dbdata[i].UserName+'<small><i class="fa fa-clock-o"></i> '+dbdata[i].CommentTimeAgo+'</small></h4>'
+                                                if(dbdata[i].Comment.length > 40)
+                                                {
+                                                    html += '<p title="'+dbdata[i].Comment+'">'+dbdata[i].Comment.substr(0,40)+'...</p>'
+                                                }
+                                                else
+                                                {
+                                                    html += '<p>'+dbdata[i].Comment+'</p>'
+                                                }
+                                                html += '</a>'
+                                            }
+                                        }
+                                        else if (dbdata[i].WhereFrom == "Scope")
+                                        {
+                                            html += '<a onclick="LoadComments(\''+dbdata[i].EncLessonID+'\',\''+dbdata[i].EncMessage_ID+'\')">'
+                                            html += '<div class="pull-left"><img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image"></div>'
+                                            html += '<h4>'+dbdata[i].UserName+'<small><i class="fa fa-clock-o"></i> '+dbdata[i].CommentTimeAgo+'</small></h4>'
+                                            if(dbdata[i].Comment.length > 40)
+                                            {
+                                                html += '<p title="'+dbdata[i].Comment+'">'+dbdata[i].Comment.substr(0,40)+'...</p>'
+                                            }
+                                            else
+                                            {
+                                                html += '<p>'+dbdata[i].Comment+'</p>'
+                                            }
+                                            html += '</a>'
+                                        }
+                                        else if (dbdata[i].WhereFrom == "FeedBack")
+                                        {
+                                            html += '<a href="../FeedBack/FeedBackProcess?EncFeedBackId='+dbdata[i].EncMessage_ID+'">'
+                                            html += '<div class="pull-left"><img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image"></div><h4>'
+                                            html += ''+dbdata[i].UserName+'<small><i class="fa fa-clock-o"></i> '+dbdata[i].CommentTimeAgo+'</small></h4>'
+                                            if(dbdata[i].Comment.length > 40)
+                                            {
+                                                html += '<p title="'+dbdata[i].Comment+'">'+dbdata[i].Comment.substr(0,40)+'...</p>'
+                                            }
+                                            else
+                                            {
+                                                html += '<p>'+dbdata[i].Comment+'</p>'
+                                            }
+                                            html += '</a>'
+                                        }
+                                        html += '</li>'
+                                    }
+                                    $(".menu").html(html);
+                                }
+                            },
+                            error: function (ex)
+                            {
+                                return false
+                            }
+                        });
+                    }
+                },
+                error: function (ex)
+                {
+                    return false
+                }
+            });
+        }
+    </script>
+</section>
+<section id="pdf">
+    <script>
+
+        function GoBack()
+        {
+            if (buttonclickdivid!=0)
+            {
+                isautosave=true;
+                SaveHtml();
+            }
+            $.ajax({
+
+                url: '../LessonPlanEditor/ResetLock',
+                type: "GET",
+                datatype: "json",
+                data: { ID: lessonplanidint },
+                success: function (data)
+                {
+                    var url="";
+                    if (mode=="List") {
+                        url = "../LessonPlanEditor/LessonList";
+                    }
+                    else if (mode=="SS") {
+                        url = "../ScopeSequence/BookConfig?BookID="+BookID;
+                    }
+                    else if (mode=="Temp") {
+                        url = "../LessonTemplates/Index?LessonID="+LessonID;
+                    }
+                    else if (mode=="Desktop") {
+                        url = "../Home/Index";
+                    }
+                    else if (mode=="Message") {
+                        url = "../Comment/CommentInbox";
+                    }
+                    else if (mode=="Verify")
+                    {
+                        url = "../LessonPlanEditor/UnderVerificationLessons";
+                    }
+                        var win = window.open(url, '_self');
+
+                }
+            });
+
+        }
+        function getpdf()
+        {
+            var win=window.open();
+            document.body.style.cursor = 'wait';
+            $.ajax({
+                type: 'GET',
+                url: '../HTMLTOWORD/Index',
+                async:false,
+                data: {LessonPlanID: lessonplanid},
+                success: function(result)
+                {
+                    if (result!=null)
+                    {
+                        document.body.style.cursor = 'default';
+                        win.location.replace(result);
+                    }
+                },
+                error:function(result){
+
+                    alert('error');
+                }
+            });
+        }
+        function ResetLock()
+        {
+            $.ajax({
+
+                url: '../LessonPlanEditor/RealeseLessonLock',
+                type: "GET",
+                datatype: "json",
+                data: { ID: lessonplanidint },
+                success: function (data)
+                {
+                    if (data=="Done") {
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+</section>
+<section id="mediaFiles">
+    <script>
+
+        /*********************Fill Images Modal and Show Selected Picture************************************/
+
+
+        $("#imageType").change(function()
+        {
+            var userID = false;
+            if($("#imageType option:selected").text() == "View All")
+            {
+                userID = true;
+            }
+            else
+            {
+                userID = false;
+            }
+
+            $.ajax({
+                url: "../LessonPlanEditor/GetImages",
+                type: 'get',
+                dataType: 'json',
+                casync: false,
+                data: { "ID":LessonID,"ImageType": 1, "userID":userID },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var savedData = data;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (result) {
+                            if (result == 1)
+                            {
+                                $("#Imagestab ul").empty();
+
+                                $.each(savedData, function (i, value) {
+                                    $("#ImagesBox").append('<li class="list-group-item"><span class="media-img"><img width="80" height="60" onclick="ShowImages('+value.FileID+',1)"  id="image_'+value.FileID+'" src="..\\Handler\\ImagesHandler.ashx?from=false&&key=' + value.EncName + '" alt="gallery img" class="img-responsive"></span><span class="img-close"><i onclick="DeleteImages('+value.FileID+','+value.UserID+',\'' + value.EncName + '\')" class="fa fa-close"></i> </span><input id="FileImage_'+value.FileID+'" onblur="SaveImageName('+value.FileID+')" title="Click here to change Name" placeholder="Untitled Image" type="text" class="form-control" value="'+value.NickName+'" /></li>');
+                                });
+                            }
+                            else
+                            {
+                                window.location.href =  "../User/LoginUser";
+                            }
+                        }
+                    });
+
+                }
+            });
+        })
+
+        $("#audioType").change(function()
+        {
+            var userID = false;
+            if($("#audioType option:selected").text() == "View All")
+            {
+                userID = true;
+            }
+            else
+            {
+                userID = false;
+            }
+
+            $.ajax({
+                url: "../LessonPlanEditor/GetImages",
+                type: 'get',
+                dataType: 'json',
+                casync: false,
+                data: { "ID":LessonID,"ImageType": 2, "userID":userID },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var savedData = data;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (result) {
+                            if (result == 1)
+                            {
+                                $("#AudioTab ul").empty();
+
+                                $.each(savedData, function (i, value) {
+
+                                    $("#AudioBox").append('<li class="list-group-item"><span class="media-img"><img width="80" height="60" onclick="ShowImages('+value.FileID+',2);" id="audio_'+value.FileID+'" src="../images/sound-file.png"><audio style="display:none;" controls><source id="aud_'+value.FileID+'" src="..\\Handler\\SoundsHandler.ashx?key='+value.EncName+'"></audio><span class="img-close"><i onclick="DeleteImages('+value.FileID+','+value.UserID+',\'' + value.EncName + '\')" class="fa fa-close"></i> </span><input id="FileImage_'+value.FileID+'" onblur="SaveImageName('+value.FileID+')" title="Click here to change Name" placeholder="Untitled Image" type="text" class="form-control" value="'+value.NickName+'" /></li>');
+                                });
+                            }
+                            else
+                            {
+                                window.location.href =  "../User/LoginUser";
+                            }
+                        }
+                    });
+
+                }
+            });
+        })
+
+        $("#videoType").change(function()
+        {
+            var userID = false;
+            if($("#videoType option:selected").text() == "View All")
+            {
+                userID = true;
+            }
+            else
+            {
+                userID = false;
+            }
+
+            $.ajax({
+                url: "../LessonPlanEditor/GetImages",
+                type: 'get',
+                dataType: 'json',
+                casync: false,
+                data: { "ID":LessonID,"ImageType": 3, "userID":userID },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var savedData = data;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (result) {
+                            if (result == 1)
+                            {
+                                $("#VideoTab ul").empty();
+
+                                $.each(savedData, function (i, value) {
+
+                                    $("#VideoBox").append('<li class="list-group-item vid-file"><img width="80" height="60" onclick="ShowImages('+value.FileID+',3);" id="video_'+value.FileID+'" src="../images/video-file.png"><audio style="display:none;" controls><source id="vid_'+value.FileID+'" src="..\\Handler\\SoundsHandler.ashx?key='+value.EncName+'"></audio><span class="img-close"><i onclick="DeleteImages('+value.FileID+','+value.UserID+',\'' + value.EncName + '\')" class="fa fa-close"></i> </span><input id="FileImage_'+value.FileID+'" onblur="SaveImageName('+value.FileID+')" title="Click here to change Name" placeholder="Untitled Image" type="text" class="form-control" value="'+value.NickName+'" /></li>');
+
+                                });
+                            }
+                            else
+                            {
+                                window.location.href =  "../User/LoginUser";
+                            }
+                        }
+                    });
+
+                }
+            });
+        })
+
+
+        function DeleteImages(Id,userID,encId)
+        {
+            debugger
+            var currentUser = $("#currentUser").val();
+            deleteRights = 'True'
+            if(modelCom > 0){
+                deleteRights = '@Model.LessonUserAccess.ToList()[2].HasRights';
+            }
+            if((userID != currentUser))
+            {
+                if(deleteRights == 'False')
+            {
+                alert("You are not authorized to Delete this image")
+            }
+            }
+            else
+            {
+                loader();
+                $.ajax({
+                    url:'../Image/GetDeleteImages',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    data: { "ImageID": Id,"LessonId":LessonID,"EncID":encId },
+                    success: function (result) {
+                        var savedData = result;
+                        $.ajax({
+                            url:'../Image/CheckSession',
+                            type: 'GET',
+                            cache: false,
+                            async: true,
+                            success: function (data) {
+                                if (data == 1)
+                                {
+                                    $("#imageDeleteModalBrowser").empty();
+                                    $("#imageDeleteModalBrowser").html('');
+                                    $("#imageDeleteModalBrowser").html(savedData);
+                                }
+                                else
+                                {
+                                    window.location.href =  "../User/LoginUser";
+                                }
+                            }
+                        });
+                    }
+                }).done(function(){
+                    $("#loading_block").hide()
+                })
+            }
+
+        }
+
+        function ShowImages(Id,type)
+        {
+
+            var src = '';
+
+            if(type == 1)
+            {
+                src = $('#image_' + Id).attr('src');
+            }
+            else if(type == 2)
+            {
+                src = $('#aud_' + Id).attr('src');
+            }
+            else if(type == 3)
+            {
+                src = $('#vid_' + Id).attr('src');
+            }
+
+            $("body").css("cursor", "progress");
+            $.ajax({
+                url:'../Image/ShowImages',
+                type: 'GET',
+                cache: false,
+                async: true,
+                data: { "ImageSrc": src,"MediaType":type },
+                success: function (result) {
+                    var savedData = result;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (data) {
+                            if (data == 1)
+                            {
+                                $("#imageDeleteModalBrowser").empty();
+                                $("#imageDeleteModalBrowser").html('');
+                                $("#imageDeleteModalBrowser").html(savedData);
+                            }
+                            else
+                            {
+                                window.location.href =  "../User/LoginUser";
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        $(function()
+        {
+
+            $('#uploadimgbtn').click(function()
+            {
+                loader();
+                if (buttonclickdivid!=0)
+                {
+                    isautosave=true;
+                    SaveHtml();
+                }
+                $.ajax({
+                    url:'../Image/GetImages',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    data: { "bkid": BookID, "lid": LessonID },
+                    success: function (result) {
+                        var savedData = result;
+                        $.ajax({
+                            url:'../Image/CheckSession',
+                            type: 'GET',
+                            cache: false,
+                            async: true,
+                            success: function (data) {
+                                if (data == 1)
+                                {
+                                    $("#imageModalBrowser").empty();
+                                    $("#imageModalBrowser").html('');
+                                    $("#imageModalBrowser").html(savedData);
+                                }
+                                else
+                                {
+                                    window.location.href =  "../User/LoginUser";
+                                }
+                            }
+                        });
+                    }
+                }).done(function (response) {
+                    $("#loading_block").hide()
+                });
+            });
+
+            $('#uploadaudiobtn').click(function()
+            {
+                loader();
+                if (buttonclickdivid!=0)
+                {
+                    isautosave=true;
+                    SaveHtml();
+                }
+                $.ajax({
+                    url:'../Image/GetAudio',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    data: { "bkid": BookID, "lid": LessonID },
+                    success: function (result) {
+                        var savedData = result;
+                        $.ajax({
+                            url:'../Image/CheckSession',
+                            type: 'GET',
+                            cache: false,
+                            async: true,
+                            success: function (data) {
+                                if (data == 1)
+                                {
+                                    $("#imageModalBrowser").html(savedData);
+                                }
+                                else
+                                {
+                                    window.location.href =  "../User/LoginUser";
+                                }
+                            }
+                        }).done(function (response) {
+                            $("#loading_block").hide()
+                        });
+
+                    }
+                });
+            });
+
+            $('#uploadvideobtn').click(function()
+            {
+                loader();
+                if (buttonclickdivid!=0)
+                {
+                    isautosave=true;
+                    SaveHtml();
+                }
+                $.ajax({
+                    url:'../Image/GetVideo',
+                    type: 'GET',
+                    cache: false,
+                    async: true,
+                    data: { "bkid": BookID, "lid": LessonID },
+                    success: function (result) {
+                        var savedData = result;
+                        $.ajax({
+                            url:'../Image/CheckSession',
+                            type: 'GET',
+                            cache: false,
+                            async: true,
+                            success: function (data) {
+                                if (data == 1)
+                                {
+                                    $("#imageModalBrowser").html(savedData);
+                                }
+                                else
+                                {
+                                    window.location.href =  "../User/LoginUser";
+                                }
+                            }
+                        }).done(function (response) {
+                            $("#loading_block").hide()
+                        });
+
+                    }
+                });
+
+            });
+
+        });
+
+        $("#ImageIcon").click(function() {
+            $('#imageType').val('My Images');
+            FillImagesPlanEditor();
+        });
+        $("#AudioIcon").click(function() {
+
+            $('#audioType').val('My Audios');
+            FillSoundsPlanEditor();
+        });
+        $("#VideoIcon").click(function() {
+            $('#videoType').val('My Videos');
+            FillVideosPlanEditor();
+        });
+
+        function FillImagesPlanEditor()
+        {
+            var userID = false;
+            if($("#imageType option:selected").text() == "View All")
+            {
+                userID = true;
+            }
+            else
+            {
+                userID = false;
+            }
+            loader();
+            $.ajax({
+                url: "../LessonPlanEditor/GetImages",
+                type: 'get',
+                dataType: 'json',
+                casync: false,
+                data: { "ID":LessonID,"ImageType": 1, "userID":userID },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var savedData = data;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (result) {
+                            if (result == 1)
+                            {
+                                $("#Imagestab ul").empty();
+
+                                $.each(savedData, function (i, value) {
+                                    var html = '';
+                                    html += '<li class="list-group-item"><span class="media-img">';
+                                    html += '<img style="width:80px; height:60px;" onclick="ShowImages('+value.FileID+',1)"  id="image_'+value.FileID+'" src="..\\Handler\\ImagesHandler.ashx?from=false&&key=' + value.EncName + '" alt="gallery img" class="img-responsive">';
+                                    html += '</span><span class="img-close"><i onclick="DeleteImages('+value.FileID+','+value.UserID+',\'' + value.EncName + '\')" class="fa fa-close"></i> </span>';
+
+                                    if(modelCom > 0)
+                                    {
+                                      html += '<input id="FileImage_'+value.FileID+'" onblur="SaveImageName('+value.FileID+')" title="Click here to change Name" placeholder="Untitled Image" type="text" class="form-control" value="'+value.NickName+'" />'
+
+                                    }
+                                    html += '</li>';
+                                            $("#ImagesBox").append(html);
+                                        });
+                            }
+                            else
+                            {
+                                window.location.href =  "../User/LoginUser";
+                            }
+                        }
+                    });
+
+                }
+            }).always(function(){
+                $("#loading_block").hide();
+            })
+
+        }
+
+        function FillSoundsPlanEditor(){
+
+            var userID = false;
+            if($("#audioType option:selected").text() == "View All")
+            {
+                userID = true;
+            }
+            else
+            {
+                userID = false;
+            }
+            loader();
+            $.ajax({
+                url: "../LessonPlanEditor/GetImages",
+                type: 'get',
+                dataType: 'json',
+                casync: false,
+                data: { "ID":LessonID,"ImageType": 2, "userID":userID },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var savedData = data;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (result) {
+                            if (result == 1)
+                            {
+                                $("#AudioTab ul").empty();
+
+                                $.each(savedData, function (i, value) {
+
+                                    $("#AudioBox").append('<li class="list-group-item"><span class="media-img"><img onclick="ShowImages('+value.FileID+',2);" id="audio_'+value.FileID+'" src="../images/sound-file.png"><audio style="display:none;" controls><source id="aud_'+value.FileID+'" src="..\\Handler\\SoundsHandler.ashx?key='+value.EncName+'"></audio><span class="img-close"><i onclick="DeleteImages('+value.FileID+','+value.UserID+',\'' + value.EncName + '\')" class="fa fa-close"></i> </span><input id="FileImage_'+value.FileID+'" onblur="SaveImageName('+value.FileID+')" title="Click here to change Name" placeholder="Untitled Image" type="text" class="form-control" value="'+value.NickName+'" /></li>');
+                                });
+                            }
+                            else
+                            {
+                                window.location.href =  "../User/LoginUser";
+                            }
+                        }
+                    });
+
+                }
+            }).always(function(){
+                $("#loading_block").hide();
+            })
+
+        }
+        function FillAudioScriptPlanEditor(){
+            $('#audioScript').empty();
+            $.ajax({
+
+                url: '../LessonPlanEditor/SelectAudioScriptSounds',
+                type: "POST",
+                dataType: "JSON",
+                data: { LessonPlanID: LessonPlanId,LessonId:LessonID,BookID:BookID },
+                success: function (data) {
+
+                    if (data != null) {
+
+                        $('#audioScript').focus();
+                        $("#audioScript").html(""); // clear before appending new list
+                        var id = "imgStd_"+lessonplanidint;
+                        $('#audioScript').append('<div class="audio-hold text-center col-lg-6"><span style="display:none" class="fa fa-close img-cross"></span><br/><img id="'+id+'" src="../images/audio.png"><audio style="display:none;" controls><source id="aud_'+lessonplanidint+'" src="..\\Handler\\SoundsHandler.ashx?key='+data+'"></audio></div>');
+                        $("#"+id).attr('onclick',"SoundModal(0,'scriptAudio','"+data+"')");
+                    }
+                }
+            });
+
+        }
+        function FillVideosPlanEditor(){
+
+            var userID = false;
+            if($("#videoType option:selected").text() == "View All")
+            {
+                userID = true;
+            }
+            else
+            {
+                userID = false;
+            }
+            loader();
+            $.ajax({
+                url: "../LessonPlanEditor/GetImages",
+                type: 'get',
+                dataType: 'json',
+                casync: false,
+                data: { "ID":LessonID,"ImageType": 3, "userID":userID },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var savedData = data;
+                    $.ajax({
+                        url:'../Image/CheckSession',
+                        type: 'GET',
+                        cache: false,
+                        async: true,
+                        success: function (result) {
+                            if (result == 1)
+                            {
+                                $("#VideoTab ul").empty();
+
+                                $.each(savedData, function (i, value) {
+
+                                    $("#VideoBox").append('<li class="list-group-item vid-file"><img onclick="ShowImages('+value.FileID+',3);" id="video_'+value.FileID+'" src="../images/video-file.png"><audio style="display:none;" controls><source id="vid_'+value.FileID+'" src="..\\Handler\\SoundsHandler.ashx?key='+value.EncName+'"></audio><span class="img-close"><i onclick="DeleteImages('+value.FileID+','+value.UserID+',\'' + value.EncName + '\')" class="fa fa-close"></i> </span><input id="FileImage_'+value.FileID+'" onblur="SaveImageName('+value.FileID+')" title="Click here to change Name" placeholder="Untitled Image" type="text" class="form-control" value="'+value.NickName+'" /></li>');
+
+                                });
+                            }
+                            else
+                            {
+                                window.location.href =  "../User/LoginUser";
+                            }
+                        }
+                    });
+
+                },
+                error: function(ex)
+                {
+                    debugger
+                }
+            }).always(function(){
+                $("#loading_block").hide();
+            })
+
+        }
+
+        function SaveImageName(id)
+        {
+            var ImageName = $("#FileImage_"+id).val();
+            $("body").css("cursor", "progress");
+            $.ajax({
+                url: "../Image/SaveImageName",
+                type: 'get',
+                dataType: 'json',
+                casync: false,
+                data: { "imageId": id, "description": ImageName },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data == 1) {
+                        $("body").css("cursor", "default");
+                    }
+                    else {
+                        alert("Problem occurs");
+                    }
+                }
+            });
+
+        }
+
+
+    </script>
+</section>
+<section id="TemplateInfo">
+    <script>
+        $("#input-id").rating();
+    </script>
+    <script>
+        var seletempid=0;
+        var templessonplanid=0;
+        function onTemplateClick(id,con,rating,votes,lesplanid)
+        {
+            if (buttonclickdivid!=0)
+            {
+                isautosave=true;
+                SaveHtml();
+            }
+            if (id!=seletempid)
+            {
+                seletempid=id;
+                templessonplanid=lesplanid;
+            }
+            else {
+                return;
+            }
+            if (id==-1)
+            {
+                $('.rate-star').hide();
+            }
+            else {
+                $('.rate-star').show();
+                $('#tempavgrate').html(rating);
+                $('.temp-star-box').empty();
+                var ratinghtml='';
+                for (var i = 1; i <= 5; i++)
+                {
+                    if (i<=rating) {
+                        ratinghtml +=' <span><i class="fa fa-star"></i></span>';
+                    }
+                    else {
+                        ratinghtml +=' <span><i class="fa fa-star-o"></i></span>';
+                    }
+                }
+                $('.temp-star-box').append(ratinghtml);
+                $('#tempvotes').html(votes+' <i class="fa fa-user"></i>');
+
+            }
+            $("#templbody").empty();
+            if (con=='open')
+            {
+                document.getElementById("templtinfo").className = "";
+                document.getElementById("templtinfo").className += 'template-sidebar template-sidebar-bg temp-open';
+
+            }
+            else {
+                document.getElementById("templtinfo").className = "";
+                document.getElementById("templtinfo").className += 'template-sidebar template-sidebar-bg temp-close';
+            }
+            if (id!=0) {
+                loader();
+                $.ajax({
+                    url:'../LessonPlanEditor/GetTemplateDataByID',
+                    type: 'POST',
+                    data: { "ID": id, "LessonID": LessonID},
+                    success: function (result)
+                    {
+                        if(result!=null)
+                        {
+                            if (result.obj.lstSection!=null)
+                            {
+                                var html="";
+                                html+='<div class="clearfix"></div>';
+                                for (var i = 0; i < result.obj.lstSection.length; i++)
+                                {
+                                    html+='<span class="title-editor">';
+                                    html+='<span>'+result.obj.lstSection[i].Name+'</span>';
+                                    html+='<span class="duration">'+ result.obj.lstSection[i].Duration.replace("(", "").replace(")", "").replace("minute", "mins")+'</span>';
+                                    html+='</span>';
+                                    html+='<div class="clearfix"></div>';
+                                    if (result.obj.lstSubsection != null)
+                                    {
+                                        for (var j = 0; j < result.obj.lstSubsection.length; j++)
+                                        {
+
+                                            if (result.obj.lstSubsection[j].SectionId == result.obj.lstSection[i].Id)
+                                            {
+                                                if (result.obj.lstSection[i].SubsectionCount!=1)
+                                                {
+                                                    html+='<span class="sub-section">';
+                                                    html+='<span>'+result.obj.lstSubsection[j].SubSectionName+'</span>';
+                                                    html+='</span>';
+                                                    html+='<div class="clearfix"></div>';
+                                                }
+
+                                                html+='<div class="subsectiondata" style="padding:0px 30px 0px 30px !important">';
+                                                html+=result.obj.lstSubsection[j].LessonPlanScript;
+                                                html+='</div>';
+                                                html+='<div class="clearfix"></div>';
+                                            }
+                                        }
+
+                                    }
+                                }
+                                $("#templbody").append(html);
+                                $("#loading_block").hide();
+                            }
+                        }
+                    },
+                });
+            }
+        }
+        function onImportClick()
+        {
+
+            var AlertMsg ='Are you sure to Import this Lesson?';
+            if(confirm(AlertMsg))
+            {
+                loader();
+                if (seletempid!=0)
+                {
+                    window.open('../LessonTemplates/SaveTemp?TempID='+seletempid+'&&LessonId='+LessonID+'&&islessonscript='+mode,'_self');
+                }
+            }
+        }
+        function TemplateRating()
+        {
+            if (seletempid!=0) {
+                $.ajax({
+                    url:'../LessonPlanEditor/GrtTemplateRating',
+                    type: 'GET',
+                    data: { "ID": seletempid},
+                    success: function (result)
+                    {
+                        if(result!=null)
+                        {
+                            $('#tempavgrat').html(result[0].Rating);
+                            $('#temstars').empty();
+                            var html='';
+                            for (var i = 1; i <= result[0].Rating; i++)
+                            {
+                                html+=' <span><i class="fa fa-star"></i></span>';
+                            }
+                            html+='  <p title="Total Votes">'+result[0].TotalVotes+'  <i class="fa fa-user"></i></p>';
+                            $('#temstars').append(html);
+                            $('#tempfivestar').html(result[0].FiveVotes);
+                            $('#tempfourstar').html(result[0].FourVotes);
+                            $('#tempthreestar').html(result[0].ThreeVotes);
+                            $('#temptwostar').html(result[0].TwoVotes);
+                            $('#temponestar').html(result[0].OneVotes);
+                            $('#tempratedby').empty();
+                            var html2='';
+                            for(var i=0;i < result.length;i++)
+                            {
+                                html2 +='<div class="review-holder">';
+                                html2 +='<div class="u-profile">';
+                                html2 +='<img src="../images/profile-img.png" class="img-responsive" />';
+                                html2 +='</div>';
+                                html2 +='<div class="star-box">';
+                                html2 +='<p>'+result[i].PersonName+'</p>';
+                                html2 +='<span>';
+                                var personrating=result[i].PersonRating;
+                                for (var j = 1; j <= personrating; j++)
+                                {
+                                    html2 +=' <span><i class="fa fa-star"></i></span>';
+                                }
+                                html2 +='<span class="temp-date">  ';
+                                html2 +=result[i].Date;
+                                html2 +='</span>';
+                                html2 +='</div>';
+                                html2 +='</div>';
+                            }
+                            $('#tempratedby').append(html2);
+                            //if (result[0].CanRate!=0) {
+                            //    document.getElementById('btnratetemplate').style.display="none";
+                            //}
+                            //else {
+                            //    document.getElementById('btnratetemplate').style.display="block";
+                            //}
+                        }
+                    },
+                });
+            }
+        }
+        function RateLesson()
+        {
+            var f = $(".filled-stars").width() / $('.filled-stars').parent().width() * 100;
+            f=Math.round(f);
+            val=f/20;
+            val=parseInt(val);
+            if (val==0) {
+                return;
+            }
+            $.ajax({
+                type: 'GET',
+                url: '../LessonPlanEditor/RateLesson',
+                data: { LessonPlanID:templessonplanid,Rating:val,VerifiedID:seletempid },
+                success: function (result) {
+                    if (result != null)
+                    {
+                        TemplateRating();
+                    }
+                },
+                error: function (result) {
+                }
+            });
+        }
+    </script>
+</section>
+<section id="multimediascripts">
+    <script>
+        function ImageModal(id,nickname,src) {return false}
+        function SoundModal(id, nickname,src) {return false}
+        function VideoModal(id, nickname,src) {return false}
+
+    </script>
+</section>
+<script>
+    var previousmode;
+    function ManageTabs(mode){
+        debugger
+        if(previousmode==undefined || previousmode==mode){
+            previousmode=mode;
+            return
+        }
+
+        if(previousmode!=mode){
+            $(".sidebar-mini").addClass("sidebar-collapse");
+            previousmode=mode;
+        }
+
+    }
+</script>

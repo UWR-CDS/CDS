@@ -1,0 +1,195 @@
+
+@font-face {
+    font-family: 'Lato-Regular';
+    src: url('../fonts/Lato-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Lato-Light';
+    src: url('../fonts/Lato-Light.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Lato-Bold';
+    src: url('../fonts/Lato-Bold.ttf') format('truetype');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background:#3977CE url('../images/cds-bg.jpg') no-repeat 50% 0;
+}
+.logo-holder {
+  background: #fff none repeat scroll 0 0;
+  margin-top:25px;
+  padding: 20px 0;
+}
+.logo-holder .logo a{
+	outline: none;
+}
+.logo-holder .logo a img{
+	display:block;
+	cursor: pointer;
+}
+
+.btn-login-box button{
+	float: right;
+}
+
+.logo-holder .register-btn{
+	background:#3979D1;
+	color: #fff;
+	border-radius: 8px;
+	padding:8px 18px;
+	outline: none;
+	border:none;
+	margin-right: 10px;
+	 font-family: "Lato-Regular",sans-serif;
+    font-size: 16px;
+    line-height: 18px;
+}
+.logo-holder .sign-btn{
+	background:#59C203;
+	color: #fff;
+	border-radius: 8px;
+	padding:8px 18px;
+	outline: none;
+	border:none;
+	 font-family: "Lato-Regular",sans-serif;
+    font-size: 16px;
+    line-height: 18px;
+}
+.logo-holder .register-btn:hover, .logo-holder .register-btn:focus{
+	background:#59C203;
+	color: #fff;
+	outline: none;
+	border:none;
+	cursor: pointer;
+}
+.logo-holder .sign-btn:hover, .logo-holder .sign-btn:focus{
+    background:#3979d1;
+	color: #fff;
+	outline: none;
+	border:none;
+	cursor: pointer;
+}
+.content-area{
+	padding:80px 0px 99px;
+}
+.contetn-box {
+	/*background: #ccc*/
+}
+.contetn-box h1{
+	font-family: "Lato-Bold", sans-serif;
+	font-size: 35px;
+	line-height: 37px;
+	color: #fff;
+	margin-bottom: 25px;
+}
+.contetn-box .light-text{
+	font-family: "Lato-Light", sans-serif;
+}
+
+.contetn-box p{
+	font-family: "Lato-Light", sans-serif;
+	font-size:16px;
+	line-height:22px;
+	color: #fff;
+}
+.btn-start button{
+	background: #59C203;
+	color: #fff;
+	border-radius: 8px;
+	padding:8px 35px;
+	outline: none;
+	border:none;
+	margin-top: 10px;
+	font-family: "Lato-Bold", sans-serif;
+    font-size: 16px;
+    line-height: 18px;
+    /*box-shadow:0 0 5px rgba(0, 0, 0, 0.5);*/
+}
+.btn-start button:hover{
+	cursor: pointer;
+    background:#55B302;
+    color:#fff;
+}
+.aboutus-uwr {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.4);
+  padding: 25px 0;
+}
+.aboutus-uwr h2{
+	background:#fff;
+	font-family: "Lato-Light", sans-serif;
+	font-size:24px;
+	line-height:26px;
+	color: #000;
+	padding: 10px 0 10px 60px;
+}
+.aboutus-uwr .uwr-logo{
+	padding: 20px 0 20px;
+}
+.aboutus-uwr .uwr-desc{
+ 	padding: 10px 60px;
+}
+
+.uwr-desc p {
+  color: #000;
+  font-family: "Lato-Light",sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  margin-bottom: 15px;
+}
+.btnaction{
+ margin-left: 0px;
+}
+.btnaction .btn-pakweb{
+	background:#3980e5;
+	color: #fff;
+	border-radius: 8px;
+	padding:8px 10px;
+	outline: none;
+	border:none;
+	margin-right: 10px;
+	 font-family: "Lato-Regular",sans-serif;
+    font-size: 16px;
+    line-height: 18px;
+}
+.btnaction .btn-inter{
+	background:#3980e5;
+	color: #fff;
+	border-radius: 8px;
+	padding:8px 10px;
+	outline: none;
+	border:none;
+	margin-right: 10px;
+	 font-family: "Lato-Regular",sans-serif;
+    font-size: 16px;
+    line-height: 18px;
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);*/
+  }
+
+.btnaction .btn-pakweb:hover, .btnaction .btn-pakweb:focus, .btnaction .btn-inter:hover, .btnaction .btn-inter:focus{
+	background:#2868B7;
+	color: #fff;
+	outline: none;
+	border:none;
+	cursor: pointer;
+}
+.footer-holder{
+	background:rgba(41, 58, 84, 1) none repeat scroll 0 0;
+	color: #fff;
+
+}
+
+.footer-holder .copyright{
+	padding: 10px 0;
+
+}
+.footer-holder .copyright p{
+	margin: 0;
+	font-family: "Lato-Light", sans-serif;
+	font-size:13px;
+	line-height:18px;
+	color: #fff;
+}

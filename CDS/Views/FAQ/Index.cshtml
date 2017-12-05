@@ -1,0 +1,108 @@
+﻿@model IEnumerable<CDS.Models.mdl_FAQ>
+@{
+    ViewBag.Title = "FAQ";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+}
+<style>
+    .panel {
+    margin-bottom:5px !important;
+    }
+    .panel-body {
+    font-size:16px !important;
+      border:1px solid #ccc;
+border-radius:2px ;
+margin-bottom:5px ;
+border-top:0px
+    }
+</style>
+<div class="container-fluid main-con">
+    <div class="title-bar">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">FAQ </a></li>
+                </ul>
+                <div class="pull-right">
+                    <a href="../Home/Index" class="btn-back" title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+        <div class="panel-box-cds">
+            <div class="panel-group" id="accordion">
+
+                @if (Model != null)
+            {
+                var sr = 1;
+                foreach (var item in Model)
+                {
+                        <div class="panel panel-default" data-toggle="collapse" data-parent="#accordion" data-target="#collapse_@item.ID" aria-expanded="true" aria-controls="collapse_@item.ID" onclick="CollapseAll(@item.ID)">
+                            <div class="panel-heading" role="tab" id="heading_@item.ID">
+                                <h4 class="panel-title">
+                                    <a id="a_@item.ID" role="button" class="ques">
+                                        <span class="faq-no">@sr</span> @item.Questions
+                                    </a>
+                                </h4>
+                            </div>
+                        </div>
+                            <div id="collapse_@item.ID" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@item.ID">
+                                <div class="panel-body" style="white-space:pre-line">
+                                    @if (item.QuestionType == 2)
+                                    {
+                                        <iframe src="@item.Answers?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                                    }
+                                    else if (item.QuestionType == 3) {
+                                        string[] str = item.Answers.Split('#');
+                                        <span>@Html.Raw(str[0])</span>
+                                        <iframe src="@str[1]?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(item.Answers);
+                                    }
+                                </div>
+                            </div>
+                        
+                        sr++;
+                    }
+                }
+                else
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab">
+                            <h4 class="panel-title" @*onclick="activeclass(@item.ID)"*@>
+                                <a class="ques">
+                                    <span class="faq-no" style="color:red">No Record Found</span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse">
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+</div>
+<script>
+    var previostabid;
+    function CollapseAll(tabid) {
+        debugger
+         if(previostabid==tabid){
+           $(".panel-collapse").removeClass('in');
+           $(".panel-collapse").hide(); 
+            previostabid=undefined;
+        }
+       else if(previostabid!=tabid){
+           $(".panel-collapse").removeClass('in');
+           $(".panel-collapse").hide(); 
+           $("#collapse_"+tabid).show();  
+           previostabid=tabid;
+       }
+       
+    }
+</script>

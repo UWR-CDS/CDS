@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+}
+    <div class="img-delete modal fade" id="page-alerts" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" id="mainheader">
+                    <button id="btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="errorheader">Image Delete</h4>
+                </div>
+                @if (ViewBag.CanDelete == false)
+                {
+                    <div class="del-msg">Image is already used in script. You cannot delete this image</div>
+                }
+                else
+                {
+                    <div class="del-msg" id="page-alerts-message"></div>
+
+                        <div class="modal-footer">
+                            <button class="btn-close" type="button" id="page-alerts-btn-cancel" onclick="closePageAlert()"> Cancel</button>
+                             <button  class="btn-blue" type="button" id="page-alerts-btn-ok" name="@ViewBag.ImageID" onclick="DeleteImageAfterConfirm()">Delete</button>
+                            
+                        </div>
+
+                }
+                
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#page-alerts-message').empty();
+        $('#page-alerts-message').append('Are you sure you want to delete!');
+        $('#page-alerts').modal('show');
+
+        function closePageAlert() {
+            $('#page-alerts').modal('hide');
+        }
+
+        function DeleteImageAfterConfirm() {
+
+            var id = $('#page-alerts-btn-ok').attr('name');
+
+            $('html, body').css("cursor", "wait");
+            $('#page-alerts-btn-ok').css("cursor", "wait"); //
+            $('#page-alerts-btn-cancel').css("cursor", "wait");
+            $('#close').css("cursor", "wait");
+
+
+            $.ajax({
+
+                url: '../Image/DeleteImages',
+                type: "POST",
+                datatype: "json",
+                //async:false,
+                data: { Id: id },
+                success: function (data) {
+
+                    //alert(id);
+                    $('#imagediv_' + id).empty();
+                    $('#sounddiv_' + id).empty();
+                    $('#videodiv_' + id).empty();
+                    FillImagesPlanEditor();
+                    FillVideosPlanEditor();
+                    FillSoundsPlanEditor();
+                    //sounddiv_1718
+
+                    $('html, body').css("cursor", "default");
+                    $('#page-alerts-btn-ok').css("cursor", "default"); //
+                    $('#page-alerts-btn-cancel').css("cursor", "default");
+                    $('#close').css("cursor", "default");
+
+                    $('#page-alerts').modal('hide');
+                }
+
+
+
+            });
+        }
+    </script>

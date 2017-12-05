@@ -1,0 +1,82 @@
+﻿@font-face {
+    font-family: 'ROBOTO-REGULAR';
+    src: url('../fonts/ROBOTO-REGULAR.TTF') format('truetype');
+}
+@font-face {
+    font-family: 'ROBOTO-BOLD';
+    src: url('../fonts/ROBOTO-BOLD.TTF') format('truetype');
+}
+.title-box-pdf {
+  margin: 30px 0;
+}
+.table-header{
+    width:100%;
+}
+.table-header tr:first-child td{
+    width:40%;
+    vertical-align: top;
+}
+.table-header tr td.list-pdf{
+    width:60%;text-align:right;
+}
+.table-title{
+    background:#59C203;
+    color:#fff;
+    /*width:50%;*/
+    margin-bottom:30px !important;
+     /*display:inline-block;*/
+     overflow:hidden;
+     padding-left:10px;
+}
+.table-title .title-pdf {
+  /*background: red none repeat scroll 0 0;*/
+  display: block;
+  font-size: 16px;
+  line-height: 20px;
+  margin: 10px 0 5px 15px;
+}
+.table-title .lsn-pdf {
+  /*background: green none repeat scroll 0 0;*/
+  display: block;
+  font-size: 22px;
+  line-height: 24px;
+  margin: 0 0 10px 15px;
+}
+/*.table-title tr td{
+    padding-left:10px;
+}
+.table-title p {
+  font-family: "ROBOTO-REGULAR";
+  font-size: 18px;
+  line-height: 20px;
+  margin: 0;
+  padding: 10px 0 0 10px;
+}
+.table-title h3 {
+  font-size: 24px;
+  line-height: 26px;
+  margin: 4px 0 10px 10px;
+  padding-right: 56px;
+}
+.table-title h2{
+  font-size: 36px;
+  line-height: 40px;
+  margin: 0;
+  padding: 0 0 0 20px;
+  font-family: 'ROBOTO-BOLD';
+}*/
+.tabledata tr .blue
+{
+    color:#4c76df !important;
+    font-weight:bold;
+    font-size:18px !important;
+    padding:10px 0 0 0;
+}
+.tabledata tr .blue1
+{
+    color:#4c76df !important;
+    padding:10px 0;
+}
+
+
+/*Lesson plan English PDF end*/

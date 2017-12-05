@@ -1,0 +1,140 @@
+﻿@model CDS.Models.UserData
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/images/favicon5.png" />
+    <title>Reigster</title>
+    <script src="~/Scripts/jquery-2.2.3.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/logincds.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/checkbox-cds.css" rel="stylesheet" />
+    <link href="~/Content/responsivecds.css" rel="stylesheet" />
+    <style>
+        body
+        {
+            background:#EAEAEB !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="rigster-header">
+        <div class="container">
+            <div class="logo">
+                <img src="~/images/register-logo.png" alt="logo" />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        @if (ViewBag.RegisterMassage != null && ViewBag.RegisterMassage == "Please Check your Email Id to verifiy your Account.")
+        {
+            <div class="col-lg-12 col-sm-12 col-xs-2 col-md-12">
+                <div class="alert1 alert-success alert-update" style="width:30%;margin-left:70px;background-color:#dff0d8 !important">
+                    <h4 id="alertmsg" class="text-center" style="color:black"><i class="fa fa-envelope-o" style="margin-right:5px;"></i>  Plaese Wait!</h4>
+                </div>
+            </div>
+        }
+        else if(ViewBag.RegisterMassage != null)
+        {
+            <div class="col-lg-12 col-sm-12 col-xs-2 col-md-12">
+                <div class="alert alert-warning alert-update">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4 id="alertmsg"><i class="fa fa-envelope-o" style="margin-right:5px;"></i></h4>
+                    @ViewBag.RegisterMassage
+                </div>
+            </div>
+        }
+        <div class="reg-title">
+            <h1>Create Your Account</h1>
+        </div>
+    </div>
+
+
+            <div class="form-holder-reg" style="">
+                @using (Html.BeginForm("Register", "User", FormMethod.Post, new { role = "form", @id = "loginForm" }))
+            {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <form>
+                        <div class="user-email-reg">
+                            @Html.ValidationMessageFor(m => m.UserFirstName, "", new { @class = "text-danger", @style = "" })
+                            @Html.TextBoxFor(m => m.UserFirstName, new { @type = "text", @class = "form-control fname",  required = "required", PlaceHolder = "First Name",@maxLength = "32" })
+                        </div>
+                        <div class="user-email-reg">
+                            @Html.ValidationMessageFor(m => m.UserLastName, "", new { @class = "text-danger", @style = "" })
+                            @Html.TextBoxFor(m => m.UserLastName, new { @type = "text", @class = "form-control", required = "required", PlaceHolder = "Last Name", @maxLength = "32" })
+                        </div>
+                        <div class="user-email-reg">
+                            @Html.ValidationMessageFor(m => m.UserPhone, "", new { @class = "text-danger", @style = "" })
+                            @Html.TextBoxFor(m => m.UserPhone, new { @type = "text", @class = "form-control", required = "required", PlaceHolder = "Mobile Phone", @maxLength = "16" })
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="user-email-reg">
+                            @Html.ValidationMessageFor(m => m.UserEmail, "", new { @class = "text-danger", @style = "" })
+                            @Html.TextBoxFor(m => m.UserEmail, new { @type = "Email", @class = "form-control", required = "required", PlaceHolder = "Email", @maxLength = "64" })
+                        </div>
+                        <div class="user-pwd">
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger", @style = "" })
+                            @Html.PasswordFor(m => m.Password, new { @type = "Password", @class = "form-control", required = "required", PlaceHolder = "Enter Password", @maxLength = "20" })
+                        </div>
+                        <div class="user-pwd">
+                            @Html.ValidationMessageFor(m => m.RetypePassword, "", new { @class = "text-danger", @style = "" })
+                            @Html.PasswordFor(m => m.RetypePassword, new { @type = "Password", @class = "form-control", required = "required", PlaceHolder = "Confirm Password", @maxLength = "20" })
+                        </div>
+                        <div class="text-center">
+                            <div class="btn-register">
+                                <button type="submit">Register</button>
+                                <button type="button" onclick="window.open('../User/LoginUser','_self')">Login</button>
+                            </div>
+
+                        </div>
+                    </form>
+            }
+            </div>
+
+
+
+
+    <div class="copyright-login dark">
+            <p>Incoporation with UnitedWeReach. 2017 </p>
+        </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        $("#Password").click(function () {
+            document.getElementById("Password").style.borderBottomColor = "solid 1px #ccc";
+        });
+        $("#RetypePassword").click(function () {
+            document.getElementById("RetypePassword").style.borderBottomColor = "solid 1px #ccc";
+        });
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(1000, function () {
+                $(this).remove();
+            });
+        }, 4000);
+        window.setTimeout(function () {
+            $(".alert1").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+                window.open('../User/RegisterMasg', '_self');
+            });
+        }, 4000);
+        $('#UserPhone').on('keydown', function (e)
+        {
+            -1 !== $.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) || /65|67|86|88/.test(e.keyCode) &&
+            (!0 === e.ctrlKey || !0 === e.metaKey) || 35 <= e.keyCode && 40 >= e.keyCode || e.keyCode == 189 || e.keyCode == 187 ||
+            (e.shiftKey || 48 > e.keyCode || 57 < e.keyCode) && (96 > e.keyCode || 105 < e.keyCode) && e.preventDefault()
+        });
+
+    });
+</script>

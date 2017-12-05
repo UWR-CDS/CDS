@@ -1,0 +1,638 @@
+﻿@*VideoModal*@
+<style>
+    #fileuploadvideo {
+    display:none;
+    }
+    .input-sm{
+    margin-bottom:10px;
+    width:80% !important;
+}
+    .modal-body 
+    {
+        min-height: 565px !important;
+    }
+   .f-browse {
+      width: 10%;
+    }
+.input-sm {
+  height: 34px !important;
+  width: 81.8% !important;
+}
+</style>
+    <div class="sectionmodel modal fade" id="Videouploadmodal" role="dialog">
+        <div class="modal-dialog" style="width:70%">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" id="mainheader">
+                    <button id="btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="errorheader">Video</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="videoLoader" style="position: absolute;z-index: 1200;background: rgba(115, 115, 115, 0.5);width: 96%;height: 600px;display:none">
+                        <img src="../img/icon.gif" style="margin-top: 210px;margin-left: 45%;">
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12" style="">
+                            <div class="progress col-lg-4 progressmedia" id="progressvideo" style="display:none">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                    <span id="uptimevideo" style="color:white; font-weight:bold;">0% complete</span>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="f-name-fld">
+                                <div class="fld-text form-inline">
+                                    <label>File Name: </label>
+                                    <input onkeypress="return IsAlphaNumeric(event);" type="text" id="filenamevideo" class="input-sm form-control" placeholder="Max 16 Characters" maxlength="16" />
+                                    <span style="margin-left:17%;"><b>Allowed Extensions</b> : mp4 , mov</span>
+                                </div>
+                            </div>
+                            <div class="f-browse">
+                                <input id="fileuploadvideo" class="upload-img" type="file" accept=".mp4, .mov" enctype="multipart/form-data" />
+                                <span class="btnmedia" id='VideoUploadButton' style="border-radius:0 4px 4px 0; margin-right:10px;">Select File</span>
+                            </div>
+                            <div class="f-upload">
+                                <div class="upload-btn">
+                                    <button onclick="SubmitVideos()"  id="btnuploadvideo" class="btnmedia" type="button" style="border-radius:4px;"> <i class="fa fa-upload"></i> Upload Video</button>
+                                </div>
+                            </div>
+                            <div style="width:300px;margin:0 auto;">
+                                <p style="margin:150px 0 ;font-size:30px;color:#ccc;text-align:center">Search videos from your Computer</p>
+                            </div>
+                            @*<div class="col-lg-12">
+                                <div id="videonone" style="float:left; width:80%; color:red; padding-top:8px; display:none;"></div>
+                                <div id="videoerror" style="float:left; width:80%; color:red; padding-top:8px; display:none;">
+                                    File Size is Greater than <span class="imgsize"> </span>
+                                </div>
+                                <div id="videoerrorext" style="float:left; width:80%; color:red; padding-top:8px; display:none;">
+                                    Please Select a valid Video Type: <span class="imgext"> </span>
+                                </div>
+                                <div class="" style="padding:0;">
+                                    <div id="videomsg" class="fil-size">
+                                        Maximum File Size: <span class="imgsize"> </span>
+                                        Supported Formats: <span class="imgext"> </span> 
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="upload-btn">
+                                        <button id="btnuploadvideo" class="btnnew pull-right" type="button" onclick=" return false"> <i class="fa fa-upload"></i> Upload Video</button>
+                                    </div>
+                                </div>
+
+
+                            </div>*@
+                            <div style="clear:both;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<script>
+    var bookID = @ViewBag.BookID;
+    var lessonID = @ViewBag.LessonID;
+    $('#Videouploadmodal').modal("show");
+
+    function CloseModal()
+    {
+        $('#Videouploadmodal').modal('hide');
+        tinyMCE.activeEditor.buttons.Jsvk.onclick();
+        ///window.location.reload();
+    }
+
+    $('#VideoUploadButton').click(function () {
+        $("input[type='file']").trigger('click');
+    })
+    $("input[type='file']").change(function () {
+        var fullname = this.value.replace(/C:\\fakepath\\/i, '');
+        var name = fullname.split('.');
+        if(name[0].length > 16)
+        {
+            name[0] = name[0].substring(0, 16);
+        }
+        $('#filenamevideo').val(name[0]);
+    })
+
+    function SubmitVideos()
+    {
+        debugger
+        $(".progress").show();
+        var formData = new FormData();
+        var totalFiles = document.getElementById("fileuploadvideo").files.length;
+        if (totalFiles == 0) {
+            alert("Select atleast one video to upload");
+            return false;
+        }
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("fileuploadvideo").files[i];
+            var ext = file.name.split(".");
+            ext[1] = ext[1].toString().toLowerCase();
+            if (ext[1] == "mp4" || ext[1] == "mov") {
+                formData.append("fileuploadvideo", file);
+            }
+            else {
+                alert("Invalid Format");
+                return false;
+            }
+        }
+        var pval = $("#filenamevideo").val();
+        var bkID = bookID;
+        var lesID = lessonID;
+        formData.append('value', pval);
+        formData.append('bkid', bkID);
+        formData.append('lesid', lesID);
+
+        $("#videoLoader").show();
+        $.ajax({
+            type: "POST",
+            url: "../Image/UploadVideos",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if(response != null)
+                {
+                    FillVideosPlanEditor();
+                    CloseModal();
+                }
+                else
+                {
+                    alert(response);
+                }
+            },
+            error: function (error) {
+                
+                alert("error");
+            },
+            progress: function(e) {
+                if(e.lengthComputable) {
+                    var progress=e.loaded / e.total * 100;
+                    setProgress(e.loaded / e.total * 100);
+                    if(progress==100){
+                        setTimeout(function() {   //calls click event after a certain time
+                            $('#showVideoModal').modal('hide');
+                        }, 1000);
+                    }
+                    progress=0;
+                }
+                else {
+                    console.warn('Content Length not reported!');
+                }
+            }
+        }).always(function(){
+            $("#videoLoader").hide();
+        })
+    }
+</script>
+    @*<script>
+
+        $('#VideoUploadButton').click(function () {
+            $("input[type='file']").trigger('click');
+        })
+
+        $("input[type='file']").change(function () {
+            var fullname = this.value.replace(/C:\\fakepath\\/i, '');
+            var name = fullname.split('.');
+            if (name[0].length > 16) {
+                name[0] = name[0].substring(0, 16);
+            }
+            $('#filenamevideo').val(name[0]);
+        })
+
+        GetExtensionsSize(3);
+        $('#Videouploadmodal').modal("show");
+        $('#Videouploadmodal').show(function () {
+
+            $('#filenamevideo').focus();
+
+            $('#btnclosevideo').click(function () {
+                
+
+                dbextarrimg = "";
+                dbextarrmedianames = "";
+
+                $('#Videouploadmodal').hide();
+
+                $('#fileuploadvideo').val('');
+                $('#filenamevideo').val('');
+
+                // $('#MultimediaButtons').show();
+                tinyMCE.activeEditor.buttons.Jsvk.onclick();
+
+            });
+
+
+        });
+        function GetExtensionsSize(Groupid) {
+
+
+            $.ajax({
+                url: '../Image/GetExtensionSize',
+                type: "GET",
+                datatype: "json",
+                data: { MediaTypeID: Groupid },
+                success: function (dbdata) {
+                    if (dbdata != null) {
+
+                        $.each(dbdata, function (i, sub) {
+
+                            dbextarrmedianames += ' ' + sub.ExtensionName + ', ';
+
+                            dbextarrimg += '.' + sub.ExtensionName + ',';
+
+                        });
+
+
+
+                        var n = dbextarrimg.length - 1;
+                        if (n > 0) {
+                            dbextarrimg = dbextarrimg.slice(0, -1);
+                        }
+
+
+                        var n = dbextarrmedianames.length - 1;
+                        if (n > 0) {
+                            dbextarrmedianames = dbextarrmedianames.slice(0, -2);
+                        }
+
+
+                        filesizedb = dbdata[0].MaxSizeinMB * 1048576;
+
+                        filesizedbimg = dbdata[0].MaxSizeinMB * 1024;
+
+
+
+                        //  alert(filesizedbimg);
+
+                        var sizeinmb = dbdata[0].MaxSizeinMB - 1;
+
+                        $('.imgext').html(dbextarrmedianames);
+
+                        $('.imgsize').html(sizeinmb + 'MB');
+
+
+
+                    }
+
+                    else {
+
+                    }
+
+                }
+            });
+        }
+    </script>
+    <script>
+
+
+        var dbextarrimg = "";
+        var dbextarrmedianames = "";
+        var dbextarrvideo = [];
+
+        $(function () {
+            $("#filenamevideo , #filenamevideoupdate").blur(function () {
+                if ($(this).val() == 0) {
+                    $(this).addClass("error");
+
+                }
+                else {
+                    $(this).removeClass("error");
+                }
+            });
+
+        });
+
+    </script>
+    <script>
+
+        $(function () {
+
+
+            $(function () {
+                var paramval = "";
+                var progress;
+                var chk = 0;
+                var progresschk = 100;
+                /*********************File Upload video************************************/
+                $('#fileuploadvideo').fileupload({
+
+                    singleFileUploads: true,
+                    maxNumberOfFiles: 1,
+
+                    add: function (e, data) {
+
+
+                        if (filesize > filesizedb) {
+
+                            $('#videomsg').hide();
+                            $('#videoerror').show();
+
+                        }
+
+                        if (filesize < filesizedb) {
+
+                            $('#videomsg').hide();
+                            $('#videoerror').hide();
+                            $('#videonone').show();
+
+                        }
+
+
+                        fileextensionvideo();
+
+
+                        if (extensiontype == 0) {
+
+                            // alert('error');
+                            $('#videoerrorext').show();
+
+
+                            return false;
+                        }
+
+
+                        if (extensiontype == 1) {
+
+                            //alert('extension type 1');
+                            $('#videoerrorext').hide();
+                            $('#videonone').show();
+                        }
+
+                        if (extensiontype == 1 && filesize < filesizedb) {
+
+                            //alert('final state');
+                            $('#videoerrorext').hide();
+                            $('#videomsg').hide();
+                            $('#videoerror').hide();
+                            $('#videonone').show();
+                        }
+
+
+
+                        $('#btnuploadvideo').unbind('click');
+
+
+                        $("#btnuploadvideo").click(function () {
+
+                            if (filesize > filesizedb) {
+                                return false;
+                            }
+
+
+
+                            paramval = $('#filenamevideo').val();
+
+                            if (paramval == null || paramval == "") {
+                                $('#filenamevideo').addClass("error");
+                                return false;
+                            }
+
+                            $('#progressvideo').show();
+                            paramcheckvideo(paramval);
+                            data.submit();
+                        })
+                    },
+
+                    formData: { paramval },
+                    url: '../Image/UploadVideos',
+                    dataType: 'json',
+                    type: "POST",
+                    replaceFileInput: false,
+
+
+                    done: function (e, data) {
+
+
+
+                        if (data == "Format Not Supported") {
+                            // alert(data);
+                        }
+
+                        else if (data == "File Size Greater than 1MB") {
+                            // alert(data);
+                        }
+
+                        //alert(val);
+                        FillVideos(lessonId);
+
+                        if (progresschk == progress) {
+
+                            $('#uploadtxt').html('Upload Completed');
+                            $('.modalvideo').hide(1000);
+                            //tinyMCE.activeEditor.buttons.Jsvk.onclick();
+                            $('.progress .progress-bar').css('width', 0 + '%');
+                            $('#uploadtxt').html('Uploading Files');
+                            $('#uptime').html(0 + '%');
+
+                        }
+
+                        else {
+
+                            $('.modalvideo').show(function () {
+
+                                $('#btnclosesound').click(function () {
+                                    $('.progress .progress-bar').css('width', 0 + '%');
+                                    $('#uploadtxt').html('Uploading Files');
+                                    $('.modalvideo').hide();
+                                    //tinyMCE.activeEditor.buttons.Jsvk.onclick();
+                                    // $("#fileuploadsound").replaceWith($("#fileuploadsound").val('').clone(true));
+                                });
+
+
+                            });
+                        }
+
+                    }
+
+
+                }).on('fileuploadprogressall', function (e, data) {
+                    progress = parseInt(data.loaded / data.total * 100, 10);
+                    var pro = $('.progress .progress-bar').css('width', progress + '%');
+                    $('#uptime').html(progress + '%');
+                    if (progress == 100) {
+                        $('#uptime').html(progress + '%');
+                        progress = 0;
+                        FillVideosPlanEditor();
+                    }
+
+                });
+                /*********************File Upload Video With Parameters************************************/
+                function paramcheckvideo(pval) {
+                    $("#progressvideo").show();
+                    $('#fileuploadvideo').fileupload({
+
+                        formData: { value: pval, bkid: BookID, lesid: LessonID, chpid: 1 },
+                        url: '../Image/UploadVideos',
+                        dataType: 'json',
+                        type: "POST",
+                        replaceFileInput: false,
+                        singleFileUploads: true,
+                        maxNumberOfFiles: 1,
+
+                        done: function (e, data) {
+
+
+
+
+                            if (data == "Format Not Supported") {
+                                // alert(data);
+                            }
+
+                            else if (data == "File Size Greater than 1MB") {
+                                // alert(data);
+                            }
+
+                            //alert(val);
+                            //FillVideos(lessonId);
+
+                            if (progresschk == progress) {
+
+                                $('#uploadtxtvideo').html('Upload Completed');
+                                $('.Videouploadmodal').hide();
+                                //tinyMCE.activeEditor.buttons.Jsvk.onclick();
+                                $('#MultimediaButtons').show();
+
+
+                                $('.progress .progress-bar').css('width', 0 + '%');
+                                $('#uploadtxtvideo').html('Uploading Files');
+                                $('#uptimevideo').html(0 + '%');
+                                $('#filenamevideo').val('');
+                                $('#progressvideo').hide();
+
+
+                                $('#videonone').hide();
+                                $('#videoerror').hide();
+                                $('#videomsg').show();
+
+                                dbextarrimg = "";
+                                dbextarrmedianames = "";
+
+
+                                FillVideosPlanEditor();
+                                alert("Save Successfully")
+
+                                $('#fileuploadvideo').val('');
+                                $('#filenamevideo').val('');
+
+                                $('#MultimediaButtons').hide();
+                            }
+
+                            else {
+
+                                $('.modal3').show(function () {
+
+                                    $('#btnclosevideo').click(function () {
+                                        
+                                        $('.progress .progress-bar').css('width', 0 + '%');
+                                        $('#uploadtxtvideo').html('Uploading Files');
+                                        $('.modal3').hide();
+
+
+                                        //tinyMCE.activeEditor.buttons.Jsvk.onclick();
+                                    });
+
+
+                                });
+                            }
+
+                        }
+
+
+                    }).on('fileuploadprogressall', function (e, data) {
+                        progress = parseInt(data.loaded / data.total * 100, 10);
+                        var pro = $('.progress .progress-bar').css('width', progress + '%');
+                        $('#uptimevideo').html(progress + '%');
+
+                        if (progress == 100) {
+                            $('#uptimevideo').html(progress + '% Successfully Uploaded');
+                            progress = 0;
+                            FillVideosPlanEditor();
+                            setTimeout(function () {   //calls click event after a certain time
+                                $("#btnclosevideo").trigger("click");
+                                //tinyMCE.activeEditor.buttons.Jsvk.onclick();
+                            }, 1000);
+
+                        }
+
+
+                    });
+
+                }
+
+            });
+
+        });
+    </script>
+    <script>
+
+        var filesize;
+        var filesizedb;
+        var filesizedbimg;
+        var extensiontype = 5;
+
+
+        $(function () {
+            $('#fileuploadvideo').bind('change', function () {
+
+                filesize = this.files[0].size;
+
+            });
+
+        });
+        function fileextensionvideo() {
+
+            var ext = $('#fileuploadvideo').val().split('.').pop().toLowerCase();
+
+            if (ext == 'mp4' || ext == 'avi' || ext == 'mov') {
+
+                extensiontype = 1;
+                // alert('extension type: ' + extensiontype);
+
+            }
+
+            else {
+
+                extensiontype = 0;
+                //  alert('extension type: ' + extensiontype);
+            }
+        }
+
+        function IsAlphaNumeric(e) {
+
+
+            var ret;
+            var specialKeys = new Array();
+            specialKeys.push(8); //Backspace
+            specialKeys.push(9); //Tab
+            specialKeys.push(46); //Delete
+            specialKeys.push(36); //Home
+            specialKeys.push(35); //End
+            specialKeys.push(37); //Left
+            specialKeys.push(39); //Right
+            //specialKeys.push(38);
+            //--38 = &
+            //--36 = $
+            //--64 = at the rate of
+
+            var keyCode = e.keyCode == 0 ? e.charCode : e.keyCode;
+            var ret = ((keyCode == 63) || (keyCode == 40) || (keyCode == 41) || (keyCode == 32) || (keyCode == 95) || (keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122) || (specialKeys.indexOf(e.keyCode) != -1 && e.charCode != e.keyCode));
+            //var ret =((keyCode != 38) && (keyCode != 36) && (keyCode != 64) || (keyCode == 32) || (keyCode == 95) || (keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122) || (specialKeys.indexOf(e.keyCode) != -1 && e.charCode != e.keyCode));
+            //return ret;
+
+            return ret;
+
+
+        }
+
+        function Extvideo() {
+            
+            progress = 0;
+            $('#fileuploadvideo').attr('accept', dbextarrimg);
+            $("#progressvideo").hide();
+            $('.progress .progress-bar').css('width', 0 + '%');
+            $('#uploadtxt').html("");
+        }
+    </script>*@
+

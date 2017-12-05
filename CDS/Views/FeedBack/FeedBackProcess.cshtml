@@ -1,0 +1,341 @@
+﻿@model CDS.Models.mdl_FeedBack
+
+@{
+    ViewBag.Title = "FeedBack Process";
+    Layout = "~/Views/Shared/_CDSLayout.cshtml";
+
+    string CmntUserName = ViewBag.CommentUserName;
+    int CmntUserID = ViewBag.CommentUserID;
+    DateTime todayDate = ViewBag.Date;
+    DateTime actualCommentDate = @Model.Date;
+}
+
+
+<div class="container">
+    <div class="title-bar">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb-lesson">
+                    <li><a href="../Home/Index">Home</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="../FeedBack/FeedBack">Feed Back</a> <i class="fa fa-angle-right"></i></li>
+                    <li><a href="">Feed Back Process</a></li>
+                </ul>
+                <div class="pull-right">
+                    <a onclick="Cancel()" id="" href="#" class="btn-back " title="Back"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.ID, new { @id = "DecFeedBackId" })
+    <div class="col-lg-12" style="background:#fff;">
+        <div class="container-feedback">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="fb-id">
+                        <span><b> #</b></span><span><b> @Model.ID</b></span>
+                        <span class="feed-date">
+                            <span></span>
+                            @Model.Date.ToString("dd MMM yyyy")
+                        </span>
+
+                        <span><b> @Model.UserName</b></span>
+                        <span class="btn-process">
+
+                            <a href="#" onclick="Cancel()" class="btn btn-default " title="Cancel"> Cancel</a>
+
+                            @if (ViewBag.returnPage == "")
+                            {
+                                if (SessionManager.Current.EntityID == 3)
+                                {
+                                    <a id="updStatus" onclick="UpdateStatus()" href="#" class="btn btn-primary " title="Save"> Save</a>
+                                }
+                            }
+
+                        </span>
+                    </div>
+
+                    <div class="title-manag">
+                        <p id="fb-source">@Model.Source</p>
+                        @if (ViewBag.returnPage == "")
+                        {
+                            if (SessionManager.Current.EntityID == 3)
+                            {
+                            @Html.DropDownList("lstStatusFeedBack", new SelectList(ViewBag.statusdropdown, "FeedBackStatusID", "StatusName", Model.StatusID), "Select Type", new { @class = "form-control process-selc", onclick = "ClearSpan()" })
+                            }
+                        }
+                    </div>
+                    <div class="prosess-text">
+                        <textarea class="form-control" readonly>@Model.Remarks</textarea>
+                    </div>
+                    <div class="img-upload">
+                        <ul>
+                            @if (Model.imageList != null && Model.imageList.Count > 0)
+                            {
+                                for (var count = 0; count < Model.imageList.Count(); count++)
+                                {
+                                    <li>
+                                        <img id="img_@count" onclick="OpenImage(@count)" src="..\\Handler\\ImagesHandler.ashx?FeedBackFilePath=@Model.imageList.ToList()[count]" class="img-responsive" />
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="comment-area">
+                        <label>Type below to comment on the thread:</label>
+                        <span id="SaveComment" class="send-btn"><i class="fa fa-send"></i></span>
+                        <textarea id="userComment" placeholder="Comment here" class="textarea form-control"></textarea>
+                    </div>
+
+
+                    <div class="chat-process">
+                        @if (Model.FeedBackComment != null && Model.FeedBackComment.Count > 0)
+                        {
+                            for (int i = 0; i < @Model.FeedBackComment.Count(); i++)
+                            {
+                                <div class="box_@Model.FeedBackComment.ToList()[i].CommentID">
+                                    <h2>
+                                        @Model.FeedBackComment.ToList()[i].CommentUserName
+                                        <span class="chat-time pull-right">
+                                            @Model.FeedBackComment.ToList()[i].CommentTime
+                                        </span>
+                                    </h2>
+                                    <div class="msguser">
+                                        @Model.FeedBackComment.ToList()[i].CommentDetail
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="FeedBackModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Image</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="">
+                        <div id="Enlarge" class="row">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    //window.onload = function() {
+    //    loader();
+    //    setTimeout(function(){
+    //        $("#loading_block").hide();
+    //    },1000)
+    //};
+    function loader() {
+
+        $.loadingBlockShow({
+            imgPath: "../img/icon.gif",
+            text: 'jQuery Script Loading ...',
+            style: {
+                position: 'fixed',
+                width: '100%',
+                height: '100%',
+                background: 'rgba(0, 0, 0, .8)',
+                left: 0,
+                top: 0,
+                zIndex: 10000
+            }
+        })
+    };
+    function OpenImage(id) {
+        var obj = document.getElementById("img_" + id);
+        var path = obj.getAttribute('src')
+        $("#Enlarge").html("");
+        $("#Enlarge").html('<img style="float:left;margin-right:0;cursor:pointer;" class="img-responsive" src="' + path + '"/>');
+        $("#FeedBackModal").modal('show');
+    }
+    function Cancel() {
+        @if (ViewBag.returnPage == "m9kApm+erCCgPxx/joiy/w==")
+        {
+                <text>
+        window.location.href = '@Url.Action("Feedback")';
+        </text>
+        }
+        else if (ViewBag.returnPage == "Inbox") {
+    <text>
+        window.location.href = '../Comment/CommentInbox';
+        </text>
+        }
+        else
+        {
+            <text>
+        window.location.href = '@Url.Action("FeedBackList")';
+        </text>
+        }
+    }
+
+    function UpdateStatus() {
+        $('#updStatus').attr("disabled", true);
+        var status = $("#lstStatusFeedBack").val();
+        var comment = $("#userComment").val();
+        var feedbackId = $("#DecFeedBackId").val();
+        var encfeedbackID = $("#FeedBackID").val();
+        $.ajax({
+            url: '@Url.Action("UpdateFeedBack", "FeedBack")',
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "status": status, "comment": comment, "feebbackId": feedbackId },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data == 1) {
+                    alert("Save Successfully");
+                    //window.location.href = "FeedBackProcess?EncFeedBackId=" + encfeedbackID;
+                }
+                else {
+                    alert("Something wents wrong. Try Again Later");
+                }
+            }
+        });
+    }
+
+    function ReAllocateStatus() {
+        if ($("#lstDepartmentFeedBack").val() == '') {
+            $("#TypeErr").html("");
+            $("#TypeErr").html("Select One Department");
+            return false;
+        }
+        var departmentId = $("#lstDepartmentFeedBack").val();
+        var comment = $("#userComment").val();
+        var feedbackId = $("#DecFeedBackId").val();
+        var encfeedbackID = $("#FeedBackID").val();
+        var prevDeptID = $("#prevdeptID").val();
+        var prevDeptName = $("#fb-dept").text();
+        var isFirstTime = false;
+
+        if (prevDeptName == "N/A") {
+            prevDeptName = $("#fb-source").text();
+            isFirstTime = true;
+        }
+        var departmentName = $("#lstDepartmentFeedBack option:selected").text();
+        $.ajax({
+            url: '@Url.Action("ReAllocateFeedBack", "FeedBack")',
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "departmentId": departmentId, "comment": comment, "feebbackId": feedbackId, "prevDeptID": prevDeptID },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data == 1) {
+                    var tr = 'iWgT5Ba8OFA=';
+                    var fal = 'w1KSdRHV15E=';
+
+                    window.location.href = "FeedBackProcess?EncFeedBackId=" + encfeedbackID + "&isView=" + fal + "&isRouteTo=" + tr;
+
+                }
+                else {
+                    alert("Something wents wrong. Try Again Later");
+                }
+            }
+        });
+    }
+
+
+    function ClearSpan() {
+        $("#TypeErr").html("");
+    }
+
+    $("#SaveComment").click(function (e) {
+        SendFeedBack();
+    });
+    $("#userComment").keypress(function (e) {
+        debugger
+        if (e.keyCode == 13 && !e.shiftKey) {
+            SendFeedBack();
+        }
+    });
+    function SendFeedBack() {
+        var comment = $("#userComment").val();
+        var feedbackId = $("#DecFeedBackId").val();
+        if (comment.trim() != '') {
+            var id = parseInt(feedbackId);
+            loader();
+            $.ajax({
+                url: '@Url.Action("AddComment", "FeedBack")',
+                type: 'get',
+                dataType: 'json',
+                casync: false,
+                data: { "comment": comment, "feebbackId": id },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data == 1) {
+                        @*var commentDate = '@DateTime.Now.ToString("HH:mm:ss tt")';
+
+                        var tbody = $("#comment-box");
+
+                        var fullDate = new Date();
+                        var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
+                        var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+                        var commentDetail = comment;
+                        var userID = '@ViewBag.CommentUserID'
+                        var userName = '@ViewBag.CommentUserName'
+
+                        if ($("#comment-box")[0].innerHTML.indexOf("No Comments") >= 0) {
+                            $("#comment-box").html('');
+                            tbody.append('<div class="msg-box-new"><div class="msg-text-new"><div class="img-msg-new"><img class="img-box img-rounded img-responsive" id="image" src="..\\Handler\\UserImageHandler.ashx?key=' + userID + '&&id=' + currentDate + '" alt="" width="35" height="35"></div><div class="name-msg">' + userName + '</div><div class="chat-text-box">' + commentDetail + '</div><div style="clear:both"></div><div class="chat-time">' + commentDate + '</div></div>');
+
+                        }
+                        else {
+                            tbody.prepend('<div class="msg-box-new"><div class="msg-text-new"><div class="img-msg-new"><img class="img-box img-rounded img-responsive" id="image" src="..\\Handler\\UserImageHandler.ashx?key=' + userID + '&&id=' + currentDate + '" alt="" width="35" height="35"></div><div class="name-msg">' + userName + '</div><div class="chat-text-box">' + commentDetail + '</div><div style="clear:both"></div><div class="chat-time">' + commentDate + '</div></div>');
+                        }*@
+                        location.reload();
+
+                        $("#userComment").val('');
+                        $("#loading_block").hide();
+                    }
+                    else {
+                        alert("Something wents wrong. Try Again Later");
+                    }
+                }
+            });
+        }
+    }
+    @*function DeleteComment(id)
+    {
+        var commentID = id;
+        $.ajax({
+            url: '@Url.Action("DeleteFeedBackComment", "FeedBack")',
+            type: 'get',
+            dataType: 'json',
+            casync: false,
+            data: { "commentID": commentID },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data == 1) {
+                    $("box_" + id).css({'display':'none'})
+                    // window.location.href = "FeedBackProcess?EncFeedBackId=" + encfeedbackID + "&isView=" + fal + "&isRouteTo=" + tr;
+                }
+                else {
+                    alert("Something wents wrong. Try Again Later");
+                }
+            }
+        });
+    }*@
+</script>
+
+

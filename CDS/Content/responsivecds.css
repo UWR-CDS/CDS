@@ -1,0 +1,913 @@
+﻿@media only screen and (min-width:300px) and (max-width:480px) {
+    .hamburger {
+        height: 35px;
+        width: 35px;
+    }
+    .hamburger.is-closed .hamb-top{
+        top: 6px;
+    }
+    .hamburger.is-closed .hamb-middle{
+        top:40%;
+    }
+    .hamburger.is-closed .hamb-top, .hamburger.is-closed .hamb-middle, .hamburger.is-closed .hamb-bottom, .hamburger.is-open .hamb-top, .hamburger.is-open .hamb-middle, .hamburger.is-open .hamb-bottom {
+        left: 7px;
+    }
+    .hamburger.is-closed .hamb-middle {
+        margin-top: 1px;
+    }
+    .hamburger.is-closed .hamb-bottom {
+        bottom: 7px;
+    }
+    .navbar-fixed-top {
+        top: 35px !important;
+    }
+    .copyright-login {
+        width: 100%;
+    }
+    .form-holder {
+        width: 100%;
+        padding: 10px 0 0px;
+    }
+    .form-holder #loginForm {
+        padding: 1% 10% 0%;
+    }
+    .login-box {
+        margin-top: 10px;
+        padding: 0 15px;
+    }
+    .logo-cds {
+        padding: 5px 0 20px;
+    }
+    .social-icon-login {
+        padding: 5% 8% 0;
+    }
+    .fget-pwd {
+        margin-bottom: 0;
+    }
+    .fget-pwd .registerd {
+        margin: 0;
+        width: 50%;
+    }
+    .fget-pwd .pwd {
+        width: 50%;
+    }
+    .form-holder form {
+        padding: 0 10%;
+    }
+    .shdow-img {
+        background-image: none;
+    }
+    .social-icon-login label {
+        width: 35%;
+    }
+    .social-icon-login ul {
+        width: 65%;
+    }
+    .copyright-login {
+        margin: 0 auto 30px;
+    }
+    .reg-title h1 {
+        font-size: 30px;
+        line-height: 32px;
+    }
+    .form-holder-reg {
+        padding: 10px 15px;
+        width: 80%;
+    }
+    .btn-register button {
+        margin-right: 0;
+    }
+    .user-email-reg input[type="text"] {
+        width: 100%;
+    }
+    .fname {
+        margin-right: 0px;
+    }
+    .main-con {
+        margin: 0;
+    }
+    .con-time h2 {
+        font-size: 18px;
+        margin: 0 0 3px;
+        padding: 0 0 0 52px;
+    }
+    .navbar .con-time {
+        width: 100%;
+        padding: 5px 0 0;
+    }
+    .newsupdate {
+        margin: 0 0 11px 47px;
+        padding: 4px 15px;
+        width: 80%;
+    }
+    .newslabel {
+        width: 25%;
+    }
+    .news-text {
+        width: 70%;
+    }
+    #sidebar-wrapper {
+        z-index: 1030;
+    }
+    .box-graph {
+        width: 100%;
+    }
+    .box-header select {
+        width: 29%;
+    }
+    .graph-b {
+        text-align: center;
+        padding: 20px 30px 0;
+    }
+    .small-graph {
+        float: none;
+        margin: 0 8px 25px;
+    }
+    .rec-lesn .lsn-box {
+        padding: 20px 15px;
+    }
+    .lsn-box .icon-tit {
+        width: 65%;
+    }
+    .btn-lsn h2 {
+        padding: 5px 0%;
+    }
+    .g-btn .btn-grd, .g-btn .btn-sub {
+        padding: 10px 15px;
+    }
+    .RecTab {
+        width: 45%;
+        right: 18%;
+    }
+.btn-status {
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+.btn-status li a {
+  display: block;
+  margin: 0 0px 1px;
+  padding: 3px 8px;
+}
+    .update-subject {
+        width: 100%;
+    }
+    .img-user {
+        margin-bottom: 20px;
+    }
+    .img-user img {
+        border: 4px solid #4c76df;
+        border-radius: 50%;
+        display: inline-block;
+        min-height: 134px;
+        width: 135px;
+        margin: 0 auto 20px;
+        text-align: center;
+    }
+    .form-subj {
+        padding: 13% 5% 5%;
+    }
+    .user-email, .user-pwd {
+        margin-bottom: 15px;
+    }
+    .form-subj .btn-register {
+        padding-top: 0;
+        margin-top: 0;
+    }
+    .btn-register button {
+        margin-right: 7%;
+    }
+    .subj-box-view .subj-icon-view {
+        height: auto;
+    }
+    .dt-bootstrap {
+        padding: 15px 0;
+    }
+    .up-prfoile {
+        margin-bottom: 30px;
+    }
+    div.dataTables_wrapper div.dataTables_filter input {
+        float: none;
+        width: 77%;
+    }
+    .dataTables_filter label {
+        float: left;
+        width: 60%;
+    }
+    .search-btn {
+        float: left;
+    }
+    .send-comnt textarea {
+        float: right;
+        width: 68%;
+        margin: 7px 0 0 0;
+    }
+    .user-list-modal {
+        width: 93%;
+    }
+    .user-check {
+        overflow: hidden;
+    }
+    .feed-box {
+        padding: 5%;
+    }
+    .feed-box h2 {
+        font-size: 18px;
+    }
+    .inputfile + label {
+        display: block;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .container-feedback {
+        padding: 30px 0;
+        width: 100%;
+    }
+    .title-manag select {
+        width: 100%;
+        margin-bottom: 20px;
+        background: #fff url("../images/favicon.ico") no-repeat scroll 95% center / 10px auto;
+    }
+    .title-manag p {
+        width: 100%;
+    }
+    .btn-process {
+        margin-bottom: 20px;
+    }
+    .video-w {
+        width: 100%;
+        height: auto;
+    }
+    .main-header .navbar-custom-menu, .main-header .navbar-right {
+        padding: 0;
+    }
+    .tasks-menu form .logout {
+        padding: 5px 15px;
+    }
+    .navbar-custom-menu .navbar-nav > li > a {
+        padding-bottom: 8px;
+        padding-top: 8px;
+    }
+    .template-box .temp-thumb {
+        width: 100%;
+        height: 350px;
+    }
+    .compose-temp {
+        width: 100%;
+    }
+    .lsn-title {
+        width: 100%;
+    }
+    .temp-btn {
+        width: 100%;
+    }
+    .panel-collapse iframe {
+        width: 100%;
+        height: 300px;
+        margin: 0 auto;
+    }
+    .sub-history .modal-dialog {
+        width: 90%;
+    }
+    .search-box {
+        right: 22px;
+        top: 97px;
+        width: 180px;
+    }
+    .mob-user{
+        display:none !important;
+    }
+     .header-editor .lsn-t{
+        display:none;
+    }
+    /*mobile-view-tinymce css start*/
+    .defaultSkin div{
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 290px;
+        padding:5px 0;
+    }
+    .main-tiny{
+        min-height: 651px; margin: 15px; width: 90%; padding: 0px 15px;
+    }
+    .left-bar-tiny, .right-bar-tiny, .control-sidebar-bg, .template-sidebar-bg{
+        display:none;
+    }
+    .editor-box{
+        background:#fff;
+    }
+    .editor-box .header-editor {
+        float: none;
+        margin: 0 0px;
+    }
+    .tinymc-box {
+        width: 100%;
+    }
+    .mceIframeContainer iframe{
+        height:40px;
+    }
+    .mceIframeContainer .mceContentBody{
+        min-width: 100% !important;
+        margin: 0 !important;
+    }
+    /*mobile-view-tinymce css end*/
+
+            
+}
+
+@media only screen and (min-width:481px) and (max-width:767px) {
+    .copyright-login {
+        width: 100%;
+    }
+    .form-holder-reg {
+        padding: 2% 6%;
+        width: 80%;
+    }
+    .btn-register button {
+        margin-right: 0;
+    }
+    .title-bar .breadcrumb-lesson {
+        width: 100%;
+    }
+.btn-status {
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+.btn-status li a {
+  display: block;
+  margin: 0 0px 1px;
+  padding: 3px 8px;
+}
+    .main-con {
+        margin: 0;
+    }
+    .con-time h2 {
+        font-size: 18px;
+        padding: 0 0 0 52px;
+        margin: 0;
+    }
+    .navbar .con-time {
+        width: 100%;
+        padding: 5px 0 0;
+    }
+    .newsupdate {
+        margin: 0 0 11px 47px;
+        padding: 4px 15px;
+        width: 80%;
+    }
+    .newslabel {
+        width: 25%;
+    }
+    .news-text {
+        width: 70%;
+    }
+    #sidebar-wrapper {
+        z-index: 1030;
+    }
+    .box-graph {
+        width: 100%;
+    }
+    .box-header select {
+        width: 29%;
+    }
+    .graph-b {
+        margin: 0 auto;
+        min-height: 205px;
+        padding: 20px 30px 0;
+        text-align: center;
+        width: 90%;
+    }
+    .small-graph {
+        float: none;
+        margin: 0 8px 25px;
+        display: inline-block;
+    }
+    .rec-lesn .lsn-box {
+        padding: 20px 15px;
+    }
+    .lsn-box .icon-tit {
+        width: 65%;
+    }
+    .btn-lsn h2 {
+        padding: 5px 0%;
+    }
+    .g-btn .btn-grd, .g-btn .btn-sub {
+        padding: 10px 15px;
+    }
+    .update-subject {
+        width: 100%;
+    }
+    .img-user {
+        margin-bottom: 20px;
+    }
+    .img-user img {
+        border: 4px solid #4c76df;
+        border-radius: 50%;
+        display: inline-block;
+        min-height: 134px;
+        width: 135px;
+        margin: 0 auto 20px;
+        text-align: center;
+    }
+    .form-subj {
+        padding: 13% 5% 5%;
+    }
+    .user-email, .user-pwd {
+        margin-bottom: 15px;
+    }
+    .form-subj .btn-register {
+        padding-top: 0;
+        margin-top: 0;
+    }
+    .btn-register button {
+        margin-right: 7%;
+    }
+    .subj-box-view .subj-icon-view {
+        height: auto;
+    }
+    .up-prfoile {
+        margin-bottom: 30px;
+    }
+    .dt-bootstrap {
+        padding: 15px 0;
+    }
+    .search-box {
+        right: 40%;
+        top: 97px;
+        width: 180px;
+    }
+    div.dataTables_wrapper div.dataTables_filter input {
+        float: none;
+        padding: 5px 58px 5px 5px;
+        width: 100%;
+    }
+    .dataTables_filter label {
+        float: left;
+        width: 50%;
+    }
+    .search-btn {
+        float: left;
+    }
+    .user-list-modal {
+        width: 93%;
+    }
+    .user-check {
+        overflow: hidden;
+    }
+    .container-feedback {
+        padding: 30px 0;
+        width: 100%;
+    }
+    .title-manag select {
+        width: 100%;
+        margin-bottom: 20px;
+        background: #fff url("../images/favicon.ico") no-repeat scroll 95% center / 10px auto;
+    }
+    .title-manag p {
+        width: 100%;
+    }
+    .btn-process {
+        margin-bottom: 20px;
+    }
+    .fget-pwd {
+        margin-bottom: 0;
+    }
+    #imageModal .modal-dialog {
+        width: 80%;
+        margin: 0 auto;
+    }
+    #drivImagesdiv .input-sm {
+        width: 58%;
+    }
+    .panel-collapse iframe {
+        width: 100%;
+        height: 300px;
+        margin: 0 auto;
+    }
+    .sub-history .modal-dialog {
+        width: 80%;
+        margin: 15px auto;
+    }
+    .sub-history .modal-content {
+        padding: 15px;
+    }
+     .header-editor .lsn-t{
+        display:none;
+    }
+}
+
+@media only screen and (min-width:768px) and (max-width:1024px) {
+
+    .box-header select {
+        background: #fff url("../images/favicon.ico") no-repeat scroll 90% center / 8% auto;
+        width: 32%;
+    }
+    .title-bar .breadcrumb-lesson {
+        width: 80%;
+    }
+.btn-status {
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+.btn-status li a {
+  display: block;
+  margin: 0 0 1px;
+  padding: 6px 15px;
+}
+    .main-con {
+        margin: 0;
+    }
+    .con-time h2 {
+        font-size: 18px;
+        padding: 10px 0 0 30px;
+        margin: 0;
+    }
+    .navbar .con-time {
+        padding: 5px 0;
+        width: 50%;
+    }
+    .newsupdate {
+        margin: 10px 0 11px 47px;
+        padding: 4px 15px;
+        width: 40%;
+    }
+    .newslabel {
+        width: 25%;
+    }
+    .news-text {
+        width: 70%;
+    }
+    #sidebar-wrapper {
+        z-index: 1030;
+    }
+    .box-graph {
+        width: 100%;
+    }
+    .box-header select {
+        width: 29%;
+    }
+    .graph-b {
+        text-align: center;
+        padding: 20px 20px 0;
+    }
+    .small-graph {
+        float: none;
+        margin: 0 8px 25px;
+    }
+    .rec-lesn .lsn-box {
+        padding: 20px 15px;
+    }
+    .lsn-box .icon-tit {
+        width: 65%;
+    }
+    .btn-lsn h2 {
+        padding: 5px 0%;
+    }
+     .g-btn .btn-grd, .g-btn .btn-sub {
+        padding: 10px 15px;
+    }
+    .RecTab {
+        width: 45%;
+        right: 18%;
+    }
+    .info-box-icon {
+        width: 70px;
+    }
+    .info-box-content {
+        margin-left: 35px;
+    }
+    .bg-parrot-green .info-box-content, .bg-darkblue .info-box-content, .bg-darkpink .info-box-content {
+        padding: 16px 13px 16px 49px;
+    }
+    .tab-des {
+        display: none;
+    }
+    .wl-holder h2 {
+        margin: 0;
+    }
+    .wl-holder .icon-view-box {
+        padding: 5px 5px;
+    }
+    .rec-lesn .lsn-box {
+        padding: 20px 8px 5px;
+    }
+    .g-btn .btn-grd, .g-btn .btn-sub {
+        padding: 10px 0;
+    }
+    .update-subject {
+        width: 100%;
+    }
+    .img-user {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    .img-user img {
+        border: 4px solid #4c76df;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 auto 15px;
+        min-height: 133px;
+        text-align: center;
+        width: 150px;
+    }
+    .form-subj {
+        padding: 11% 5% 5%;
+    }
+    .user-email, .user-pwd {
+        margin-bottom: 15px;
+    }
+    .form-subj .btn-register {
+        padding-top: 0;
+        margin-top: 0;
+    }
+    .btn-register button {
+        margin-right: 7%;
+    }
+    .up-prfoile {
+        margin-bottom: 30px;
+    }
+    .dataTables_filter label {
+        display: inline-block;
+    }
+    .dt-bootstrap {
+        padding: 15px 0;
+    }
+    .user-list-modal {
+        width: 93%;
+    }
+    .user-check {
+        overflow: hidden;
+    }
+    .container-feedback {
+        width: 80%;
+    }
+    .btnaction {
+        margin-left: -15px;
+        padding: 0 15px;
+    }
+    .aboutus-uwr h2 {
+        padding: 10px 0 10px 15px;
+    }
+    .content-area {
+        padding: 40px 0 70px;
+    }
+    .aboutus-uwr .uwr-desc {
+        padding: 10px 15px;
+    }
+    .template-box .temp-thumb {
+        margin-top: 31px;
+    }
+    .f-browse {
+        width: 25%;
+    }
+    .f-upload {
+        width: 33%;
+    }
+    .social-icon-login {
+        padding: 0 15%;
+    }
+    #imageModal .modal-dialog {
+        width: 80%;
+        margin: 0 auto;
+    }
+    #drivImagesdiv .input-sm {
+        width: 58%;
+    }
+    .control-sidebar-bg, .control-sidebar {
+        width: 20%;
+    }
+    .temp-open {
+        right: 22% !important;
+    }
+    .template-sidebar-bg, .template-sidebar {
+        width: 58%;
+    }
+    .search-box {
+        top: 61px;
+    }
+    .tooltip .tooltiptext {
+      left: 5px;
+      padding: 10px 1px;
+      top: 16px;
+      width: 94%;
+    }
+    .tab-pane h3 {
+      font-size: 13px !important;
+      line-height: 20px !important;
+    }
+    .list-group-item {
+        margin: 10px 0 35px 10px !important;
+    }
+}
+
+@media only screen and (min-width:1025px) and (max-width:1200px) {
+    .btn-status {
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+.btn-status li a {
+  display: block;
+  margin: 0 0 1px;
+  padding: 6px 15px;
+}
+    .graph-b {
+        padding: 0 66px;
+        text-align: center;
+    }
+    .small-graph {
+        margin: 0 8px 10px;
+    }
+    .box-header select {
+        background: #fff url("../images/favicon.ico") no-repeat scroll 90% center / 11% auto;
+        width: 20%;
+    }
+    .main-con {
+        margin: 0;
+    }
+    .con-time h2 {
+        font-size: 18px;
+        padding: 5px 0 0 30px;
+        margin: 0;
+    }
+    .navbar .con-time {
+        padding: 12px 0 0;
+        width: 45%;
+    }
+    .newsupdate {
+        margin: 10px 0 11px 47px;
+        padding: 4px 15px;
+        width: 40%;
+    }
+    .newslabel {
+        width: 25%;
+    }
+    .news-text {
+        width: 70%;
+    }
+    #sidebar-wrapper {
+        z-index: 1030;
+    }
+    .box-graph {
+        width: 100%;
+    }
+    .box-header select {
+        background: #fff url("../images/favicon.ico") no-repeat scroll 90% center / 10px auto;
+        width: 20%;
+    }
+    .graph-b {
+        text-align: center;
+        padding: 20px 20px 0;
+    }
+    .small-graph {
+        float: none;
+        margin: 0 8px 25px;
+    }
+    .rec-lesn .lsn-box {
+        padding: 20px 15px;
+    }
+    .lsn-box .icon-tit {
+        width: 65%;
+    }
+    .btn-lsn h2 {
+        padding: 5px 0%;
+    }
+    .g-btn .btn-grd, .g-btn .btn-sub {
+        padding: 10px 15px;
+    }
+    .RecTab {
+        width: 45%;
+        right: 18%;
+    }
+    .info-box-icon {
+        width: 70px;
+    }
+    .info-box-content {
+        margin-left: 35px;
+    }
+    .bg-parrot-green .info-box-content, .bg-darkblue .info-box-content, .bg-darkpink .info-box-content {
+        padding: 16px 13px 16px 49px;
+    }
+    .tab-des {
+        display: none;
+    }
+    .wl-holder h2 {
+        margin: 18px 0 10px;
+    }
+    .wl-holder .icon-view-box {
+        padding: 5px 5px;
+    }
+    .rec-lesn .lsn-box {
+        padding: 20px 8px 5px;
+    }
+    .g-btn .btn-grd, .g-btn .btn-sub {
+        padding: 10px 0;
+    }
+    .img-user {
+        margin-bottom: 20px;
+    }
+    .img-user img {
+        display: block;
+        margin: 0 auto 20px;
+        text-align: center;
+    }
+    .form-subj {
+        padding: 11% 5% 5%;
+    }
+    .user-email, .user-pwd {
+        margin-bottom: 15px;
+    }
+    .form-subj .btn-register {
+        padding-top: 0;
+        margin-top: 0;
+    }
+    .btn-register button {
+        margin-right: 7%;
+    }
+    .up-prfoile {
+        margin-bottom: 30px;
+    }
+    .dataTables_filter label {
+        display: inline-block;
+    }
+    .user-check {
+        overflow: hidden;
+    }
+    .btnaction {
+        margin-left: -15px;
+        padding: 0 15px;
+    }
+    .aboutus-uwr h2 {
+        padding: 10px 0 10px 15px;
+    }
+    .content-area {
+        padding: 40px 0 70px;
+    }
+    .aboutus-uwr .uwr-desc {
+        padding: 10px 15px;
+    }
+    .template-box .temp-thumb {
+        margin-top: 31px;
+    }
+    .social-icon-login {
+        padding: 0 15%;
+    }
+    .thumb-read .user-work {
+        width: 76%;
+        overflow: hidden;
+    }
+     .tooltip .tooltiptext {
+      left: 3px;
+      width: 95%;
+    }
+}
+
+@media only screen and (min-width:1201px) and (max-width:1600px) {
+    .graph-b {
+        padding: 0 15px 0;
+    }
+    .small-graph {
+        margin: 0 12px 10px 14px;
+    }
+    .f-link {
+        position: absolute;
+        bottom: 18px;
+    }
+    .box-header select {
+        background: #fff url("../images/favicon.ico") no-repeat scroll 90% center / 11% auto;
+        width: 12%;
+    }
+    .lsn-box .icon-tit {
+        width: 67%;
+    }
+    .btn-lsn h2 {
+        padding: 5px 0%;
+    }
+}
+
+@media only screen and (min-width:1201px) and (max-width:1366px) {
+    .box-header select {
+        background: #fff url("../images/favicon.ico") no-repeat scroll 90% center / 11% auto;
+        width: 16%;
+    }
+    .tooltip .tooltiptext {
+      left: 5px;    
+      width: 95%;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .login-box input[type="password"] {
+        -webkit-text-stroke-color: #fff;
+    }
+
+    .form-holder-reg input[type="password"] {
+        -webkit-text-stroke-color: #000;
+    }
+}
